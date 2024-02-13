@@ -15,7 +15,7 @@ namespace PranicAhmedbad.DA
         public DataSet Check_Login(string UserId, string Password)
         {
             sqlQuery = new StringBuilder();
-            object[] objParamName = { "UserId","Password"  };
+            object[] objParamName = { "varUserID", "varPassword" };
             object[] objParamValue = { UserId, Password};
 
             try

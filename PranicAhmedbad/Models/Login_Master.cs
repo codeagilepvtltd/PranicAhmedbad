@@ -6,21 +6,21 @@ using System.Threading.Tasks;
 
 namespace PranicAhmedbad.Models
 {
-    internal class Login_Master
+    public class Login_Master
     {
         public long intGlCode { get; set; }
 
-        public string varUserName { get; set; }
+        public string ?varUserName { get; set; }
 
-        public string varMobileNo { get; set; }
+        public string ?varMobileNo { get; set; }
 
-        public string varEmailID { get; set; }
+        public string ?varEmailID { get; set; }
 
-        public string varPassword { get; set; }
+        public string ?varPassword { get; set; }
 
-        public string chrLock { get; set; }
+        public char ?chrLock { get; set; }
 
-        public string chrActive { get; set; }
+        public char ?chrActive { get; set; }
 
         public DateTime? dtEntryDate { get; set; }
 

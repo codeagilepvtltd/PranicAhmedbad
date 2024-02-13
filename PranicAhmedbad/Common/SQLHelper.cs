@@ -11,6 +11,7 @@ namespace PranicAhmedbad.Common
     public enum StoredProcedures
     {
         USP_Check_Login,
+        USP_Insert_Modules_Error_Log
     }
     public class SQLHelper
     {
@@ -160,6 +161,25 @@ namespace PranicAhmedbad.Common
             catch
             {
                 throw;
+            }
+        }
+
+        public static void writeException(Exception ex)
+        {
+            string str = Environment.CurrentDirectory + "\\log\\";
+            string strpath = DateTime.Now.Ticks.ToString() + ".txt";
+            string strFinal = str + strpath;
+
+            if (!System.IO.Directory.Exists(str))
+            {
+                System.IO.Directory.CreateDirectory(str);
+            }
+
+            using (Stream stream = File.Create(strFinal))
+            {
+                TextWriter tw = new StreamWriter(stream); /* this is where the problem was */
+                tw.WriteLine(ex.Message + " - " + Environment.NewLine + ex.StackTrace);
+                tw.Close();
             }
         }
 

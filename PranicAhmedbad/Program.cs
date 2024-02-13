@@ -1,9 +1,21 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using PranicAhmedbad.Common;
+using PranicAhmedbad.Repository.Account;
+using PranicAhmedbad.Repository.ModuleErrorLog;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddSingleton<IAccountRepository, AccountRepository>();
+builder.Services.AddSingleton<IModuleErrorLogRepository, ModuleErrorLogRepository>();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddRouting();
+builder.Services.AddMvc().AddSessionStateTempDataProvider();
+builder.Services.AddSession();
 var app = builder.Build();
+SQLHelper.InitializeConfiguration(app.Configuration);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -15,6 +27,9 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseSession();
+
+/*Http Context Accessor*/
 
 app.UseRouting();
 
@@ -25,3 +40,4 @@ app.MapControllerRoute(
     pattern: "{controller=Account}/{action=Login}/{id?}");
 
 app.Run();
+
