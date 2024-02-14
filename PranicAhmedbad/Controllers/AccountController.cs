@@ -53,7 +53,7 @@ namespace PranicAhmedbad.Controllers
                 AccountLoginViewModel accountLoginView = accountRepository.CheckAuthentication(accountLoginViewModel.UserName, accountLoginViewModel.Password);
                 if (accountLoginView != null && !string.IsNullOrEmpty(accountLoginView.UserName))
                 {
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Index", "DashBoard");
                 }
                 else
                 {
