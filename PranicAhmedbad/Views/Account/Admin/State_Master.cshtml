@@ -1,0 +1,103 @@
+﻿@model PranicAhmedbad.Lib.ViewModels.StateViewModel
+@{
+    ViewData["Title"] = "Pranic Ahmedbad - States";
+}
+<!-- Container Fluid-->
+<div class="container-fluid" id="container-wrapper">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">State Master</h1>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="./">Home</a></li>
+            <li class="breadcrumb-item">Forms</li>
+            <li class="breadcrumb-item active" aria-current="page">State Master</li>
+        </ol>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Basic -->
+            <div class="card mb-6">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">State  Entry</h6>
+                </div>
+                <div class="card-body">
+                    <form class="user" asp-controller="Account" asp-action="Save_States" method="post">
+
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-1 col-form-label">Country:</label>
+                            <div class="col-sm-3">
+                                <select asp-for="intGlCode" id="countryList" name="countryList" class="form-control" asp-items="@(new SelectList(ViewBag.countryList, "intGlCode", "varCountryName"))"></select>
+                            </div>
+                            <label for="inputEmail3" class="col-sm-1 col-form-label"><span class="red">*</span>State Name:</label>
+                            <div class="col-sm-3">
+                                <input type="text" asp-for="varStateName" required="required" class="form-control" id="txtState" placeholder="State Name">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-1 col-form-label">Status:</label>
+                            <div class="col-sm-3">
+                                <input type="checkbox" asp-for="chrActive" id="chkStatus" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-3">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="button" class="btn btn-dark">Cancel</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<br />
+<!---Container Fluid-->
+<!-- Container Fluid-->
+<div class="container-fluid" id="container-wrapper">
+    <div class="row">
+        <!-- DataTable with Hover -->
+        <div class="col-lg-12">
+            <div class="card mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">State List</h6>
+                    <button type="button" class="btn btn-primary">Download</button>
+                </div>
+                <div class="table-responsive p-3">
+
+                    <table class="table align-items-center table-flush table-hover" id="StateMasterList">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>State Name</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>State Name</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            @foreach (PranicAhmedbad.Lib.Models.State_Master state_Master in Model.state_Masters)
+                            {
+                                <tr>
+                                    <td>@state_Master.varStateName</td>
+                                    <td>@state_Master.chrActive</td>
+                                    <td><a href="#">Edit</a> / <a href="#">Delete</a></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!---Container Fluid-->

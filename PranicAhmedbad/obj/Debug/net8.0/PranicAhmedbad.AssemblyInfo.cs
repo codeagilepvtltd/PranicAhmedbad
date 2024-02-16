@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PranicAhmedbad")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1aa0824663c2e3feba345b2e64f46b25747e349e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+35d00e1eab0f87dccdb915f297f34beee17c57e1")]
 [assembly: System.Reflection.AssemblyProductAttribute("PranicAhmedbad")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PranicAhmedbad")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

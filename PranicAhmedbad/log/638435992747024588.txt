@@ -1,0 +1,14 @@
+Procedure or function 'USP_InsertUpdate_State_Master' expects parameter '@varStateName', which was not supplied. - 
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String methodName)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at PranicAhmedbad.Common.SQLHelper.ExecuteQuery(StoredProcedures eStoredProcedure, Object[] ParamName, Object[] ParamVal) in D:\Work\CodeAgile\Project\PranicAhmedbad\PranicAhmedbad\Common\SQLHelper.cs:line 107
+   at PranicAhmedbad.DA.Account_DA.InsertUpdate_states(StateViewModel stateViewModel) in D:\Work\CodeAgile\Project\PranicAhmedbad\PranicAhmedbad\DA\Account_DA.cs:line 58
+   at PranicAhmedbad.Repository.Account.AccountRepository.InsertUpdate_states(StateViewModel stateViewModel) in D:\Work\CodeAgile\Project\PranicAhmedbad\PranicAhmedbad\Repository\Account\AccountRepository.cs:line 68
+   at PranicAhmedbad.Controllers.AccountController.Save_States(StateViewModel stateView) in D:\Work\CodeAgile\Project\PranicAhmedbad\PranicAhmedbad\Controllers\AccountController.cs:line 38

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
-using PranicAhmedbad.Common;
-using PranicAhmedbad.Models;
+using PranicAhmedbad.Lib.Common;
+using PranicAhmedbad.Lib.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
