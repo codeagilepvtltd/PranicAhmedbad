@@ -3,3 +3,12 @@
 ################################################################################
 
 /PranicAhmedbad/.vs
+OBJ 
+bin 
+/PranicAhmedbad/OBJ
+/PranicAhmedbad/bin
+/PranicAhmedbad.Lib/OBJ
+/PranicAhmedbad.Lib/bin
+
+/PranicAhmedbad.Test/OBJ
+/PranicAhmedbad.Test/bin
