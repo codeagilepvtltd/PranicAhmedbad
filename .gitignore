@@ -5,6 +5,8 @@
 /PranicAhmedbad/.vs
 obj 
 bin 
+packages
+.vs
 /PranicAhmedbad/obj
 /PranicAhmedbad/bin
 /PranicAhmedbad.Lib/obj
