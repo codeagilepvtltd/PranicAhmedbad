@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.8.34525.116
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.33328.57
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PranicAhmedbad", "PranicAhmedbad.csproj", "{42A3309A-4BDB-4F33-A351-3DFE1E3294AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PranicAhmedbad", "PranicAhmedbad\PranicAhmedbad.csproj", "{5F36B2CD-03B2-4D8A-93F8-1049EA3DF364}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PranicAhmedbad.Lib", "..\PranicAhmedbad.Lib\PranicAhmedbad.Lib.csproj", "{82EB5C2C-2817-4D0A-B2EA-8BB14E31EFFD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PranicAhmedbad.Lib", "PranicAhmedbad.Lib\PranicAhmedbad.Lib.csproj", "{82EB5C2C-2817-4D0A-B2EA-8BB14E31EFFD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PranicAhmedbad.Test", "..\PranicAhmedbad.Test\PranicAhmedbad.Test.csproj", "{4BFEDE3F-40B5-46AB-9DAB-46791166D6F1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PranicAhmedbad.Test", "PranicAhmedbad.Test\PranicAhmedbad.Test.csproj", "{4BFEDE3F-40B5-46AB-9DAB-46791166D6F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,10 +15,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{42A3309A-4BDB-4F33-A351-3DFE1E3294AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{42A3309A-4BDB-4F33-A351-3DFE1E3294AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{42A3309A-4BDB-4F33-A351-3DFE1E3294AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{42A3309A-4BDB-4F33-A351-3DFE1E3294AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F36B2CD-03B2-4D8A-93F8-1049EA3DF364}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F36B2CD-03B2-4D8A-93F8-1049EA3DF364}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F36B2CD-03B2-4D8A-93F8-1049EA3DF364}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F36B2CD-03B2-4D8A-93F8-1049EA3DF364}.Release|Any CPU.Build.0 = Release|Any CPU
 		{82EB5C2C-2817-4D0A-B2EA-8BB14E31EFFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{82EB5C2C-2817-4D0A-B2EA-8BB14E31EFFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82EB5C2C-2817-4D0A-B2EA-8BB14E31EFFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -32,6 +32,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {C04693F8-FF73-4805-A374-3D92CCA52CA3}
+		SolutionGuid = {8FB43560-1C4E-428D-9C9C-591905167272}
 	EndGlobalSection
 EndGlobal
