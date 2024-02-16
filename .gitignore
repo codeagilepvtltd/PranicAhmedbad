@@ -6,7 +6,7 @@
 obj 
 bin
 bin/debug
-bin/release 
+bin/release
 packages
 .vs
 /PranicAhmedbad/obj
