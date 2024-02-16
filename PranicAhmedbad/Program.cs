@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using PranicAhmedbad.Common;
-using PranicAhmedbad.Repository.Account;
-using PranicAhmedbad.Repository.ModuleErrorLog;
+using PranicAhmedbad.Lib.Common;
+using PranicAhmedbad.Lib.Repository.Account;
+using PranicAhmedbad.Lib.Repository.ModuleErrorLog;
 
 var builder = WebApplication.CreateBuilder(args);
 

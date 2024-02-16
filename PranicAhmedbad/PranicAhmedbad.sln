@@ -5,6 +5,10 @@ VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PranicAhmedbad", "PranicAhmedbad.csproj", "{42A3309A-4BDB-4F33-A351-3DFE1E3294AD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PranicAhmedbad.Lib", "..\PranicAhmedbad.Lib\PranicAhmedbad.Lib.csproj", "{82EB5C2C-2817-4D0A-B2EA-8BB14E31EFFD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PranicAhmedbad.Test", "..\PranicAhmedbad.Test\PranicAhmedbad.Test.csproj", "{4BFEDE3F-40B5-46AB-9DAB-46791166D6F1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{42A3309A-4BDB-4F33-A351-3DFE1E3294AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42A3309A-4BDB-4F33-A351-3DFE1E3294AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42A3309A-4BDB-4F33-A351-3DFE1E3294AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82EB5C2C-2817-4D0A-B2EA-8BB14E31EFFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82EB5C2C-2817-4D0A-B2EA-8BB14E31EFFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82EB5C2C-2817-4D0A-B2EA-8BB14E31EFFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82EB5C2C-2817-4D0A-B2EA-8BB14E31EFFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BFEDE3F-40B5-46AB-9DAB-46791166D6F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BFEDE3F-40B5-46AB-9DAB-46791166D6F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BFEDE3F-40B5-46AB-9DAB-46791166D6F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BFEDE3F-40B5-46AB-9DAB-46791166D6F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

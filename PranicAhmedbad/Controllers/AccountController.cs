@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PranicAhmedbad.Common;
-using PranicAhmedbad.Repository.Account;
-using PranicAhmedbad.Repository.ModuleErrorLog;
-using PranicAhmedbad.ViewModels;
+using PranicAhmedbad.Lib.Common;
+using PranicAhmedbad.Lib.Repository.Account;
+using PranicAhmedbad.Lib.Repository.ModuleErrorLog;
+using PranicAhmedbad.Lib.ViewModels;
 using System.Net;
 
 namespace PranicAhmedbad.Controllers
@@ -20,7 +21,49 @@ namespace PranicAhmedbad.Controllers
             return View("Admin/Login");
         }
 
-        public AccountController(IAccountRepository _accountRepository,IModuleErrorLogRepository _moduleErrorLogRepository, IHttpContextAccessor _httpContextAccessor)
+        #region State
+        public ActionResult States()
+        {
+            StateViewModel stateViewModel = new StateViewModel();
+
+            stateViewModel = accountRepository.GetStateList(stateViewModel);
+
+            stateViewModel.county_Masters.Insert(0, new Lib.Models.Country_Master { intGlCode = 0, varCountryName = "-Select-" });
+            ViewBag.countryList = stateViewModel.county_Masters;
+
+            return View("Admin/State_Master", stateViewModel);
+        }
+
+
+
+        [HttpPost]
+        public async Task<ActionResult> Save_States(StateViewModel stateView)
+        {
+            try
+            {
+                stateView.ref_EntryBy = 1;
+                stateView.ref_CountryID = 1;
+                int id = accountRepository.InsertUpdate_states(stateView);
+                if (id == 0)
+                {
+                    return RedirectToAction("Account", "Admin/State_Master");
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = string.Format(Common_Messages.Save_Failed_Message, "State");
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (Exception ex)
+            {
+                SQLHelper.writeException(ex);
+
+                return View();
+            }
+        }
+
+        #endregion
+        public AccountController(IAccountRepository _accountRepository, IModuleErrorLogRepository _moduleErrorLogRepository, IHttpContextAccessor _httpContextAccessor)
         {
             accountRepository = _accountRepository;
             httpContextAccessor = _httpContextAccessor;
@@ -70,7 +113,7 @@ namespace PranicAhmedbad.Controllers
         }
         public IActionResult Index(string returnUrl)
         {
-           SessionManager sessionManager = new SessionManager(httpContextAccessor);
+            SessionManager sessionManager = new SessionManager(httpContextAccessor);
             try
             {
                 ViewBag.ErrorMessage = TempData["ErrorMessage"];
@@ -92,7 +135,7 @@ namespace PranicAhmedbad.Controllers
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = ex.Message;
-              //  ModuleErrorLogRepository.Insert_Modules_Error_Log("Login", System.Reflection.MethodBase.GetCurrentMethod().Name.ToString(), Convert.ToString(sessionManager.IntGlCode), ex.StackTrace, this.GetType().Name.ToString(), "Novapack", ex.Source, "", "", ex.Message);
+                //  ModuleErrorLogRepository.Insert_Modules_Error_Log("Login", System.Reflection.MethodBase.GetCurrentMethod().Name.ToString(), Convert.ToString(sessionManager.IntGlCode), ex.StackTrace, this.GetType().Name.ToString(), "Novapack", ex.Source, "", "", ex.Message);
                 return RedirectToAction(nameof(Index));
             }
         }
