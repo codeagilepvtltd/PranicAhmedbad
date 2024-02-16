@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using PranicAhmedbad.Lib.Repository.Account;
 using PranicAhmedbad.Lib.ViewModels;
 using NUnit.Framework.Internal;
+using System.Security.Cryptography;
 
 namespace PranicAhmedbad.Test
 {
@@ -24,6 +25,15 @@ namespace PranicAhmedbad.Test
             {
                 //Assert.A(accountLoginViewModel.UserName, "Mitesh");
             }
+        }
+        [Test]
+        public void EncryptPassword()
+        {
+
+            string cleanString = "Admin@2024";
+            Byte[] clearBytes = new UnicodeEncoding().GetBytes(cleanString);
+            Byte[] hashedBytes = ((HashAlgorithm)CryptoConfig.CreateFromName("MD5")).ComputeHash(clearBytes);
+            string retvalue= BitConverter.ToString(hashedBytes);
         }
     }
 }
