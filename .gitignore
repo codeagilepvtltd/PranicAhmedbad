@@ -4,7 +4,9 @@
 
 /PranicAhmedbad/.vs
 obj 
-bin 
+bin
+bin/debug
+bin/release 
 packages
 .vs
 /PranicAhmedbad/obj
