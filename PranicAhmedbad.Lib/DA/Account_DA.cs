@@ -83,7 +83,7 @@ namespace PranicAhmedbad.Lib.DA
         {
             sqlQuery = new StringBuilder();
             object[] objParamName = { "intGlCode", "varStateName" , "ref_EntryBy", "ref_CountryId", "chrActive" };
-            object[] objParamValue = { stateViewModel.intGlCode, stateViewModel.varStateName, stateViewModel.ref_EntryBy, stateViewModel.ref_CountryID, stateViewModel.chrActive };
+            object[] objParamValue = { stateViewModel.state_Master.intGlCode, stateViewModel.state_Master.varStateName, stateViewModel.state_Master.ref_EntryBy, stateViewModel.state_Master.ref_CountryID, stateViewModel.state_Master.chrActive };
 
             try
             {

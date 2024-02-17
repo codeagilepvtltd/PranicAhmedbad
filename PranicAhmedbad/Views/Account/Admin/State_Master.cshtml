@@ -5,14 +5,14 @@
 }
 <!-- Container Fluid-->
 <div class="container-fluid" id="container-wrapper">
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">State Master</h1>
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="./">Home</a></li>
-            <li class="breadcrumb-item">Forms</li>
-            <li class="breadcrumb-item active" aria-current="page">State Master</li>
-        </ol>
-    </div>
+    @*    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">State Master</h1>
+    <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="./">Home</a></li>
+    <li class="breadcrumb-item">Forms</li>
+    <li class="breadcrumb-item active" aria-current="page">State Master</li>
+    </ol>
+    </div> *@
 
     <div class="row">
         <div class="col-lg-12">
@@ -23,12 +23,7 @@
                 </div>
                 <div class="card-body">
                     <form class="user" asp-controller="Account" asp-action="Save_States" method="post">
-
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-1 col-form-label">Country:</label>
-                            <div class="col-sm-3">
-                           <select asp-for="state_Master.ref_CountryID" id="countryList" name="countryList" class="form-control" asp-items="@(new SelectList(ViewBag.countryList, "intGlCode", "varCountryName"))"></select>
-                            </div>
                             <label for="inputEmail3" class="col-sm-1 col-form-label"><span class="red">*</span>State Name:</label>
                             <div class="col-sm-3">
                                 <input type="text" tabindex="1" class="form-control custom_input" maxlength="100" id="txtUserID" asp-for="state_Master.varStateName" placeholder="State ID">
@@ -68,41 +63,29 @@
                     <button type="button" class="btn btn-primary">Download</button>
                 </div>
                 <div class="table-responsive p-3">
-                    @(Html.DevExtreme().DataGrid<>(State_Master)
-                        .ID("grdStateDetails")
+                    @(Html.DevExtreme().DataGrid()
+                        .ID("grdRoleList")
                         .ShowBorders(true)
-                        .DataSource(ds => ds.Mvc().Controller("Account").LoadAction("GetStateList").Key("intGlCode").UpdateAction("UpdateStateDetails"))
+                        .DataSource(ds => ds.Mvc().Controller("Account").Key("intGlCode").LoadAction("GetStateList"))
                         .Selection(s => s.Mode(SelectionMode.Single))
                         .LoadPanel(f => f.Enabled(false))
                         .Columns(columns =>
                         {
-                            columns.Add().DataField("intGlCode").Caption("Edit").Type(GridCommandColumnType.Buttons)
-                            .Width(50)
-                            .Buttons(b =>
-                            {
-                                b.Add().Name(GridColumnButtonName.Edit).Visible(true).Icon("edit").OnClick("editdata");
+                            columns.Add().DataField("intGlCode").Caption("Edit");
+                            columns.Add().DataField("varStateName").Caption("State Name");
+                            columns.Add().DataField("chrActive").Caption("Status");
+                            columns.Add().DataField("dtEntryDate").Caption("Entry Date");
 
-                            });
-                            columns.Add().DataField("fk_DesignationGlCode").Caption("fk_DesignationGlCode").Visible(false);
-                            columns.Add().DataField("UserID").Caption("User ID").Width(120);
-                            columns.Add().DataField("FirstName").Caption("First Name").Width(150);
-                            columns.Add().DataField("LastName").Caption("Last Name").Width(150);
-                            columns.Add().DataField("Designation").Caption("Designation").Width(120);
-                            columns.Add().DataField("EmailID").Caption("Email ID").Width(150);
-                            columns.Add().DataField("Phone").Caption("Phone #").Width(120);
-                            columns.Add().DataField("Address").Caption("Address").Width(200);
-                            columns.Add().DataField("ValidFrom").Caption("Valid From").Width(120);
-                            columns.Add().DataField("ValidTo").Caption("Valid To").Width(120);
                         })
                         .ColumnAutoWidth(true)
                         .Scrolling(scrolling => scrolling.ColumnRenderingMode(GridColumnRenderingMode.Standard))
                         .ShowRowLines(true)
                         .RowAlternationEnabled(true)
                         .Paging(paging => paging.PageSize(10))
-                          .Pager(pager =>
-                          {
-                              pager.ShowInfo(true);
-                          })
+                        .Pager(pager =>
+                        {
+                            pager.ShowInfo(true);
+                        })
                         .Sorting(sorting => sorting.Mode(DevExtreme.AspNet.Mvc.GridSortingMode.Multiple))
                         .FilterRow(filterRow => filterRow
                         .Visible(true)
@@ -110,35 +93,7 @@
                         )
                         .HeaderFilter(headerFilter => headerFilter.Visible(true))
                         .WordWrapEnabled(true)
-                    )
-
-
-                    <table class="table align-items-center table-flush table-hover" id="StateMasterList">
-                        <thead class="thead-light">
-                            <tr>
-                                <th>State Name</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tfoot>
-                            <tr>
-                                <th>State Name</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </tfoot>
-                        <tbody>
-                            @foreach (PranicAhmedbad.Lib.Models.State_Master state_Master in Model.state_Masters)
-                            {
-                                <tr>
-                                    <td>@state_Master.varStateName</td>
-                                    <td>@state_Master.chrActive</td>
-                                    <td><a href="#">Edit</a> / <a href="#">Delete</a></td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+                        )
                 </div>
             </div>
         </div>
