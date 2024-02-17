@@ -102,7 +102,7 @@ namespace PranicAhmedbad.Lib.Repository.Account
         public RoleMasterViewModel GetRoles()
         {
 
-            RoleMasterViewModel roleMasterViewModel = new RoleMasterViewModel(); ;
+            RoleMasterViewModel roleMasterViewModel = new RoleMasterViewModel();
             Account_DA accountDA = new Account_DA();
 
             try
@@ -111,20 +111,15 @@ namespace PranicAhmedbad.Lib.Repository.Account
 
                 if (dsResult.Tables.Count > 0 && dsResult.Tables[0].Rows.Count > 0)
                 {
-                    roleMasterViewModel.Role_MasterList = new List<Role_Master>();
+                    roleMasterViewModel.Role_MasterList = dsResult.Tables[0].AsEnumerable().Select(row => new Role_Master()
                     {
-                        dsResult.Tables[0].AsEnumerable().Select(row =>
-                               new
-                               {
-                                   intGlCode = row.Field<int>("intGlCode"),
-                                   varRoleName = row.Field<string>("varRoleName"),
-                                   chrActive = row.Field<string>("chrActive"),
-                                   dtEntryDate = row.Field<DateTime>("dtEntryDate"),
-                                   ref_EntryBy = row.Field<long>("ref_EntryBy"),
-                                   dtUpdatedDate = row.Field<DateTime>("dtUpdatedDate"),
-                                   ref_UpdateBy = row.Field<long>("ref_UpdateBy")
-                               }).ToList();
-                    }
+                        intGlCode = row.Field<int>("intGlCode"),
+                        varRoleName = row.Field<string>("varRoleName"),
+                        chrActive = row.Field<string>("chrActive"),
+                        dtEntryDate = row.Field<DateTime>("dtEntryDate")
+
+                    }).ToList();
+                    
                 }
 
             }

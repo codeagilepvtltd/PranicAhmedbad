@@ -184,5 +184,34 @@ namespace PranicAhmedbad.Controllers
                 return RedirectToAction(nameof(Index));
             }
         }
+
+        public IActionResult Roles()
+        {
+            return View("~/Views/Account/Admin/Role_Master.cshtml");
+        }
+
+        public IActionResult GetRolesList()
+        {
+            SessionManager sessionManager = new SessionManager(httpContextAccessor);
+            Role_Master Roles_mst = new Role_Master();
+            DataSet dsResult = new DataSet();
+            try
+            {
+                RoleMasterViewModel objViewModel = new RoleMasterViewModel();
+                objViewModel = accountRepository.GetRoles();
+                
+
+                var resultJson = JsonConvert.SerializeObject(objViewModel.Role_MasterList);
+                return Content(resultJson, "application/json");
+                //return DataSourceLoader.Load(objViewModel.lst_Model, loadOptions);
+            }
+            catch (Exception ex)
+            {
+                //ModuleErrorLogRepository.Insert_Modules_Error_Log("Supplier_Mst", System.Reflection.MethodBase.GetCurrentMethod().Name.ToString(), Convert.ToString(sessionManager.IntGlCode), ex.StackTrace, this.GetType().Name.ToString(), "Novapack", ex.Source, "", "", ex.Message);
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction("ErrorForbidden", "Account");
+            }
+        }
+
     }
 }

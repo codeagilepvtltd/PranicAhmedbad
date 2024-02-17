@@ -7,11 +7,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    <link href="~/css/Admin/devextreme/dx.common.css" rel="stylesheet" />
+    <link href="~/css/Admin/devextreme/dx.light.css" rel="stylesheet" />
+  @*   <link href="~/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" /> *@
+    <script src="~/js/Admin/devextreme/jquery.js"></script>
+    <script src="~/js/Admin/devextreme/bootstrap.js"></script>
+
+    <script src="~/js/Admin/devextreme/cldr.js"></script>
+    <script src="~/js/Admin/devextreme/cldr/event.js"></script>
+    <script src="~/js/Admin/devextreme/cldr/supplemental.js"></script>
+    <script src="~/js/Admin/devextreme/cldr/unresolved.js"></script>
+
+    <script src="~/js/Admin/devextreme/globalize.js"></script>
+    <script src="~/js/Admin/devextreme/globalize/message.js"></script>
+    <script src="~/js/Admin/devextreme/globalize/number.js"></script>
+    <script src="~/js/Admin/devextreme/globalize/currency.js"></script>
+    <script src="~/js/Admin/devextreme/globalize/date.js"></script>
+
+    @* JSZip for client side export *@
+    <script src="~/js/Admin/devextreme/jszip.js"></script>
+
+    <script src="~/js/Admin/devextreme/dx.all.js"></script>
+    @*<script type="text/javascript" src="https://cdn3.devexpress.com/jslib/19.1.12/js/dx.all.js"></script>*@
+    <script src="~/js/Admin/devextreme/vectormap-data/world.js"></script>
+    <script src="~/js/Admin/devextreme/aspnet/dx.aspnet.data.js"></script>
+    <script src="~/js/Admin/devextreme/aspnet/dx.aspnet.mvc.js"></script>
     <link href="~/img/Admin/img/logo/logo.png" rel="icon">
     <title>Pranic Ahmedabad - Dashboard</title>
     <link href="~/lib/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="~/lib/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-    <link href="~/css/admin/ruang-admin.min.css" rel="stylesheet">
+    <link href="~/css/admin/ruang-admin.css" rel="stylesheet">
     <link href="~/lib/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 </head>
 
@@ -335,16 +360,7 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
-    <script src="~/lib/vendor/jquery/jquery.min.js"></script>
-    <script src="~/lib/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="~/lib/vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="~/js/Admin/ruang-admin.min.js"></script>
-    <script src="~/lib/vendor/chart.js/Chart.min.js"></script>
-    <script src="~/js/Admin/demo/chart-area-demo.js"></script>
-    <script src="~/Scripts/Account/account.js"></script>
-    <!-- Page level plugins -->
-    <script src="~/lib/vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="~/lib/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
     <script>
         $(document).ready(function () {
             $('#StateMasterList').DataTable();
