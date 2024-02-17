@@ -1,0 +1,130 @@
+﻿@using DevExtreme.AspNet.Mvc
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model PranicAhmedbad.Lib.ViewModels.RoleMasterViewModel
+@{
+    ViewData["Title"] = "Pranic Ahmedbad - States";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid" id="container-wrapper">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Role Master</h1>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="./">Home</a></li>
+            <li class="breadcrumb-item">Forms</li>
+            <li class="breadcrumb-item active" aria-current="page">Role  Master</li>
+        </ol>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Basic -->
+            <div class="card mb-6">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Role  Entry</h6>
+                </div>
+                <div class="card-body">
+                    <form class="needs-validation" method="post" id="frmRoleDetail" novalidate>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="SupplierName">Role Name<span style="color:red">*</span></label>
+                                    <input type="text" tabindex="1" class="form-control custom_input" maxlength="100" id="txtSupplierName" asp-for="varRoleName" placeholder="Role Name">
+                                    @Html.ValidationMessageFor(model => model.varRoleName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox custom-checkbox-primary mb-3">
+                                        <input type="checkbox" class="custom-control-input" id="chkchrActive">
+                                        <label class="custom-control-label" for="chkchrActive">Active</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group mb-0">
+                            <button type="button" id="btnSave" tabindex="6" class="btn btn-primary" onclick="return ValidateData()">Save</button>
+                            <button type="button" id="btnCancel" tabindex="7" class="btn btn-secondary" onclick="return resetValidation()">Cancel</button>
+                            <button type="button" id="btnDownLoad" tabindex="8" class="btn btn-warning" onclick="ExportExcel();">Download</button>
+                        </div>
+
+                        <input type="hidden" asp-for="@Model.intGlCode" id="intGlCode" />
+                        <input type="hidden" asp-for="@Model.chrActive" id="chrActive" />
+                        @* <input type="hidden" asp-for="@Model.varAction" id="Action" /> *@
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<br />
+<!---Container Fluid-->
+<!-- Container Fluid-->
+<div class="container-fluid" id="container-wrapper">
+
+    <div class="row">
+        <!-- DataTable with Hover -->
+        <div class="col-md-12">  <hr></hr></div>
+        <div class="col-lg-12">
+            @(Html.DevExtreme().DataGrid()
+                .ID("grdRolesDetials")
+                .ShowBorders(true)
+                .DataSource(ds => ds.Mvc().Controller("Account").Key("intGlCode").LoadAction("GetRolesList"))
+                .Selection(s => s.Mode(SelectionMode.Single))
+                .LoadPanel(f => f.Enabled(false))
+                .Columns(columns =>
+                {
+                    columns.Add().DataField("intGlCode").Caption("Edit");
+                    columns.Add().DataField("varRoleName").Caption("Role Name");
+                    columns.Add().DataField("chrActive").Caption("Status");
+                    columns.Add().DataField("dtEntryDate").Caption("Entry Date");
+
+                })
+                .ColumnAutoWidth(true)
+                .Scrolling(scrolling => scrolling.ColumnRenderingMode(GridColumnRenderingMode.Standard))
+                .ShowRowLines(true)
+                .RowAlternationEnabled(true)
+                .Paging(paging => paging.PageSize(10))
+                .Pager(pager =>
+                {
+                    pager.ShowInfo(true);
+                })
+                .Sorting(sorting => sorting.Mode(DevExtreme.AspNet.Mvc.GridSortingMode.Multiple))
+                .FilterRow(filterRow => filterRow
+                .Visible(true)
+                .ApplyFilter(GridApplyFilterMode.Auto)
+                )
+                .HeaderFilter(headerFilter => headerFilter.Visible(true))
+                .WordWrapEnabled(true)
+
+                )
+        </div>
+    </div>
+    </div>
+
+</div>
+@Html.AntiForgeryToken()
+
+
+<style>
+    .dvdx-overlay-content {
+        position: absolute;
+        z-index: 1000;
+        outline: 0;
+        overflow: unset !important;
+    }
+
+    .dx-overlay-content.dx-popup-normal.dx-popup-draggable.dx-resizable.dx-dropdowneditor-overlay-flipped {
+        overflow: scroll !important;
+    }
+
+    .custom-checkbox {
+        margin: 40px 0px;
+    }
+</style>

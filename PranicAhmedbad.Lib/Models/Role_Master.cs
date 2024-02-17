@@ -16,11 +16,11 @@ namespace PranicAhmedbad.Lib.Models
 
         public DateTime? dtEntryDate { get; set; }
 
-        public long? ref_EntryBy { get; set; }
+        //public long? ref_EntryBy { get; set; }
 
-        public DateTime? dtUpdatedDate { get; set; }
+        //public DateTime? dtUpdatedDate { get; set; }
 
-        public long? ref_UpdateBy { get; set; }
+        //public long? ref_UpdateBy { get; set; }
 
     }
 
