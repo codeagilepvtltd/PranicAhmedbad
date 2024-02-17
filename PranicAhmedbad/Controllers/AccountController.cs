@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using PranicAhmedbad.Common;
 using PranicAhmedbad.Lib.Common;
+using PranicAhmedbad.Lib.Models;
 using PranicAhmedbad.Lib.Repository.Account;
 using PranicAhmedbad.Lib.Repository.ModuleErrorLog;
 using PranicAhmedbad.Lib.ViewModels;
+using System.Data;
 using System.Net;
 
 namespace PranicAhmedbad.Controllers
@@ -24,14 +27,7 @@ namespace PranicAhmedbad.Controllers
         #region State
         public ActionResult States()
         {
-            StateViewModel stateViewModel = new StateViewModel();
-
-            stateViewModel = accountRepository.GetStateList(stateViewModel);
-
-            stateViewModel.county_Masters.Insert(0, new Lib.Models.Country_Master { intGlCode = 0, varCountryName = "-Select-" });
-            ViewBag.countryList = stateViewModel.county_Masters;
-
-            return View("Admin/State_Master", stateViewModel);
+            return View("Admin/State_Master");
         }
 
 
@@ -41,8 +37,8 @@ namespace PranicAhmedbad.Controllers
         {
             try
             {
-                stateView.ref_EntryBy = 1;
-                stateView.ref_CountryID = 1;
+                //stateView.ref_EntryBy = 1;
+                //stateView.ref_CountryID = 1;
                 int id = accountRepository.InsertUpdate_states(stateView);
                 if (id == 0)
                 {
@@ -70,6 +66,54 @@ namespace PranicAhmedbad.Controllers
             moduleErrorLogRepository = _moduleErrorLogRepository;
         }
 
+
+        public IActionResult GetStateList()
+        {
+
+            List<State_Master> state_Masters = new List<State_Master>();
+            DataSet dsResult = new DataSet();
+            try
+            {
+                state_Masters = accountRepository.GetStateList();
+                var resultJson = JsonConvert.SerializeObject(state_Masters);
+                return Content(resultJson, "application/json");
+            }
+            catch (Exception ex)
+            {
+                //ModuleErrorLogRepository.Insert_Modules_Error_Log("GetPersonDetails", System.Reflection.MethodBase.GetCurrentMethod().Name.ToString(), Convert.ToString(sessionManager.IntGlCode), ex.StackTrace, this.GetType().Name.ToString(), "Novapack", ex.Source, "", "", ex.Message);
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction("ErrorForbidden", "Account");
+            }
+        }
+        [HttpPut]
+        public IActionResult UpdateStateDetails([FromForm] int key, [FromForm] string values)
+        {
+           // SessionManager sessionManager = new SessionManager(HttpContextAccessor);
+            try
+            {
+                //PersonViewModel objPersonViewModel = new PersonViewModel();
+                //SessionPersonMst objSessionPersonMst = new SessionPersonMst(HttpContextAccessor);
+                //objPersonViewModel.lst_Model = objSessionPersonMst.lstPerson_Details;
+
+                //if (objPersonViewModel.lst_Model.Where(x => x.intGlCode == key).Any() == true)
+                //{
+                //    Person_Mst data = objPersonViewModel.lst_Model.First(o => o.intGlCode == key);
+                //    JsonConvert.PopulateObject(values, data);
+                //}
+                //else
+                //{
+                //    return Ok();
+                //}
+            }
+            catch (Exception ex)
+            {
+                //ModuleErrorLogRepository.Insert_Modules_Error_Log("Dummy_Shipment", System.Reflection.MethodBase.GetCurrentMethod().Name.ToString(), Convert.ToString(sessionManager.IntGlCode), ex.StackTrace, this.GetType().Name.ToString(), "Novapack", ex.Source, "", "", ex.Message);
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction("ErrorForbidden", "Account");
+            }
+            return Ok();
+
+        }
         // POST: HomeController/Create
         [HttpPost]
         public async Task<ActionResult> ValidateLogin(AccountLoginViewModel accountLoginViewModel, string returnUrl)
@@ -111,6 +155,7 @@ namespace PranicAhmedbad.Controllers
                 return View();
             }
         }
+
         public IActionResult Index(string returnUrl)
         {
             SessionManager sessionManager = new SessionManager(httpContextAccessor);

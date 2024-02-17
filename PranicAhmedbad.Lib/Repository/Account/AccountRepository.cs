@@ -35,14 +35,13 @@ namespace PranicAhmedbad.Lib.Repository.Account
             }
             return accountLoginViewModel;
         }
-        public StateViewModel GetStateList(StateViewModel stateViewModel)
+        public List<State_Master> GetStateList(int StateId=0)
         {
             Account_DA accountDA = new Account_DA();
+            List <State_Master> states = new List<State_Master>();
             try
             {
-                DataSet dsResult = accountDA.GetStateList(stateViewModel.intGlCode);
-                stateViewModel.state_Masters = new List<Models.State_Master>();
-                stateViewModel.county_Masters = new List<Models.Country_Master>();
+                DataSet dsResult = accountDA.GetStateList(StateId);
                 foreach (DataRow dataRow in dsResult.Tables[0].Rows)
                 {
                     State_Master state_Master = new State_Master();
@@ -50,17 +49,11 @@ namespace PranicAhmedbad.Lib.Repository.Account
                     state_Master.varStateName = Convert.ToString(dataRow["varStateName"]);
                     state_Master.chrActive = Convert.ToString(dataRow["chrActive"]);
                     state_Master.dtEntryDate = Convert.ToDateTime(dataRow["dtEntryDate"]);
-
                     state_Master.ref_CountryID = Convert.ToInt32(dataRow["CountryId"]);
                     state_Master.varCountryName = Convert.ToString(dataRow["CountryName"]);
-
-                    stateViewModel.state_Masters.Add(state_Master);
+                    states.Add(state_Master);
                 }
-                foreach(Country_Master country_Master in GetCountryList(0))
-                {
-                    stateViewModel.county_Masters.Add(country_Master);
-                }
-                return stateViewModel;
+                return states;
 
             }
             catch

@@ -12,7 +12,9 @@ namespace PranicAhmedbad.Lib.Repository.Account
 
         int InsertUpdate_states(StateViewModel stateViewModel);
 
-        List<Country_Master> GetCountryList(int intGlCode = 0);
+        List<Country_Master> GetCountryList(int CountryId = 0);
+
+        List<State_Master> GetStateList(int StateId = 0);
 
         RoleMasterViewModel GetRoles();
 

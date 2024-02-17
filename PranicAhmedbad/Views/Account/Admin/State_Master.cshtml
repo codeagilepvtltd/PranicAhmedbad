@@ -1,4 +1,5 @@
-﻿@model PranicAhmedbad.Lib.ViewModels.StateViewModel
+﻿@using DevExtreme.AspNet.Mvc
+@model StateViewModel
 @{
     ViewData["Title"] = "Pranic Ahmedbad - States";
 }
@@ -26,17 +27,17 @@
                         <div class="form-group row">
                             <label for="inputEmail3" class="col-sm-1 col-form-label">Country:</label>
                             <div class="col-sm-3">
-                                <select asp-for="intGlCode" id="countryList" name="countryList" class="form-control" asp-items="@(new SelectList(ViewBag.countryList, "intGlCode", "varCountryName"))"></select>
+                           <select asp-for="state_Master.ref_CountryID" id="countryList" name="countryList" class="form-control" asp-items="@(new SelectList(ViewBag.countryList, "intGlCode", "varCountryName"))"></select>
                             </div>
                             <label for="inputEmail3" class="col-sm-1 col-form-label"><span class="red">*</span>State Name:</label>
                             <div class="col-sm-3">
-                                <input type="text" asp-for="varStateName" required="required" class="form-control" id="txtState" placeholder="State Name">
+                                <input type="text" tabindex="1" class="form-control custom_input" maxlength="100" id="txtUserID" asp-for="state_Master.varStateName" placeholder="State ID">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="inputEmail3" class="col-sm-1 col-form-label">Status:</label>
                             <div class="col-sm-3">
-                                <input type="checkbox" asp-for="chrActive" id="chkStatus" />
+                                <input type="checkbox" asp-for="state_Master.chrActive" id="chkStatus" />
                             </div>
                         </div>
                         <div class="form-group row">
@@ -67,6 +68,50 @@
                     <button type="button" class="btn btn-primary">Download</button>
                 </div>
                 <div class="table-responsive p-3">
+                    @(Html.DevExtreme().DataGrid<>(State_Master)
+                        .ID("grdStateDetails")
+                        .ShowBorders(true)
+                        .DataSource(ds => ds.Mvc().Controller("Account").LoadAction("GetStateList").Key("intGlCode").UpdateAction("UpdateStateDetails"))
+                        .Selection(s => s.Mode(SelectionMode.Single))
+                        .LoadPanel(f => f.Enabled(false))
+                        .Columns(columns =>
+                        {
+                            columns.Add().DataField("intGlCode").Caption("Edit").Type(GridCommandColumnType.Buttons)
+                            .Width(50)
+                            .Buttons(b =>
+                            {
+                                b.Add().Name(GridColumnButtonName.Edit).Visible(true).Icon("edit").OnClick("editdata");
+
+                            });
+                            columns.Add().DataField("fk_DesignationGlCode").Caption("fk_DesignationGlCode").Visible(false);
+                            columns.Add().DataField("UserID").Caption("User ID").Width(120);
+                            columns.Add().DataField("FirstName").Caption("First Name").Width(150);
+                            columns.Add().DataField("LastName").Caption("Last Name").Width(150);
+                            columns.Add().DataField("Designation").Caption("Designation").Width(120);
+                            columns.Add().DataField("EmailID").Caption("Email ID").Width(150);
+                            columns.Add().DataField("Phone").Caption("Phone #").Width(120);
+                            columns.Add().DataField("Address").Caption("Address").Width(200);
+                            columns.Add().DataField("ValidFrom").Caption("Valid From").Width(120);
+                            columns.Add().DataField("ValidTo").Caption("Valid To").Width(120);
+                        })
+                        .ColumnAutoWidth(true)
+                        .Scrolling(scrolling => scrolling.ColumnRenderingMode(GridColumnRenderingMode.Standard))
+                        .ShowRowLines(true)
+                        .RowAlternationEnabled(true)
+                        .Paging(paging => paging.PageSize(10))
+                          .Pager(pager =>
+                          {
+                              pager.ShowInfo(true);
+                          })
+                        .Sorting(sorting => sorting.Mode(DevExtreme.AspNet.Mvc.GridSortingMode.Multiple))
+                        .FilterRow(filterRow => filterRow
+                        .Visible(true)
+                        .ApplyFilter(GridApplyFilterMode.Auto)
+                        )
+                        .HeaderFilter(headerFilter => headerFilter.Visible(true))
+                        .WordWrapEnabled(true)
+                    )
+
 
                     <table class="table align-items-center table-flush table-hover" id="StateMasterList">
                         <thead class="thead-light">
