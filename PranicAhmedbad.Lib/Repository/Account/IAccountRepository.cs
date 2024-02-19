@@ -15,7 +15,6 @@ namespace PranicAhmedbad.Lib.Repository.Account
 
         DataSet InsertUpdate_roles(RoleMasterViewModel roleViewModel);
 
-        List<Country_Master> GetCountryList(int intGlCode = 0);
         List<State_Master> GetStateList(int StateId = 0);
 
         RoleMasterViewModel GetRoles();
