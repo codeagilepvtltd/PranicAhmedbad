@@ -7,17 +7,29 @@ namespace PranicAhmedbad.Lib.Repository.Account
 {
     public interface IAccountRepository
     {
+        #region Login
         AccountLoginViewModel CheckAuthentication(string UserName, string Password);
 
-        DataSet InsertUpdate_states(StateViewModel stateViewModel);
+        #endregion
 
-        List<Country_Master> GetCountryList(int CountryId = 0);
+        #region Roles
+        RoleMasterViewModel GetRoles();
 
         DataSet InsertUpdate_roles(RoleMasterViewModel roleViewModel);
 
-        List<State_Master> GetStateList(int StateId = 0);
+        #endregion
 
-        RoleMasterViewModel GetRoles();
+        #region State
+        List<State_Master> GetStateList(int StateId = 0);
+        DataSet InsertUpdate_states(StateViewModel stateViewModel);
+
+        #endregion
+
+        #region Country
+        DataSet InsertUpdate_country(CountryViewModel countryViewModel);
+        List<Country_Master> GetCountryList(int CountryId = 0);
+
+        #endregion
 
     }
 }

@@ -10,6 +10,7 @@ namespace PranicAhmedbad.Lib.Repository.Account
 {
     public class AccountRepository : IAccountRepository
     {
+        #region Login
         public AccountLoginViewModel CheckAuthentication(string UserName, string Password)
         {
             AccountLoginViewModel accountLoginViewModel = new AccountLoginViewModel();
@@ -35,10 +36,13 @@ namespace PranicAhmedbad.Lib.Repository.Account
             }
             return accountLoginViewModel;
         }
-        public List<State_Master> GetStateList(int StateId=0)
+        #endregion
+
+        #region State
+        public List<State_Master> GetStateList(int StateId = 0)
         {
             Account_DA accountDA = new Account_DA();
-            List <State_Master> states = new List<State_Master>();
+            List<State_Master> states = new List<State_Master>();
             try
             {
                 DataSet dsResult = accountDA.GetStateList(StateId);
@@ -75,19 +79,9 @@ namespace PranicAhmedbad.Lib.Repository.Account
             }
         }
 
-        public DataSet InsertUpdate_roles(RoleMasterViewModel roleViewModel)
-        {
-            Account_DA accountDA = new Account_DA();
-            try
-            {
-                return accountDA.InsertUpdate_Role(roleViewModel);
+        #endregion
 
-            }
-            catch
-            {
-                throw;
-            }
-        }
+        #region Country
         public List<Country_Master> GetCountryList(int intGlCode=0)
         {
             Account_DA accountDA = new Account_DA();
@@ -102,7 +96,10 @@ namespace PranicAhmedbad.Lib.Repository.Account
 
                     country_Master.intGlCode = Convert.ToInt32(dataRow["intGlCode"]);
                     country_Master.varCountryName = Convert.ToString(dataRow["varCountryName"]);
-
+                    country_Master.chrActive = Convert.ToString(dataRow["chrActive"]);
+                    country_Master.ref_EntryBy = Convert.ToInt32(dataRow["ref_EntryBy"]);
+                    country_Master.ref_UpdateBy = Convert.ToInt32(dataRow["ref_UpdateBy"]);
+                    country_Master.dtEntryDate = Convert.ToDateTime(dataRow["dtEntryDate"]);
                     country_Masters.Add(country_Master);
                 }
             }
@@ -113,6 +110,23 @@ namespace PranicAhmedbad.Lib.Repository.Account
             return country_Masters;
         }
 
+        public DataSet InsertUpdate_country(CountryViewModel countryViewModel)
+        {
+            Account_DA accountDA = new Account_DA();
+            try
+            {
+                return accountDA.InsertUpdate_Country(countryViewModel);
+
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        #endregion
+
+        #region Roles
         public RoleMasterViewModel GetRoles()
         {
 
@@ -144,6 +158,21 @@ namespace PranicAhmedbad.Lib.Repository.Account
 
             return roleMasterViewModel;
         }
+        public DataSet InsertUpdate_roles(RoleMasterViewModel roleViewModel)
+        {
+            Account_DA accountDA = new Account_DA();
+            try
+            {
+                return accountDA.InsertUpdate_Role(roleViewModel);
 
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+      
+        #endregion
     }
 }

@@ -25,13 +25,7 @@ namespace PranicAhmedbad.Lib.ViewModels
     }
     public class CountryViewModel
     {
-        public int intGlCode { get; set; }
-
-        public string varCountryCode { get; set; }
-
-        public string varCountryName { get; set; }
-
-        public string chrActive { get; set; }
+        public Country_Master country_Master { get; set; }
 
         public List<Country_Master> county_Masters { get; set; }
 
