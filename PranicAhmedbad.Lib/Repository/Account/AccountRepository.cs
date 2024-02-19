@@ -10,6 +10,7 @@ namespace PranicAhmedbad.Lib.Repository.Account
 {
     public class AccountRepository : IAccountRepository
     {
+        #region Login
         public AccountLoginViewModel CheckAuthentication(string UserName, string Password)
         {
             AccountLoginViewModel accountLoginViewModel = new AccountLoginViewModel();
@@ -35,14 +36,16 @@ namespace PranicAhmedbad.Lib.Repository.Account
             }
             return accountLoginViewModel;
         }
-        public StateViewModel GetStateList(StateViewModel stateViewModel)
+        #endregion
+
+        #region State
+        public List<State_Master> GetStateList(int StateId = 0)
         {
             Account_DA accountDA = new Account_DA();
+            List<State_Master> states = new List<State_Master>();
             try
             {
-                DataSet dsResult = accountDA.GetStateList(stateViewModel.intGlCode);
-                stateViewModel.state_Masters = new List<Models.State_Master>();
-                stateViewModel.county_Masters = new List<Models.Country_Master>();
+                DataSet dsResult = accountDA.GetStateList(StateId);
                 foreach (DataRow dataRow in dsResult.Tables[0].Rows)
                 {
                     State_Master state_Master = new State_Master();
@@ -50,17 +53,11 @@ namespace PranicAhmedbad.Lib.Repository.Account
                     state_Master.varStateName = Convert.ToString(dataRow["varStateName"]);
                     state_Master.chrActive = Convert.ToString(dataRow["chrActive"]);
                     state_Master.dtEntryDate = Convert.ToDateTime(dataRow["dtEntryDate"]);
-
-                    state_Master.ref_CountryID = Convert.ToInt32(dataRow["CountryId"]);
+                    state_Master.ref_CountryId = Convert.ToInt32(dataRow["CountryId"]);
                     state_Master.varCountryName = Convert.ToString(dataRow["CountryName"]);
-
-                    stateViewModel.state_Masters.Add(state_Master);
+                    states.Add(state_Master);
                 }
-                foreach(Country_Master country_Master in GetCountryList(0))
-                {
-                    stateViewModel.county_Masters.Add(country_Master);
-                }
-                return stateViewModel;
+                return states;
 
             }
             catch
@@ -68,7 +65,7 @@ namespace PranicAhmedbad.Lib.Repository.Account
                 throw;
             }
         }
-        public int InsertUpdate_states(StateViewModel stateViewModel)
+        public DataSet InsertUpdate_states(StateViewModel stateViewModel)
         {
             Account_DA accountDA = new Account_DA();
             try
@@ -82,19 +79,9 @@ namespace PranicAhmedbad.Lib.Repository.Account
             }
         }
 
-        public DataSet InsertUpdate_roles(RoleMasterViewModel roleViewModel)
-        {
-            Account_DA accountDA = new Account_DA();
-            try
-            {
-                return accountDA.InsertUpdate_Role(roleViewModel);
+        #endregion
 
-            }
-            catch
-            {
-                throw;
-            }
-        }
+        #region Country
         public List<Country_Master> GetCountryList(int intGlCode=0)
         {
             Account_DA accountDA = new Account_DA();
@@ -109,7 +96,10 @@ namespace PranicAhmedbad.Lib.Repository.Account
 
                     country_Master.intGlCode = Convert.ToInt32(dataRow["intGlCode"]);
                     country_Master.varCountryName = Convert.ToString(dataRow["varCountryName"]);
-
+                    country_Master.chrActive = Convert.ToString(dataRow["chrActive"]);
+                    country_Master.ref_EntryBy = Convert.ToInt32(dataRow["ref_EntryBy"]);
+                    country_Master.ref_UpdateBy = Convert.ToInt32(dataRow["ref_UpdateBy"]);
+                    country_Master.dtEntryDate = Convert.ToDateTime(dataRow["dtEntryDate"]);
                     country_Masters.Add(country_Master);
                 }
             }
@@ -120,6 +110,23 @@ namespace PranicAhmedbad.Lib.Repository.Account
             return country_Masters;
         }
 
+        public DataSet InsertUpdate_country(CountryViewModel countryViewModel)
+        {
+            Account_DA accountDA = new Account_DA();
+            try
+            {
+                return accountDA.InsertUpdate_Country(countryViewModel);
+
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        #endregion
+
+        #region Roles
         public RoleMasterViewModel GetRoles()
         {
 
@@ -151,5 +158,21 @@ namespace PranicAhmedbad.Lib.Repository.Account
 
             return roleMasterViewModel;
         }
+        public DataSet InsertUpdate_roles(RoleMasterViewModel roleViewModel)
+        {
+            Account_DA accountDA = new Account_DA();
+            try
+            {
+                return accountDA.InsertUpdate_Role(roleViewModel);
+
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+      
+        #endregion
     }
 }

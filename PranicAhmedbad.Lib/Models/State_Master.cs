@@ -14,7 +14,7 @@ namespace PranicAhmedbad.Lib.Models
 
         public string varStateName { get; set; }
 
-        public int? ref_CountryID { get; set; }
+        public int? ref_CountryId { get; set; }
 
         public string chrActive { get; set; }
 

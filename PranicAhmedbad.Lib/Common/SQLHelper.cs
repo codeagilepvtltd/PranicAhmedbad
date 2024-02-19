@@ -15,11 +15,11 @@ namespace PranicAhmedbad.Lib.Common
         USP_InsertUpdate_Role_Master,
         USP_Select_StateList,
         USP_Select_CountryList,
-        USP_Select_RoleList
+        USP_Select_RoleList,
+        USP_InsertUpdate_Country_Master
     }
     public class Common_Messages
     {
-
         public const string Save_Failed_Message = "Error in saving {0} data.";
         public const string Save_Success_Message = "Data insert successfully.";
     }

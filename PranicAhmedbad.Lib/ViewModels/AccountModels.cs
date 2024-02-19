@@ -15,15 +15,8 @@ namespace PranicAhmedbad.Lib.ViewModels
     }
     public class StateViewModel 
     {
-        public int intGlCode { get; set; }
-
-        public string varStateName { get; set; }
-
-        public int? ref_CountryID { get; set; }
-
-        public string  chrActive { get; set; }
-
-        public long? ref_EntryBy { get; set; }
+    
+        public State_Master state_Master{ get; set; }
 
         public List<State_Master>  state_Masters { get; set; }
 
@@ -32,13 +25,7 @@ namespace PranicAhmedbad.Lib.ViewModels
     }
     public class CountryViewModel
     {
-        public int intGlCode { get; set; }
-
-        public string varCountryCode { get; set; }
-
-        public string varCountryName { get; set; }
-
-        public string chrActive { get; set; }
+        public Country_Master country_Master { get; set; }
 
         public List<Country_Master> county_Masters { get; set; }
 

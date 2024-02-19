@@ -13,32 +13,27 @@
             <div class="card">
                 <div class="card-body">
                     <form class="needs-validation" method="post" id="frmRoleDetail" novalidate>
-
-                        <div class="row">
-                            <div class="col-md-6">
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-2 col-form-label"><span style="color:red">*</span>Role Name:</label>
+                            <div class="col-sm-4">
                                 <div class="form-group">
-                                    <label for="RoleName">Role Name<span style="color:red">*</span></label>
                                     <input type="text" tabindex="1" class="form-control custom_input" maxlength="100" id="txtRoleName" asp-for="varRoleName" placeholder="Role Name">
                                     @Html.ValidationMessageFor(model => model.varRoleName, "", new { @class = "text-danger" })
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-2 col-form-label">Status:</label>
+                            <div class="col-sm-4">
                                 <div class="form-group">
-                                    <div class="custom-control custom-checkbox custom-checkbox-primary mb-3">
-                                        <input type="checkbox" class="custom-control-input" id="chkchrActive">
-                                        <label class="custom-control-label" for="chkchrActive">Active</label>
-                                    </div>
+                                    <input type="checkbox" id="chkchrActive" />
                                 </div>
                             </div>
                         </div>
-
-
                         <div class="form-group mb-0">
                             <button type="button" id="btnSave" tabindex="6" class="btn btn-primary" onclick="return ValidateData()">Save</button>
                             <button type="button" id="btnCancel" tabindex="7" class="btn btn-secondary" onclick="return resetValidation()">Cancel</button>
-                            <button type="button" id="btnDownLoad" tabindex="8" class="btn btn-warning" onclick="ExportExcel();">Download</button>
                         </div>
-
                         <input type="hidden" asp-for="@Model.intGlCode" id="intGlCode" />
                         <input type="hidden" asp-for="@Model.chrActive" id="chrActive" />
                         @* <input type="hidden" asp-for="@Model.varAction" id="Action" /> *@
@@ -55,56 +50,65 @@
 <!---Container Fluid-->
 <!-- Container Fluid-->
 <div class="container-fluid" id="container-wrapper">
-
     <div class="row">
         <!-- DataTable with Hover -->
-        <div class="col-md-12">  <hr></hr></div>
         <div class="col-lg-12">
-            @(Html.DevExtreme().DataGrid()
-                .ID("grdRolesDetials")
-                .ShowBorders(true)
-                .DataSource(ds => ds.Mvc().Controller("Account").Key("intGlCode").LoadAction("GetRolesList"))
-                .Selection(s => s.Mode(SelectionMode.Single))
-                .LoadPanel(f => f.Enabled(false))
-                .Columns(columns =>
-                {
-                    columns.Add().DataField("intGlCode").Caption("Edit").Type(GridCommandColumnType.Buttons)
-                    .Width(50)
-                    .Buttons(b =>
-                    {
-                        b.Add().Name(GridColumnButtonName.Edit).Visible(true).Icon("edit").OnClick("editdata");
+            <div class="card mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Role List</h6>
+                    <button type="button" class="btn btn-primary" onclick="ExportExcel();">Download</button>
+                </div>  
+                <div class="table-responsive p-3">
 
-                    });
-                    columns.Add().DataField("varRoleName").Caption("Role Name");
-                    columns.Add().DataField("chrActive").Caption("Status");
-                    columns.Add().DataField("dtEntryDate").Caption("Entry Date");
 
-                })
-                .ColumnAutoWidth(true)
-                .Scrolling(scrolling => scrolling.ColumnRenderingMode(GridColumnRenderingMode.Standard))
-                .ShowRowLines(true)
-                .RowAlternationEnabled(true)
-                .Paging(paging => paging.PageSize(10))
-                .Pager(pager =>
-                {
-                    pager.ShowInfo(true);
-                })
-                .Sorting(sorting => sorting.Mode(DevExtreme.AspNet.Mvc.GridSortingMode.Multiple))
-                .FilterRow(filterRow => filterRow
-                .Visible(true)
-                .ApplyFilter(GridApplyFilterMode.Auto)
-                )
-                .HeaderFilter(headerFilter => headerFilter.Visible(true))
-                .WordWrapEnabled(true)
+                    @(Html.DevExtreme().DataGrid()
+                        .ID("grdRolesDetials")
+                        .ShowBorders(true)
+                        .DataSource(ds => ds.Mvc().Controller("Account").Key("intGlCode").LoadAction("GetRolesList"))
+                        .Selection(s => s.Mode(SelectionMode.Single))
+                        .LoadPanel(f => f.Enabled(false))
+                        .Columns(columns =>
+                        {
+                            columns.Add().DataField("intGlCode").Caption("Edit").Type(GridCommandColumnType.Buttons)
+                            .Width(50)
+                            .Buttons(b =>
+                            {
+                                b.Add().Name(GridColumnButtonName.Edit).Visible(true).Icon("edit").OnClick("editdata");
 
-                )
+                            });
+                            columns.Add().DataField("varRoleName").Caption("Role Name");
+                            columns.Add().DataField("chrActive").Caption("Status");
+                            columns.Add().DataField("dtEntryDate").Caption("Entry Date").Format("yyyy-mm-dd");
+
+                        })
+                        .ColumnAutoWidth(true)
+                        .Scrolling(scrolling => scrolling.ColumnRenderingMode(GridColumnRenderingMode.Standard))
+                        .ShowRowLines(true)
+                        .RowAlternationEnabled(true)
+                        .Paging(paging => paging.PageSize(10))
+                        .Pager(pager =>
+                        {
+                            pager.ShowInfo(true);
+                        })
+                        .Sorting(sorting => sorting.Mode(DevExtreme.AspNet.Mvc.GridSortingMode.Multiple))
+                        .FilterRow(filterRow => filterRow
+                        .Visible(true)
+                        .ApplyFilter(GridApplyFilterMode.Auto)
+                        )
+                        .HeaderFilter(headerFilter => headerFilter.Visible(true))
+                        .WordWrapEnabled(true)
+
+                        )
+                </div>
+            </div>
         </div>
-        </div>
- </div>
+    </div>
+
+</div>
 
 @Html.AntiForgeryToken()
 @section Scripts {
-    <script src="~/Scripts/Account/account.js"></script>
+    <script src="~/Scripts/Account/role.js"></script>
     <script src="~/Scripts/Account/Common.js"></script>
 }
 

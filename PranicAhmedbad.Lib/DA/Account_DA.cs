@@ -79,15 +79,15 @@ namespace PranicAhmedbad.Lib.DA
             return resultSet;
 
         }
-        public int InsertUpdate_states(StateViewModel  stateViewModel)
+        public DataSet InsertUpdate_states(StateViewModel  stateViewModel)
         {
             sqlQuery = new StringBuilder();
             object[] objParamName = { "intGlCode", "varStateName" , "ref_EntryBy", "ref_CountryId", "chrActive" };
-            object[] objParamValue = { stateViewModel.intGlCode, stateViewModel.varStateName, stateViewModel.ref_EntryBy, stateViewModel.ref_CountryID, stateViewModel.chrActive };
+            object[] objParamValue = { stateViewModel.state_Master.intGlCode, stateViewModel.state_Master.varStateName, stateViewModel.state_Master.ref_EntryBy, stateViewModel.state_Master.ref_CountryId, stateViewModel.state_Master.chrActive };
 
             try
             {
-                return SQLHelper.ExecuteQuery(StoredProcedures.USP_InsertUpdate_State_Master, objParamName, objParamValue);
+                return SQLHelper.GetData(StoredProcedures.USP_InsertUpdate_State_Master, objParamName, objParamValue);
             }
             catch
             {
@@ -105,6 +105,22 @@ namespace PranicAhmedbad.Lib.DA
             try
             {
                 return SQLHelper.GetData(StoredProcedures.USP_InsertUpdate_Role_Master, objParamName, objParamValue);
+            }
+            catch
+            {
+                throw;
+            }
+
+        }
+        public DataSet InsertUpdate_Country(CountryViewModel countryViewModel)
+        {
+            sqlQuery = new StringBuilder();
+            object[] objParamName = { "intGlCode", "varCountryCode","varCountryName", "chrActive", "ref_EntryBy", "ref_UpdatedBy" };
+            object[] objParamValue = { countryViewModel.country_Master.intGlCode, countryViewModel.country_Master.varCountryCode, countryViewModel.country_Master.varCountryName, countryViewModel.country_Master.chrActive, countryViewModel.country_Master.ref_EntryBy, countryViewModel.country_Master.ref_UpdateBy };
+
+            try
+            {
+                return SQLHelper.GetData(StoredProcedures.USP_InsertUpdate_Country_Master, objParamName, objParamValue);
             }
             catch
             {
