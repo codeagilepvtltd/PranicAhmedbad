@@ -157,7 +157,7 @@ namespace PranicAhmedbad.Controllers
             {
                 RoleMasterViewModel objViewModel = new RoleMasterViewModel();
                 objViewModel = accountRepository.GetRoles();
-                
+
 
                 var resultJson = JsonConvert.SerializeObject(objViewModel.Role_MasterList);
                 return Content(resultJson, "application/json");
@@ -168,6 +168,35 @@ namespace PranicAhmedbad.Controllers
                 //ModuleErrorLogRepository.Insert_Modules_Error_Log("Supplier_Mst", System.Reflection.MethodBase.GetCurrentMethod().Name.ToString(), Convert.ToString(sessionManager.IntGlCode), ex.StackTrace, this.GetType().Name.ToString(), "Novapack", ex.Source, "", "", ex.Message);
                 TempData["ErrorMessage"] = ex.Message;
                 return RedirectToAction("ErrorForbidden", "Account");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Save_Roles(RoleMasterViewModel roleView)
+        {
+            try
+            {
+                roleView.ref_EntryBy = 1;
+                roleView.ref_UpdateBy = 1;
+                DataSet result = accountRepository.InsertUpdate_roles(roleView);
+                var resultJson = JsonConvert.SerializeObject(result);
+               
+                if (result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0)
+                {
+                    TempData["ErrorMessage"] = string.Format(Common_Messages.Save_Failed_Message, "Role");
+                    return Content(resultJson, "application/json");
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = string.Format(Common_Messages.Save_Success_Message, "Role");
+                    return Content(resultJson, "application/json");
+                }
+            }
+            catch (Exception ex)
+            {
+                SQLHelper.writeException(ex);
+
+                return Content(JsonConvert.SerializeObject(0));
             }
         }
 

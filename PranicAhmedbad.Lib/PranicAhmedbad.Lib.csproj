@@ -192,6 +192,7 @@
     <Compile Include="Repository\ModuleErrorLog\IModuleErrorLogRepository.cs" />
     <Compile Include="Repository\ModuleErrorLog\ModuleErrorLogRepository.cs" />
     <Compile Include="ViewModels\AccountModels.cs" />
+    <Compile Include="ViewModels\CommonFieldModels.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
