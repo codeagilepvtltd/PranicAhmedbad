@@ -81,6 +81,20 @@ namespace PranicAhmedbad.Lib.Repository.Account
                 throw;
             }
         }
+
+        public DataSet InsertUpdate_roles(RoleMasterViewModel roleViewModel)
+        {
+            Account_DA accountDA = new Account_DA();
+            try
+            {
+                return accountDA.InsertUpdate_Role(roleViewModel);
+
+            }
+            catch
+            {
+                throw;
+            }
+        }
         public List<Country_Master> GetCountryList(int intGlCode=0)
         {
             Account_DA accountDA = new Account_DA();

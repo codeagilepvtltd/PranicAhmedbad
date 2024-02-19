@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <link href="~/css/Admin/devextreme/dx.common.css" rel="stylesheet" />
     <link href="~/css/Admin/devextreme/dx.light.css" rel="stylesheet" />
-  @*   <link href="~/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" /> *@
+    <link href="~/lib/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
     <script src="~/js/Admin/devextreme/jquery.js"></script>
     <script src="~/js/Admin/devextreme/bootstrap.js"></script>
 
@@ -28,6 +28,10 @@
     <script src="~/js/Admin/devextreme/jszip.js"></script>
 
     <script src="~/js/Admin/devextreme/dx.all.js"></script>
+
+    <script src="~/Scripts/Account/config.js"></script>
+
+    <script src="~/lib/assets/libs/sweetalert2/sweetalert2.min.js"></script>
     @*<script type="text/javascript" src="https://cdn3.devexpress.com/jslib/19.1.12/js/dx.all.js"></script>*@
     <script src="~/js/Admin/devextreme/vectormap-data/world.js"></script>
     <script src="~/js/Admin/devextreme/aspnet/dx.aspnet.data.js"></script>
@@ -37,7 +41,8 @@
     <link href="~/lib/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="~/lib/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="~/css/admin/ruang-admin.css" rel="stylesheet">
-    <link href="~/lib/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+
 </head>
 
 <body id="page-top">
@@ -342,10 +347,10 @@
             </div>
             <!-- Footer -->
             @RenderBody()
-            
+
             <!-- Footer -->
         </div>
-       
+
     </div>
     <footer class="sticky-footer bg-white">
         <div class="container my-auto">
@@ -362,11 +367,31 @@
         <i class="fas fa-angle-up"></i>
     </a>
 
-    <script>
-        $(document).ready(function () {
-            $('#StateMasterList').DataTable();
-        });
-    </script>
+    <script src="~/lib/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/assets/libs/metismenu/metisMenu.min.js"></script>
+    <script src="~/lib/assets/libs/simplebar/simplebar.min.js"></script>
+    <script src="~/lib/assets/libs/node-waves/waves.min.js"></script>
+    <script src="~/lib/assets/js/lang/jquery.multiLanguage.js"></script>
+
+    <script src="~/js/Admin/bootstrap.min.js"></script>
+    <script src="~/js/Admin/bootsnav.js"></script>
+    <script src="~/js/Admin/ajaxchimp.js"></script>
+    <script src="~/js/Admin/ajaxchimp-config.js"></script>
+    <script src="~/js/Admin/script.js"></script>
+    <script src="~/js/Admin/moment.min.js"></script>
+    <script src="~/js/Admin/daterangepicker.js"></script>
+    <script src="~/js/Admin/bootstrap-datetimepicker.js"></script>
+    @*<script src="~/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/js/bootstrap-timepicker.min.js"></script>*@
+    <script src="~/js/Admin/select2.full.min.js"></script>
+    <script src="~/js/Admin/icheck.min.js"></script>
+    <script src="~/js/Admin/jquery.slimscroll.min.js"></script>
+
+    <script src="~/js/Admin/site.js" asp-append-version="true"></script>
+    <link href="~/lib/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    @RenderSection("scripts", required: false)
+
 </body>
 
 </html>
