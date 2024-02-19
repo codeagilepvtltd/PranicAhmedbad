@@ -79,7 +79,7 @@ namespace PranicAhmedbad.Lib.DA
             return resultSet;
 
         }
-        public int InsertUpdate_states(StateViewModel   stateViewModel)
+        public int InsertUpdate_states(StateViewModel  stateViewModel)
         {
             sqlQuery = new StringBuilder();
             object[] objParamName = { "intGlCode", "varStateName" , "ref_EntryBy", "ref_CountryId", "chrActive" };
@@ -88,6 +88,23 @@ namespace PranicAhmedbad.Lib.DA
             try
             {
                 return SQLHelper.ExecuteQuery(StoredProcedures.USP_InsertUpdate_State_Master, objParamName, objParamValue);
+            }
+            catch
+            {
+                throw;
+            }
+
+        }
+
+        public DataSet InsertUpdate_Role(RoleMasterViewModel roleViewModel)
+        {
+            sqlQuery = new StringBuilder();
+            object[] objParamName = { "intGlCode", "varRoleName", "chrActive", "ref_EntryBy", "ref_UpdateBy" };
+            object[] objParamValue = { roleViewModel.intGlCode, roleViewModel.varRoleName,roleViewModel.chrActive, roleViewModel.ref_EntryBy, roleViewModel.ref_UpdateBy };
+
+            try
+            {
+                return SQLHelper.GetData(StoredProcedures.USP_InsertUpdate_Role_Master, objParamName, objParamValue);
             }
             catch
             {

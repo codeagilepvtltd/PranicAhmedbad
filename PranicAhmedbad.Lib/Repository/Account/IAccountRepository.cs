@@ -1,6 +1,7 @@
 ﻿using PranicAhmedbad.Lib.Models;
 using PranicAhmedbad.Lib.ViewModels;
 using System.Collections.Generic;
+using System.Data;
 
 namespace PranicAhmedbad.Lib.Repository.Account
 {
@@ -12,6 +13,9 @@ namespace PranicAhmedbad.Lib.Repository.Account
 
         List<Country_Master> GetCountryList(int CountryId = 0);
 
+        DataSet InsertUpdate_roles(RoleMasterViewModel roleViewModel);
+
+        List<Country_Master> GetCountryList(int intGlCode = 0);
         List<State_Master> GetStateList(int StateId = 0);
 
         RoleMasterViewModel GetRoles();

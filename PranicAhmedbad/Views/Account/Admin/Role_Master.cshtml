@@ -7,14 +7,6 @@
 }
 
 <div class="container-fluid" id="container-wrapper">
-   @*  <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Role Master</h1>
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="./">Home</a></li>
-            <li class="breadcrumb-item">Forms</li>
-            <li class="breadcrumb-item active" aria-current="page">Role  Master</li>
-        </ol>
-    </div> *@
 
     <div class="row">
         <div class="col-xl-12">
@@ -25,8 +17,8 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="SupplierName">Role Name<span style="color:red">*</span></label>
-                                    <input type="text" tabindex="1" class="form-control custom_input" maxlength="100" id="txtSupplierName" asp-for="varRoleName" placeholder="Role Name">
+                                    <label for="RoleName">Role Name<span style="color:red">*</span></label>
+                                    <input type="text" tabindex="1" class="form-control custom_input" maxlength="100" id="txtRoleName" asp-for="varRoleName" placeholder="Role Name">
                                     @Html.ValidationMessageFor(model => model.varRoleName, "", new { @class = "text-danger" })
                                 </div>
                             </div>
@@ -76,7 +68,13 @@
                 .LoadPanel(f => f.Enabled(false))
                 .Columns(columns =>
                 {
-                    columns.Add().DataField("intGlCode").Caption("Edit");
+                    columns.Add().DataField("intGlCode").Caption("Edit").Type(GridCommandColumnType.Buttons)
+                    .Width(50)
+                    .Buttons(b =>
+                    {
+                        b.Add().Name(GridColumnButtonName.Edit).Visible(true).Icon("edit").OnClick("editdata");
+
+                    });
                     columns.Add().DataField("varRoleName").Caption("Role Name");
                     columns.Add().DataField("chrActive").Caption("Status");
                     columns.Add().DataField("dtEntryDate").Caption("Entry Date").Format("yyyy-mm-dd");
@@ -102,11 +100,13 @@
                 )
         </div>
         </div>
-    </div>
+ </div>
 
-</div>
 @Html.AntiForgeryToken()
-
+@section Scripts {
+    <script src="~/Scripts/Account/account.js"></script>
+    <script src="~/Scripts/Account/Common.js"></script>
+}
 
 <style>
     .dvdx-overlay-content {

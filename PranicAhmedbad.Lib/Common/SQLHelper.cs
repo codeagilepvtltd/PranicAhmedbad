@@ -12,6 +12,7 @@ namespace PranicAhmedbad.Lib.Common
         USP_Check_Login,
         USP_Insert_Modules_Error_Log,
         USP_InsertUpdate_State_Master,
+        USP_InsertUpdate_Role_Master,
         USP_Select_StateList,
         USP_Select_CountryList,
         USP_Select_RoleList
@@ -20,6 +21,7 @@ namespace PranicAhmedbad.Lib.Common
     {
 
         public const string Save_Failed_Message = "Error in saving {0} data.";
+        public const string Save_Success_Message = "Data insert successfully.";
     }
     public class SQLHelper
     {

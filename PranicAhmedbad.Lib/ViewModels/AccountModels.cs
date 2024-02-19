@@ -37,21 +37,11 @@ namespace PranicAhmedbad.Lib.ViewModels
 
     }
 
-    public class RoleMasterViewModel
+    public class RoleMasterViewModel : CommonFieldModel
     {
         public int intGlCode { get; set; }
 
-        public string varRoleName { get; set; }
-
-        public string chrActive { get; set; }
-
-        public DateTime? dtEntryDate { get; set; }
-
-        public long? ref_EntryBy { get; set; }
-
-        public DateTime? dtUpdatedDate { get; set; }
-
-        public long? ref_UpdateBy { get; set; }
+        public string varRoleName { get; set; }       
 
         public List<Role_Master>  Role_MasterList { get; set; }
     }
