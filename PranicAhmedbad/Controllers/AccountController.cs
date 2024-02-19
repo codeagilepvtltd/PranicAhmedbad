@@ -85,6 +85,25 @@ namespace PranicAhmedbad.Controllers
                 return RedirectToAction("ErrorForbidden", "Account");
             }
         }
+
+        public IActionResult GetCountryList()
+        {
+
+            List<Country_Master> Country_Master = new List<Country_Master>();
+            DataSet dsResult = new DataSet();
+            try
+            {
+                Country_Master = accountRepository.GetCountryList();
+                var resultJson = JsonConvert.SerializeObject(Country_Master);
+                return Content(resultJson, "application/json");
+            }
+            catch (Exception ex)
+            {
+                //ModuleErrorLogRepository.Insert_Modules_Error_Log("GetPersonDetails", System.Reflection.MethodBase.GetCurrentMethod().Name.ToString(), Convert.ToString(sessionManager.IntGlCode), ex.StackTrace, this.GetType().Name.ToString(), "Novapack", ex.Source, "", "", ex.Message);
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction("ErrorForbidden", "Account");
+            }
+        }
         [HttpPut]
         public IActionResult UpdateStateDetails([FromForm] int key, [FromForm] string values)
         {

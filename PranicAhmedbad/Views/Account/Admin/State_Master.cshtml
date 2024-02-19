@@ -24,7 +24,22 @@
                 <div class="card-body">
                     <form class="user" asp-controller="Account" asp-action="Save_States" method="post">
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-1 col-form-label"><span class="red">*</span>State Name:</label>
+                            <label for="inputEmail3" class="col-sm-1 col-form-label"><span style="color:red">*</span>Country Name:</label>
+                            <div class="col-sm-3">
+                                @(Html.DevExtreme().SelectBox().ID("ddlCountryList")
+                                    .DataSource(d => d.Mvc().Controller("General").LoadAction("GetCountryList").Key("intGlCode"))
+                                    .DisplayExpr("varCountryName")
+                                    .ValueExpr("intGlCode")
+                                    .Placeholder("-- Select --")
+                                    .SearchEnabled(true)
+                                    .OnOpened("dxSelectBox_OnOpened")
+                                    )
+
+                                <input type="text" tabindex="1" class="form-control custom_input" maxlength="100" id="txtUserID" asp-for="state_Master.varStateName" placeholder="State ID">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-1 col-form-label"><span style="color:red">*</span>State Name:</label>
                             <div class="col-sm-3">
                                 <input type="text" tabindex="1" class="form-control custom_input" maxlength="100" id="txtUserID" asp-for="state_Master.varStateName" placeholder="State ID">
                             </div>
