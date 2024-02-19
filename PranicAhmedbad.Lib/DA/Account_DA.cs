@@ -79,15 +79,15 @@ namespace PranicAhmedbad.Lib.DA
             return resultSet;
 
         }
-        public int InsertUpdate_states(StateViewModel  stateViewModel)
+        public DataSet InsertUpdate_states(StateViewModel  stateViewModel)
         {
             sqlQuery = new StringBuilder();
             object[] objParamName = { "intGlCode", "varStateName" , "ref_EntryBy", "ref_CountryId", "chrActive" };
-            object[] objParamValue = { stateViewModel.state_Master.intGlCode, stateViewModel.state_Master.varStateName, stateViewModel.state_Master.ref_EntryBy, stateViewModel.state_Master.ref_CountryID, stateViewModel.state_Master.chrActive };
+            object[] objParamValue = { stateViewModel.state_Master.intGlCode, stateViewModel.state_Master.varStateName, stateViewModel.state_Master.ref_EntryBy, stateViewModel.state_Master.ref_CountryId, stateViewModel.state_Master.chrActive };
 
             try
             {
-                return SQLHelper.ExecuteQuery(StoredProcedures.USP_InsertUpdate_State_Master, objParamName, objParamValue);
+                return SQLHelper.GetData(StoredProcedures.USP_InsertUpdate_State_Master, objParamName, objParamValue);
             }
             catch
             {

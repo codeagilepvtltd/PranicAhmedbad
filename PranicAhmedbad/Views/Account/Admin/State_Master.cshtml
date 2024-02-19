@@ -22,12 +22,12 @@
                     <h6 class="m-0 font-weight-bold text-primary">State  Entry</h6>
                 </div>
                 <div class="card-body">
-                    <form class="user" asp-controller="Account" asp-action="Save_States" method="post">
+                    <form class="user" asp-controller="Account" asp-action="Save_States" method="post" id="frmStates">
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-1 col-form-label"><span style="color:red">*</span>Country Name:</label>
-                            <div class="col-sm-3">
+                            <label for="inputEmail3" class="col-sm-2 col-form-label"><span style="color:red">*</span>Country Name:</label>
+                            <div class="col-sm-4">
                                 @(Html.DevExtreme().SelectBox().ID("ddlCountryList")
-                                    .DataSource(d => d.Mvc().Controller("General").LoadAction("GetCountryList").Key("intGlCode"))
+                                    .DataSource(d => d.Mvc().Controller("Account").LoadAction("GetCountryList").Key("intGlCode"))
                                     .DisplayExpr("varCountryName")
                                     .ValueExpr("intGlCode")
                                     .Placeholder("-- Select --")
@@ -35,25 +35,28 @@
                                     .OnOpened("dxSelectBox_OnOpened")
                                     )
 
-                                <input type="text" tabindex="1" class="form-control custom_input" maxlength="100" id="txtUserID" asp-for="state_Master.varStateName" placeholder="State ID">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-1 col-form-label"><span style="color:red">*</span>State Name:</label>
-                            <div class="col-sm-3">
-                                <input type="text" tabindex="1" class="form-control custom_input" maxlength="100" id="txtUserID" asp-for="state_Master.varStateName" placeholder="State ID">
+                            <label for="inputEmail3" class="col-sm-2 col-form-label"><span style="color:red">*</span>State Name:</label>
+                            <div class="col-sm-4">
+                                <input type="text" tabindex="1" required="required" class="form-control custom_input" maxlength="100" id="txtStateName" asp-for="state_Master.varStateName" placeholder="State Name">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-1 col-form-label">Status:</label>
-                            <div class="col-sm-3">
+                            <label for="inputEmail3" class="col-sm-2 col-form-label">Status:</label>
+                            <div class="col-sm-4">
                                 <input type="checkbox" asp-for="state_Master.chrActive" id="chkStatus" />
                             </div>
                         </div>
+                        <input type="hidden" asp-for="@Model.state_Master.ref_CountryId" id="ref_CountryId" />
+                        <input type="hidden" asp-for="@Model.state_Master.intGlCode" id="intGlCode" />
+                        <input type="hidden" asp-for="@Model.state_Master.chrActive" id="chrActive" />
+
                         <div class="form-group row">
                             <div class="col-sm-3">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                                <button type="button" class="btn btn-dark">Cancel</button>
+                                <button type="button" class="btn btn-primary" onclick="ValidateDataState();">Save</button>
+                                <button type="button" class="btn btn-dark" onclick="resetValidationstate();">Cancel</button>
                             </div>
                         </div>
 
@@ -75,20 +78,28 @@
             <div class="card mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">State List</h6>
-                    <button type="button" class="btn btn-primary">Download</button>
+                    <button type="button" class="btn btn-primary" onclick="ExportExcelState();">Download</button>
                 </div>
                 <div class="table-responsive p-3">
                     @(Html.DevExtreme().DataGrid()
-                        .ID("grdRoleList")
+                        .ID("grdStateList")
                         .ShowBorders(true)
                         .DataSource(ds => ds.Mvc().Controller("Account").Key("intGlCode").LoadAction("GetStateList"))
                         .Selection(s => s.Mode(SelectionMode.Single))
                         .LoadPanel(f => f.Enabled(false))
                         .Columns(columns =>
                         {
-                            columns.Add().DataField("intGlCode").Caption("Edit");
-                            columns.Add().DataField("varStateName").Caption("State Name");
+                            columns.Add().DataField("intGlCode").Caption("Edit").Type(GridCommandColumnType.Buttons)
+                            .Width(50)
+                            .Buttons(b =>
+                            {
+                                b.Add().Name(GridColumnButtonName.Edit).Visible(true).Icon("edit").OnClick("editdataState");
+
+                            });
+                            columns.Add().DataField("varCountryName").Caption("Country Name");
+                            columns.Add().DataField("varStateName").Caption("State Name");                           
                             columns.Add().DataField("chrActive").Caption("Status");
+                            columns.Add().DataField("ref_CountryId").Caption("ref_CountryId").Visible(false);
                             columns.Add().DataField("dtEntryDate").Caption("Entry Date");
 
                         })
@@ -114,5 +125,9 @@
         </div>
     </div>
 </div>
-
+@Html.AntiForgeryToken()
+@section Scripts {
+    <script src="~/Scripts/Account/state.js"></script>
+    <script src="~/Scripts/Account/Common.js"></script>
+}
 <!---Container Fluid-->

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PranicAhmedbad.Common;
@@ -19,46 +20,8 @@ namespace PranicAhmedbad.Controllers
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly IModuleErrorLogRepository moduleErrorLogRepository;
         // GET: Controller
-        public ActionResult Login()
-        {
-            return View("Admin/Login");
-        }
-
-        #region State
-        public ActionResult States()
-        {
-            return View("Admin/State_Master");
-        }
 
 
-
-        [HttpPost]
-        public async Task<ActionResult> Save_States(StateViewModel stateView)
-        {
-            try
-            {
-                //stateView.ref_EntryBy = 1;
-                //stateView.ref_CountryID = 1;
-                int id = accountRepository.InsertUpdate_states(stateView);
-                if (id == 0)
-                {
-                    return RedirectToAction("Account", "Admin/State_Master");
-                }
-                else
-                {
-                    TempData["ErrorMessage"] = string.Format(Common_Messages.Save_Failed_Message, "State");
-                    return RedirectToAction(nameof(Index));
-                }
-            }
-            catch (Exception ex)
-            {
-                SQLHelper.writeException(ex);
-
-                return View();
-            }
-        }
-
-        #endregion
         public AccountController(IAccountRepository _accountRepository, IModuleErrorLogRepository _moduleErrorLogRepository, IHttpContextAccessor _httpContextAccessor)
         {
             accountRepository = _accountRepository;
@@ -66,74 +29,44 @@ namespace PranicAhmedbad.Controllers
             moduleErrorLogRepository = _moduleErrorLogRepository;
         }
 
-
-        public IActionResult GetStateList()
+        #region Index
+        public IActionResult Index(string returnUrl)
         {
-
-            List<State_Master> state_Masters = new List<State_Master>();
-            DataSet dsResult = new DataSet();
+            SessionManager sessionManager = new SessionManager(httpContextAccessor);
             try
             {
-                state_Masters = accountRepository.GetStateList();
-                var resultJson = JsonConvert.SerializeObject(state_Masters);
-                return Content(resultJson, "application/json");
+                ViewBag.ErrorMessage = TempData["ErrorMessage"];
+                if (string.IsNullOrEmpty(sessionManager.UserName))
+                {
+                    return View("~/Views/Account/Index.cshtml");
+                }
+                if (string.IsNullOrEmpty(returnUrl) && string.IsNullOrEmpty(Request.Headers["Referer"]))
+                    returnUrl = WebUtility.UrlEncode(Request.Headers["Referer"]);
+
+                if (Url.IsLocalUrl(returnUrl) && !string.IsNullOrEmpty(returnUrl))
+                {
+                    ViewBag.ReturnURL = returnUrl;
+                }
+
+                ViewBag.ErrorMessage = TempData["ErrorMessage"];
+                return View("~/Views/Account/Index.cshtml");
             }
             catch (Exception ex)
             {
-                //ModuleErrorLogRepository.Insert_Modules_Error_Log("GetPersonDetails", System.Reflection.MethodBase.GetCurrentMethod().Name.ToString(), Convert.ToString(sessionManager.IntGlCode), ex.StackTrace, this.GetType().Name.ToString(), "Novapack", ex.Source, "", "", ex.Message);
                 TempData["ErrorMessage"] = ex.Message;
-                return RedirectToAction("ErrorForbidden", "Account");
+                //  ModuleErrorLogRepository.Insert_Modules_Error_Log("Login", System.Reflection.MethodBase.GetCurrentMethod().Name.ToString(), Convert.ToString(sessionManager.IntGlCode), ex.StackTrace, this.GetType().Name.ToString(), "Novapack", ex.Source, "", "", ex.Message);
+                return RedirectToAction(nameof(Index));
             }
         }
 
-        public IActionResult GetCountryList()
+        #endregion
+
+        #region Login
+        public ActionResult Login()
         {
-
-            List<Country_Master> Country_Master = new List<Country_Master>();
-            DataSet dsResult = new DataSet();
-            try
-            {
-                Country_Master = accountRepository.GetCountryList();
-                var resultJson = JsonConvert.SerializeObject(Country_Master);
-                return Content(resultJson, "application/json");
-            }
-            catch (Exception ex)
-            {
-                //ModuleErrorLogRepository.Insert_Modules_Error_Log("GetPersonDetails", System.Reflection.MethodBase.GetCurrentMethod().Name.ToString(), Convert.ToString(sessionManager.IntGlCode), ex.StackTrace, this.GetType().Name.ToString(), "Novapack", ex.Source, "", "", ex.Message);
-                TempData["ErrorMessage"] = ex.Message;
-                return RedirectToAction("ErrorForbidden", "Account");
-            }
+            return View("Admin/Login");
         }
-        [HttpPut]
-        public IActionResult UpdateStateDetails([FromForm] int key, [FromForm] string values)
-        {
-           // SessionManager sessionManager = new SessionManager(HttpContextAccessor);
-            try
-            {
-                //PersonViewModel objPersonViewModel = new PersonViewModel();
-                //SessionPersonMst objSessionPersonMst = new SessionPersonMst(HttpContextAccessor);
-                //objPersonViewModel.lst_Model = objSessionPersonMst.lstPerson_Details;
 
-                //if (objPersonViewModel.lst_Model.Where(x => x.intGlCode == key).Any() == true)
-                //{
-                //    Person_Mst data = objPersonViewModel.lst_Model.First(o => o.intGlCode == key);
-                //    JsonConvert.PopulateObject(values, data);
-                //}
-                //else
-                //{
-                //    return Ok();
-                //}
-            }
-            catch (Exception ex)
-            {
-                //ModuleErrorLogRepository.Insert_Modules_Error_Log("Dummy_Shipment", System.Reflection.MethodBase.GetCurrentMethod().Name.ToString(), Convert.ToString(sessionManager.IntGlCode), ex.StackTrace, this.GetType().Name.ToString(), "Novapack", ex.Source, "", "", ex.Message);
-                TempData["ErrorMessage"] = ex.Message;
-                return RedirectToAction("ErrorForbidden", "Account");
-            }
-            return Ok();
-
-        }
-        // POST: HomeController/Create
         [HttpPost]
         public async Task<ActionResult> ValidateLogin(AccountLoginViewModel accountLoginViewModel, string returnUrl)
         {
@@ -175,35 +108,84 @@ namespace PranicAhmedbad.Controllers
             }
         }
 
-        public IActionResult Index(string returnUrl)
+        #endregion
+
+        #region State
+        public ActionResult States()
         {
-            SessionManager sessionManager = new SessionManager(httpContextAccessor);
+            return View("Admin/State_Master");
+        }
+
+        [HttpPost]
+        public ActionResult Save_States(StateViewModel stateView)
+        {
             try
             {
-                ViewBag.ErrorMessage = TempData["ErrorMessage"];
-                if (string.IsNullOrEmpty(sessionManager.UserName))
-                {
-                    return View("~/Views/Account/Index.cshtml");
-                }
-                if (string.IsNullOrEmpty(returnUrl) && string.IsNullOrEmpty(Request.Headers["Referer"]))
-                    returnUrl = WebUtility.UrlEncode(Request.Headers["Referer"]);
+                stateView.state_Master.ref_EntryBy = 1;
+                stateView.state_Master.ref_UpdateBy = 1;
+                stateView.state_Master.chrActive = stateView.state_Master.chrActive == "true" ? "Y" : "N";
+                DataSet result = accountRepository.InsertUpdate_states(stateView);
+                var resultJson = JsonConvert.SerializeObject(result);
 
-                if (Url.IsLocalUrl(returnUrl) && !string.IsNullOrEmpty(returnUrl))
+                if (result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0)
                 {
-                    ViewBag.ReturnURL = returnUrl;
+                    TempData["ErrorMessage"] = string.Format(Common_Messages.Save_Failed_Message, "State");
+                    return Content(resultJson, "application/json");
                 }
-
-                ViewBag.ErrorMessage = TempData["ErrorMessage"];
-                return View("~/Views/Account/Index.cshtml");
+                else
+                {
+                    TempData["ErrorMessage"] = string.Format(Common_Messages.Save_Success_Message, "State");
+                    return Content(resultJson, "application/json");
+                }
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = ex.Message;
-                //  ModuleErrorLogRepository.Insert_Modules_Error_Log("Login", System.Reflection.MethodBase.GetCurrentMethod().Name.ToString(), Convert.ToString(sessionManager.IntGlCode), ex.StackTrace, this.GetType().Name.ToString(), "Novapack", ex.Source, "", "", ex.Message);
-                return RedirectToAction(nameof(Index));
+                SQLHelper.writeException(ex);
+
+                return Content(JsonConvert.SerializeObject(0));
             }
         }
 
+        public IActionResult GetStateList()
+        {
+
+            List<State_Master> state_Masters = new List<State_Master>();
+            DataSet dsResult = new DataSet();
+            try
+            {
+                state_Masters = accountRepository.GetStateList();
+                var resultJson = JsonConvert.SerializeObject(state_Masters);
+                return Content(resultJson, "application/json");
+            }
+            catch (Exception ex)
+            {
+                //ModuleErrorLogRepository.Insert_Modules_Error_Log("GetPersonDetails", System.Reflection.MethodBase.GetCurrentMethod().Name.ToString(), Convert.ToString(sessionManager.IntGlCode), ex.StackTrace, this.GetType().Name.ToString(), "Novapack", ex.Source, "", "", ex.Message);
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction("ErrorForbidden", "Account");
+            }
+        }
+
+        public IActionResult GetCountryList()
+        {
+
+            List<Country_Master> Country_Master = new List<Country_Master>();
+            DataSet dsResult = new DataSet();
+            try
+            {
+                Country_Master = accountRepository.GetCountryList();
+                var resultJson = JsonConvert.SerializeObject(Country_Master);
+                return Content(resultJson, "application/json");
+            }
+            catch (Exception ex)
+            {
+                //ModuleErrorLogRepository.Insert_Modules_Error_Log("GetPersonDetails", System.Reflection.MethodBase.GetCurrentMethod().Name.ToString(), Convert.ToString(sessionManager.IntGlCode), ex.StackTrace, this.GetType().Name.ToString(), "Novapack", ex.Source, "", "", ex.Message);
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction("ErrorForbidden", "Account");
+            }
+        }
+        #endregion
+
+        #region Role
         public IActionResult Roles()
         {
             return View("~/Views/Account/Admin/Role_Master.cshtml");
@@ -239,9 +221,11 @@ namespace PranicAhmedbad.Controllers
             {
                 roleView.ref_EntryBy = 1;
                 roleView.ref_UpdateBy = 1;
+                roleView.chrActive = roleView.chrActive == "Active" ? "Y" : "N";
+
                 DataSet result = accountRepository.InsertUpdate_roles(roleView);
                 var resultJson = JsonConvert.SerializeObject(result);
-               
+
                 if (result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0)
                 {
                     TempData["ErrorMessage"] = string.Format(Common_Messages.Save_Failed_Message, "Role");
@@ -261,5 +245,6 @@ namespace PranicAhmedbad.Controllers
             }
         }
 
+        #endregion
     }
 }

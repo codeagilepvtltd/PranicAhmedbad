@@ -49,7 +49,7 @@ namespace PranicAhmedbad.Lib.Repository.Account
                     state_Master.varStateName = Convert.ToString(dataRow["varStateName"]);
                     state_Master.chrActive = Convert.ToString(dataRow["chrActive"]);
                     state_Master.dtEntryDate = Convert.ToDateTime(dataRow["dtEntryDate"]);
-                    state_Master.ref_CountryID = Convert.ToInt32(dataRow["CountryId"]);
+                    state_Master.ref_CountryId = Convert.ToInt32(dataRow["CountryId"]);
                     state_Master.varCountryName = Convert.ToString(dataRow["CountryName"]);
                     states.Add(state_Master);
                 }
@@ -61,7 +61,7 @@ namespace PranicAhmedbad.Lib.Repository.Account
                 throw;
             }
         }
-        public int InsertUpdate_states(StateViewModel stateViewModel)
+        public DataSet InsertUpdate_states(StateViewModel stateViewModel)
         {
             Account_DA accountDA = new Account_DA();
             try

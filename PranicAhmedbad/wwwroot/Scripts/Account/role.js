@@ -4,16 +4,14 @@
 
 function ValidateData() {
     var chrActive = $("#chkchrActive").prop('checked');
-
     $("#chrActive").val(chrActive == false ? 'InActive' : 'Active');
 
-   
     if ($("#txtRoleName").val() == "") {
         PopUpMessage("Please Enter Role Name.", "fa fa-exclamation-circle popup_icon");
         $("#txtRoleName").focus();
         return false;
     }
-
+   
     setTimeout(function () {
         $.ajax({
             type: "POST",
@@ -61,6 +59,8 @@ function resetValidation() {
     $("#chkchrActive").prop('checked', true);
 
     $("#chrActive").val(true);
+    $("#grdRolesDetials").dxDataGrid('instance').refresh();
+    $("#grdRolesDetials").dxDataGrid('instance').clearFilter();
 
 }
 
@@ -73,6 +73,3 @@ function editdata(e) {
     $("#chkchrActive").prop('checked', e.row.data.chrActive == 'Active' ? true : false);
 
 }
-
-
-

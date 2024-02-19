@@ -9,7 +9,7 @@ namespace PranicAhmedbad.Lib.Repository.Account
     {
         AccountLoginViewModel CheckAuthentication(string UserName, string Password);
 
-        int InsertUpdate_states(StateViewModel stateViewModel);
+        DataSet InsertUpdate_states(StateViewModel stateViewModel);
 
         List<Country_Master> GetCountryList(int CountryId = 0);
 
