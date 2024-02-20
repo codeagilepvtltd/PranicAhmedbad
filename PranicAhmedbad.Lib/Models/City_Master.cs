@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PranicAhmedbad.Lib.Models
 {
-    internal class City_Master
+    public  class City_Master
     {
         public int intGlCode { get; set; }
 
@@ -27,6 +27,10 @@ namespace PranicAhmedbad.Lib.Models
         public DateTime? dtUpdatedDate { get; set; }
 
         public long? ref_UpdateBy { get; set; }
+
+        public string StateName { get; set; }
+
+        public string CountryName { get; set; }
 
     }
 }

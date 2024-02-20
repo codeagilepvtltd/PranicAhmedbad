@@ -23,6 +23,19 @@ namespace PranicAhmedbad.Lib.ViewModels
         public List<Country_Master> county_Masters { get; set; }
 
     }
+
+    public class CityViewModel
+    {
+
+        public City_Master city_Master { get; set; }
+
+        public List<City_Master> city_Masters { get; set; }
+
+        public List<State_Master> state_Masters { get; set; }
+
+        public List<Country_Master> county_Masters { get; set; }
+
+    }
     public class CountryViewModel
     {
         public Country_Master country_Master { get; set; }

@@ -96,9 +96,8 @@ namespace PranicAhmedbad.Lib.Repository.Account
 
                     country_Master.intGlCode = Convert.ToInt32(dataRow["intGlCode"]);
                     country_Master.varCountryName = Convert.ToString(dataRow["varCountryName"]);
+                    country_Master.varCountryCode = Convert.ToString(dataRow["varCountryCode"]);
                     country_Master.chrActive = Convert.ToString(dataRow["chrActive"]);
-                    country_Master.ref_EntryBy = Convert.ToInt32(dataRow["ref_EntryBy"]);
-                    country_Master.ref_UpdateBy = Convert.ToInt32(dataRow["ref_UpdateBy"]);
                     country_Master.dtEntryDate = Convert.ToDateTime(dataRow["dtEntryDate"]);
                     country_Masters.Add(country_Master);
                 }
@@ -172,7 +171,57 @@ namespace PranicAhmedbad.Lib.Repository.Account
             }
         }
 
-      
+        #endregion
+
+        #region City
+        public DataSet InsertUpdate_city(CityViewModel cityViewModel)
+        {
+            Account_DA accountDA = new Account_DA();
+            try
+            {
+                return accountDA.InsertUpdate_City(cityViewModel);
+
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public CityViewModel GetCityList(int CityId = 0)
+        {
+            CityViewModel cityViewModel = new CityViewModel();
+            Account_DA accountDA = new Account_DA();
+
+            try
+            {
+                DataSet dsResult = accountDA.GetCityList();
+                if (dsResult.Tables.Count > 0 && dsResult.Tables[0].Rows.Count > 0)
+                {
+                    cityViewModel.city_Masters = dsResult.Tables[0].AsEnumerable().Select(row => new City_Master()
+                    {
+                        intGlCode = row.Field<int>("intGlCode"),
+                        varCityCode = row.Field<string>("varCityCode"),
+                        varCityName = row.Field<string>("varCityName"),
+                        chrActive = row.Field<string>("chrActive"),
+                        dtEntryDate = row.Field<DateTime>("dtEntryDate"),
+                        StateName = row.Field<string>("StateName"),
+                        CountryName = row.Field<string>("CountryName"),
+                        ref_CountryID = row.Field<int>("ref_CountryID"),
+                        ref_StateID = row.Field<int>("ref_StateID")
+
+                    }).ToList();
+
+                }
+                return cityViewModel;
+            }
+            catch
+            {
+                throw;
+            }
+
+            
+        }
         #endregion
     }
 }

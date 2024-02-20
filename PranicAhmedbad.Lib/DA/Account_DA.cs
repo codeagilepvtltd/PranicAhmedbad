@@ -79,6 +79,24 @@ namespace PranicAhmedbad.Lib.DA
             return resultSet;
 
         }
+
+        public DataSet GetCityList(int CityId = 0)
+        {
+            sqlQuery = new StringBuilder();
+            object[] objParamName = { "intGlCode" };
+            object[] objParamValue = { CityId };
+
+            try
+            {
+                resultSet = SQLHelper.GetData(StoredProcedures.USP_Select_CityList, objParamName, objParamValue);
+            }
+            catch
+            {
+                throw;
+            }
+            return resultSet;
+
+        }
         public DataSet InsertUpdate_states(StateViewModel  stateViewModel)
         {
             sqlQuery = new StringBuilder();
@@ -88,6 +106,22 @@ namespace PranicAhmedbad.Lib.DA
             try
             {
                 return SQLHelper.GetData(StoredProcedures.USP_InsertUpdate_State_Master, objParamName, objParamValue);
+            }
+            catch
+            {
+                throw;
+            }
+
+        }
+        public DataSet InsertUpdate_City(CityViewModel cityViewModel)
+        {
+            sqlQuery = new StringBuilder();
+            object[] objParamName = { "intGlCode", "varCityCode", "varCityName", "ref_CountryID", "ref_StateID", "chrActive", "ref_EntryBy", "ref_UpdateBy" };
+            object[] objParamValue = { cityViewModel.city_Master.intGlCode, cityViewModel.city_Master.varCityCode, cityViewModel.city_Master.varCityName, cityViewModel.city_Master.ref_CountryID, cityViewModel.city_Master.ref_StateID, cityViewModel.city_Master.chrActive, cityViewModel.city_Master.ref_EntryBy, cityViewModel.city_Master.ref_UpdateBy};
+
+            try
+            {
+                return SQLHelper.GetData(StoredProcedures.USP_InsertUpdate_City_Master, objParamName, objParamValue);
             }
             catch
             {
