@@ -210,7 +210,7 @@ namespace PranicAhmedbad.Controllers
             DataSet dsResult = new DataSet();
             try
             {
-                Country_Master.county_Masters = accountRepository.GetCountryList();
+                Country_Master.county_Masters = accountRepository.GetCountryList().Where(m => m.chrActive == "Active").ToList();
                 var resultJson = JsonConvert.SerializeObject(Country_Master.county_Masters);
                 return Content(resultJson, "application/json");
             }
