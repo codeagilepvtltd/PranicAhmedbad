@@ -140,6 +140,7 @@ function dxSelectBox_OnOpened(ev) {
     }
 }
 
+
 function dxSelectBox_OnInitialized(ev) {
     ev.component.option('dataSource', data);
 }
