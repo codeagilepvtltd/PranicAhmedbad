@@ -164,16 +164,54 @@ namespace PranicAhmedbad.Controllers
                 return RedirectToAction("ErrorForbidden", "Account");
             }
         }
+        #endregion
+
+        #region Country
+
+        public ActionResult Country()
+        {
+            return View("Admin/Country_Master");
+        }
+
+        [HttpPost]
+        public ActionResult Save_Country(CountryViewModel countryView)
+        {
+            try
+            {
+                countryView.country_Master.ref_EntryBy = 1;
+                countryView.country_Master.ref_UpdateBy = 1;
+                countryView.country_Master.chrActive = countryView.country_Master.chrActive == "true" ? "Y" : "N";
+                DataSet result = accountRepository.InsertUpdate_country(countryView);
+                var resultJson = JsonConvert.SerializeObject(result);
+
+                if (result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0)
+                {
+                    TempData["ErrorMessage"] = string.Format(Common_Messages.Save_Failed_Message, "Country");
+                    return Content(resultJson, "application/json");
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = string.Format(Common_Messages.Save_Success_Message, "Country");
+                    return Content(resultJson, "application/json");
+                }
+            }
+            catch (Exception ex)
+            {
+                SQLHelper.writeException(ex);
+
+                return Content(JsonConvert.SerializeObject(0));
+            }
+        }
 
         public IActionResult GetCountryList()
         {
 
-            List<Country_Master> Country_Master = new List<Country_Master>();
+            CountryViewModel Country_Master = new CountryViewModel();
             DataSet dsResult = new DataSet();
             try
             {
-                Country_Master = accountRepository.GetCountryList();
-                var resultJson = JsonConvert.SerializeObject(Country_Master);
+                Country_Master.county_Masters = accountRepository.GetCountryList();
+                var resultJson = JsonConvert.SerializeObject(Country_Master.county_Masters);
                 return Content(resultJson, "application/json");
             }
             catch (Exception ex)
@@ -183,6 +221,8 @@ namespace PranicAhmedbad.Controllers
                 return RedirectToAction("ErrorForbidden", "Account");
             }
         }
+
+
         #endregion
 
         #region Role
@@ -246,5 +286,7 @@ namespace PranicAhmedbad.Controllers
         }
 
         #endregion
+
+
     }
 }
