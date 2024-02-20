@@ -31,5 +31,10 @@ namespace PranicAhmedbad.Lib.Repository.Account
 
         #endregion
 
+        #region City
+        DataSet InsertUpdate_city(CityViewModel cityViewModel);
+        CityViewModel GetCityList(int CityId = 0);
+
+        #endregion
     }
 }

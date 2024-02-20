@@ -16,7 +16,9 @@ namespace PranicAhmedbad.Lib.Common
         USP_Select_StateList,
         USP_Select_CountryList,
         USP_Select_RoleList,
-        USP_InsertUpdate_Country_Master
+        USP_InsertUpdate_Country_Master,
+        USP_InsertUpdate_City_Master,
+        USP_Select_CityList
     }
     public class Common_Messages
     {
