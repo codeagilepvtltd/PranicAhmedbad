@@ -195,6 +195,7 @@ namespace PranicAhmedbad.Lib.Repository.Account
 
             try
             {
+                cityViewModel.city_Masters = new List<City_Master>();
                 DataSet dsResult = accountDA.GetCityList();
                 if (dsResult.Tables.Count > 0 && dsResult.Tables[0].Rows.Count > 0)
                 {
@@ -222,6 +223,27 @@ namespace PranicAhmedbad.Lib.Repository.Account
 
             
         }
+        #endregion
+
+        #region Customer
+        //public DataSet InsertUpdate_Customer(CustomerMasterViewModel customerMasterViewModel)
+        //{
+        //    Account_DA accountDA = new Account_DA();
+        //    try
+        //    {
+        //        return accountDA.InsertUpdate_City(cityViewModel);
+
+        //    }
+        //    catch
+        //    {
+        //        throw;
+        //    }
+        //}
+
+        //public CustomerMasterViewModel GetCustomer(int CityId = 0)
+        //{
+        //    throw new NotImplementedException();
+        //}
         #endregion
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PranicAhmedbad.Lib.Models
 {
-    internal class Address_Master
+    public class Address_Master
     {
         public int intGlCode { get; set; }
 

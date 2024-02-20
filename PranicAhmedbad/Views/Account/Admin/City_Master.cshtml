@@ -1,7 +1,7 @@
 ﻿@using DevExtreme.AspNet.Mvc
-@model StateViewModel
+@model CityViewModel
 @{
-    ViewData["Title"] = "Pranic Ahmedbad - States";
+    ViewData["Title"] = "Pranic Ahmedbad - City";
 }
 <!-- Container Fluid-->
 <div class="container-fluid" id="container-wrapper">
@@ -19,10 +19,10 @@
             <!-- Form Basic -->
             <div class="card mb-6">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">State  Entry</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">City  Entry</h6>
                 </div>
                 <div class="card-body">
-                    <form class="user" asp-controller="Account" asp-action="Save_States" method="post" id="frmStates">
+                    <form class="user" asp-controller="Account" asp-action="Save_City" method="post" id="frmCity">
                         <div class="form-group row">
                             <label for="inputEmail3" class="col-sm-2 col-form-label"><span style="color:red">*</span>Country Name:</label>
                             <div class="col-sm-4">
@@ -36,27 +36,46 @@
                                     )
 
                             </div>
-                        </div>
-                        <div class="form-group row">
+
                             <label for="inputEmail3" class="col-sm-2 col-form-label"><span style="color:red">*</span>State Name:</label>
                             <div class="col-sm-4">
-                                <input type="text" tabindex="1" required="required" class="form-control custom_input" maxlength="100" id="txtStateName" asp-for="state_Master.varStateName" placeholder="State Name">
+                                @(Html.DevExtreme().SelectBox().ID("ddlStateList")
+                                    .DataSource(d => d.Mvc().Controller("Account").LoadAction("GetStateListActive").Key("intGlCode"))
+                                    .DisplayExpr("varStateName")
+                                    .ValueExpr("intGlCode")
+                                    .Placeholder("-- Select --")
+                                    .SearchEnabled(true)
+                                    .OnOpened("dxSelectBox_OnOpened ")
+                                    )
+
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-2 col-form-label"><span style="color:red">*</span>City Code:</label>
+                            <div class="col-sm-4">
+                                <input type="text" tabindex="1" required="required" class="form-control custom_input" maxlength="100" id="txtCityCode" asp-for="city_Master.varCityCode" placeholder="City Code">
+                            </div>
+
+                            <label for="inputEmail3" class="col-sm-2 col-form-label"><span style="color:red">*</span>City Name:</label>
+                            <div class="col-sm-4">
+                                <input type="text" tabindex="1" required="required" class="form-control custom_input" maxlength="100" id="txtCityName" asp-for="city_Master.varCityName" placeholder="City Name">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="inputEmail3" class="col-sm-2 col-form-label">Status:</label>
                             <div class="col-sm-4">
-                                <input type="checkbox" asp-for="state_Master.chrActive" id="chkStatus" />
+                                <input type="checkbox" asp-for="city_Master.chrActive" id="chkStatus" />
                             </div>
                         </div>
-                        <input type="hidden" asp-for="@Model.state_Master.ref_CountryId" id="ref_CountryId" />
-                        <input type="hidden" asp-for="@Model.state_Master.intGlCode" id="intGlCode" />
-                        <input type="hidden" asp-for="@Model.state_Master.chrActive" id="chrActive" />
+                        <input type="hidden" asp-for="@Model.city_Master.ref_CountryID" id="ref_CountryId" />
+                        <input type="hidden" asp-for="@Model.city_Master.ref_StateID" id="ref_StateID" />
+                        <input type="hidden" asp-for="@Model.city_Master.intGlCode" id="intGlCode" />
+                        <input type="hidden" asp-for="@Model.city_Master.chrActive" id="chrActive" />
 
                         <div class="form-group row">
                             <div class="col-sm-3">
-                                <button type="button" class="btn btn-primary" onclick="ValidateDataState();">Save</button>
-                                <button type="button" class="btn btn-dark" onclick="resetValidationstate();">Cancel</button>
+                                <button type="button" class="btn btn-primary" onclick="ValidateDataCity();">Save</button>
+                                <button type="button" class="btn btn-dark" onclick="resetValidationcity();">Cancel</button>
                             </div>
                         </div>
 
@@ -77,14 +96,14 @@
         <div class="col-lg-12">
             <div class="card mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">State List</h6>
-                    <button type="button" class="btn btn-primary" onclick="ExportExcelState();">Download</button>
+                    <h6 class="m-0 font-weight-bold text-primary">City List</h6>
+                    <button type="button" class="btn btn-primary" onclick="ExportExcelCity();">Download</button>
                 </div>
                 <div class="table-responsive p-3">
                     @(Html.DevExtreme().DataGrid()
-                        .ID("grdStateList")
+                        .ID("grdCityList")
                         .ShowBorders(true)
-                        .DataSource(ds => ds.Mvc().Controller("Account").Key("intGlCode").LoadAction("GetStateList"))
+                        .DataSource(ds => ds.Mvc().Controller("Account").Key("intGlCode").LoadAction("GetCityList"))
                         .Selection(s => s.Mode(SelectionMode.Single))
                         .LoadPanel(f => f.Enabled(false))
                         .Columns(columns =>
@@ -93,13 +112,16 @@
                             .Width(50)
                             .Buttons(b =>
                             {
-                                b.Add().Name(GridColumnButtonName.Edit).Visible(true).Icon("edit").OnClick("editdataState");
+                                b.Add().Name(GridColumnButtonName.Edit).Visible(true).Icon("edit").OnClick("editdataCity");
 
                             });
-                            columns.Add().DataField("varCountryName").Caption("Country Name");
-                            columns.Add().DataField("varStateName").Caption("State Name");                           
+                            columns.Add().DataField("varCityCode").Caption("City Code");
+                            columns.Add().DataField("varCityName").Caption("City Name");
+                            columns.Add().DataField("CountryName").Caption("Country Name");
+                            columns.Add().DataField("StateName").Caption("State Name");
                             columns.Add().DataField("chrActive").Caption("Status");
-                            columns.Add().DataField("ref_CountryId").Caption("ref_CountryId").Visible(false);
+                            columns.Add().DataField("ref_CountryID").Caption("ref_CountryID").Visible(false);
+                            columns.Add().DataField("ref_StateID").Caption("ref_StateID").Visible(false);
                             columns.Add().DataField("dtEntryDate").Caption("Entry Date");
 
                         })
@@ -127,7 +149,7 @@
 </div>
 @Html.AntiForgeryToken()
 @section Scripts {
-    <script src="~/Scripts/Account/state.js"></script>
+    <script src="~/Scripts/Account/city.js"></script>
     <script src="~/Scripts/Account/Common.js"></script>
 }
 <!---Container Fluid-->

@@ -210,6 +210,24 @@ namespace PranicAhmedbad.Controllers
             DataSet dsResult = new DataSet();
             try
             {
+                Country_Master.county_Masters = accountRepository.GetCountryList();
+                var resultJson = JsonConvert.SerializeObject(Country_Master.county_Masters);
+                return Content(resultJson, "application/json");
+            }
+            catch (Exception ex)
+            {
+                //ModuleErrorLogRepository.Insert_Modules_Error_Log("GetPersonDetails", System.Reflection.MethodBase.GetCurrentMethod().Name.ToString(), Convert.ToString(sessionManager.IntGlCode), ex.StackTrace, this.GetType().Name.ToString(), "Novapack", ex.Source, "", "", ex.Message);
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction("ErrorForbidden", "Account");
+            }
+        }
+        public IActionResult GetActiveCountryList()
+        {
+
+            CountryViewModel Country_Master = new CountryViewModel();
+            DataSet dsResult = new DataSet();
+            try
+            {
                 Country_Master.county_Masters = accountRepository.GetCountryList().Where(m => m.chrActive == "Active").ToList();
                 var resultJson = JsonConvert.SerializeObject(Country_Master.county_Masters);
                 return Content(resultJson, "application/json");
@@ -221,7 +239,6 @@ namespace PranicAhmedbad.Controllers
                 return RedirectToAction("ErrorForbidden", "Account");
             }
         }
-
 
         #endregion
 
@@ -287,6 +304,81 @@ namespace PranicAhmedbad.Controllers
 
         #endregion
 
+        #region City
+
+        public ActionResult City()
+        {
+            return View("Admin/City_Master");
+        }
+
+        [HttpPost]
+        public ActionResult Save_City(CityViewModel cityView)
+        {
+            try
+            {
+                cityView.city_Master.ref_EntryBy = 1;
+                cityView.city_Master.ref_UpdateBy = 1;
+                cityView.city_Master.chrActive = cityView.city_Master.chrActive == "true" ? "Y" : "N";
+                DataSet result = accountRepository.InsertUpdate_city(cityView);
+                var resultJson = JsonConvert.SerializeObject(result);
+
+                if (result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0)
+                {
+                    TempData["ErrorMessage"] = string.Format(Common_Messages.Save_Failed_Message, "City");
+                    return Content(resultJson, "application/json");
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = string.Format(Common_Messages.Save_Success_Message, "City");
+                    return Content(resultJson, "application/json");
+                }
+            }
+            catch (Exception ex)
+            {
+                SQLHelper.writeException(ex);
+
+                return Content(JsonConvert.SerializeObject(0));
+            }
+        }
+
+        public IActionResult GetStateListActive()
+        {
+
+            List<State_Master> state_Masters = new List<State_Master>();
+            DataSet dsResult = new DataSet();
+            try
+            {
+                state_Masters = accountRepository.GetStateList().Where(m => m.chrActive == "Active").ToList();
+                var resultJson = JsonConvert.SerializeObject(state_Masters);
+                return Content(resultJson, "application/json");
+            }
+            catch (Exception ex)
+            {
+                //ModuleErrorLogRepository.Insert_Modules_Error_Log("GetPersonDetails", System.Reflection.MethodBase.GetCurrentMethod().Name.ToString(), Convert.ToString(sessionManager.IntGlCode), ex.StackTrace, this.GetType().Name.ToString(), "Novapack", ex.Source, "", "", ex.Message);
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction("ErrorForbidden", "Account");
+            }
+        }
+
+        public IActionResult GetCityList()
+        {
+
+            CityViewModel cityViewModel = new CityViewModel();
+            DataSet dsResult = new DataSet();
+            try
+            {
+                cityViewModel = accountRepository.GetCityList();
+                var resultJson = JsonConvert.SerializeObject(cityViewModel.city_Masters);
+                return Content(resultJson, "application/json");
+            }
+            catch (Exception ex)
+            {
+                //ModuleErrorLogRepository.Insert_Modules_Error_Log("GetPersonDetails", System.Reflection.MethodBase.GetCurrentMethod().Name.ToString(), Convert.ToString(sessionManager.IntGlCode), ex.StackTrace, this.GetType().Name.ToString(), "Novapack", ex.Source, "", "", ex.Message);
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction("ErrorForbidden", "Account");
+            }
+        }
+        #endregion
 
     }
 }
