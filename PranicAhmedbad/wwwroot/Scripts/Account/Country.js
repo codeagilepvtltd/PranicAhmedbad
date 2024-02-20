@@ -1,23 +1,31 @@
 ﻿$(document).ready(function () {
-   
+
 });
 
 function ValidateData() {
     var chrActive = $("#chkchrActive").prop('checked');
     $("#chrActive").val(chrActive == false ? 'InActive' : 'Active');
 
-    if ($("#txtRoleName").val() == "") {
-        PopUpMessage("Please Enter Role Name.", "fa fa-exclamation-circle popup_icon");
-        $("#txtRoleName").focus();
+    if ($("#txtCountryCode").val() == "") {
+        PopUpMessage("Please Enter Country Code.", "fa fa-exclamation-circle popup_icon");
+        $("#txtCountryCode").focus();
+        return false;
+    }
+
+    if ($("#txtCountryName").val() == "")
+    {
+        PopUpMessage("Please Enter Country Name.", "fa fa-exclamation-circle popup_icon");
+        $("#txtCountryName").focus();
         return false;
     }
    
+
     setTimeout(function () {
         $.ajax({
             type: "POST",
-            data: $('#frmRoleDetail').serialize(),
+            data: $('#frmCountryDetail').serialize(),
             timeout: 15000, // adjust the limit. currently its 15 seconds
-            url: configuration.onLoad() + "Account/Save_Roles",
+            url: configuration.onLoad() + "Account/Save_Country",
             success: function (response) {
                 if (response.Unauthorized == "401") {
                     window.location.href = configuration.onLoad() + 'Home';
@@ -28,7 +36,7 @@ function ValidateData() {
                 else {
                     PopUpWithClose(response.Table[0].varMessage, "fa fa-check-circle popup_icon_success");
                     resetValidation();
-                    $("#grdRolesDetials").dxDataGrid('instance').refresh();
+                    $("#grdCountryDetials").dxDataGrid('instance').refresh();
                 }
             },
             error: function (error) {
@@ -39,7 +47,7 @@ function ValidateData() {
     }, 1000);
 }
 function ExportExcel() {
-    $("#grdRolesDetials").dxDataGrid("instance").exportToExcel(false);
+    $("#grdCountryDetials").dxDataGrid("instance").exportToExcel(false);
 }
 
 function resetValidation() {
@@ -59,17 +67,18 @@ function resetValidation() {
     $("#chkchrActive").prop('checked', false);
 
     $("#chrActive").val(true);
-    $("#grdRolesDetials").dxDataGrid('instance').refresh();
-    $("#grdRolesDetials").dxDataGrid('instance').clearFilter();
+    $("#grdCountryDetials").dxDataGrid('instance').refresh();
+    $("#grdCountryDetials").dxDataGrid('instance').clearFilter();
 
 }
 
 
 function editdata(e) {
+
     $("#intGlCode").val(e.row.data.intGlCode);
     $("#Action").val('Update');
-
-    $("#txtRoleName").val(e.row.data.varRoleName);
+    $("#txtCountryName").val(e.row.data.varCountryName);
+    $("#txtCountryCode").val(e.row.data.varCountryCode);
     $("#chkchrActive").prop('checked', e.row.data.chrActive == 'Active' ? true : false);
 
 }
