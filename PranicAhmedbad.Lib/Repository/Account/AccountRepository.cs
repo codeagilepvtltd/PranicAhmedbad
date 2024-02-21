@@ -226,24 +226,58 @@ namespace PranicAhmedbad.Lib.Repository.Account
         #endregion
 
         #region Customer
-        //public DataSet InsertUpdate_Customer(CustomerMasterViewModel customerMasterViewModel)
-        //{
-        //    Account_DA accountDA = new Account_DA();
-        //    try
-        //    {
-        //        return accountDA.InsertUpdate_City(cityViewModel);
+        public DataSet InsertUpdate_Customer(CustomerMasterViewModel customerMasterViewModel)
+        {
+            Account_DA accountDA = new Account_DA();
+            try
+            {
+                return accountDA.InsertUpdate_Customer(customerMasterViewModel);
 
-        //    }
-        //    catch
-        //    {
-        //        throw;
-        //    }
-        //}
+            }
+            catch
+            {
+                throw;
+            }
+        }
 
-        //public CustomerMasterViewModel GetCustomer(int CityId = 0)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public CustomerMasterViewModel GetCustomerlist(int AddId = 0)
+        {
+            CustomerMasterViewModel customerViewModel = new CustomerMasterViewModel();
+            Account_DA accountDA = new Account_DA();
+
+            try
+            {
+                customerViewModel.customer_Masters = new List<Customer_Master>();
+                DataSet dsResult = accountDA.GetCustomerList(AddId);
+                if (dsResult.Tables.Count > 0 && dsResult.Tables[0].Rows.Count > 0)
+                {
+                    customerViewModel.customer_Masters = dsResult.Tables[0].AsEnumerable().Select(row => new Customer_Master()
+                    {
+                        intGlCode = row.Field<int>("intGlCode"),
+                        ref_LoginID = row.Field<int>("ref_LoginID"),
+                        varFirstName = row.Field<string>("varFirstName"),
+                        varMiddleName = row.Field<string>("varMiddleName"),
+                        varLasteName = row.Field<string>("varLasteName"),
+                        ref_EntityTypeID = row.Field<int>("ref_EntityTypeID"),
+                        ref_AddressId = row.Field<int>("ref_AddressId"), 
+                        chrGender = row.Field<string>("chrGender"),
+                        dtDOB = row.Field<DateTime>("dtDOB"),
+                        chrActive = row.Field<string>("chrActive"),
+                        dtEntryDate = row.Field<DateTime>("dtEntryDate"),
+                        ref_EntryBy = row.Field<int>("ref_EntryBy"),
+                        dtUpdatedDate = row.Field<DateTime>("dtUpdatedDate"),
+                        ref_UpdateBy = row.Field<int>("ref_UpdateBy")
+
+                    }).ToList();
+
+                }
+                return customerViewModel;
+            }
+            catch
+            {
+                throw;
+            }
+        }
         #endregion
     }
 }

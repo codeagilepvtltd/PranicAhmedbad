@@ -1,0 +1,207 @@
+﻿@using DevExtreme.AspNet.Mvc
+@model CustomerMasterViewModel
+@{
+    ViewData["Title"] = "Pranic Ahmedbad - Customer";
+}
+<!-- Container Fluid-->
+<div class="container-fluid" id="container-wrapper">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Customer Master</h1>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="./">Home</a></li>
+            <li class="breadcrumb-item">Forms</li>
+            <li class="breadcrumb-item active" aria-current="page">Customer Master</li>
+        </ol>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Basic -->
+            <div class="card mb-12">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Customer Entry</h6>
+                </div>
+                <div class="card-body">
+                    <form class="user" asp-controller="Account" asp-action="Save_Customer" method="post" id="frmCustomer">
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-1 col-form-label"><span class="red">*</span>First Name:</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" id="txtFirstName" asp-for="customer_Master.varFirstName" placeholder="First Name">
+                            </div>
+                            <label for="inputEmail3" class="col-sm-1 col-form-label">Middle Name:</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" id="txtMiddleName" asp-for="customer_Master.varMiddleName" placeholder="Middle Name">
+                            </div>
+                            <label for="inputEmail3" class="col-sm-1 col-form-label"><span class="red">*</span>Last Name:</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" id="txtLastName" asp-for="customer_Master.varLasteName" placeholder="Last Name">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-1 col-form-label">Country:</label>
+                            <div class="col-sm-3">
+                                @(Html.DevExtreme().SelectBox().ID("ddlCountryList")
+                                    .DataSource(d => d.Mvc().Controller("Account").LoadAction("GetActiveCountryList").Key("intGlCode"))
+                                    .DisplayExpr("varCountryName")
+                                    .ValueExpr("intGlCode")
+                                    .Placeholder("-- Select --")
+                                    .SearchEnabled(true)
+                                    .OnOpened("dxSelectBox_OnOpened ")
+                                    )
+                            </div>
+                            <label for="inputEmail3" class="col-sm-1 col-form-label">State:</label>
+                            <div class="col-sm-3">
+                                @(Html.DevExtreme().SelectBox().ID("ddlStateList")
+                                    .DataSource(d => d.Mvc().Controller("Account").LoadAction("GetStateListActive").Key("intGlCode"))
+                                    .DisplayExpr("varStateName")
+                                    .ValueExpr("intGlCode")
+                                    .Placeholder("-- Select --")
+                                    .SearchEnabled(true)
+                                    .OnOpened("dxSelectBox_OnOpened ")
+                                    )
+                            </div>
+                            <label for="inputEmail3" class="col-sm-1 col-form-label">City:</label>
+                            <div class="col-sm-3">
+                                @(Html.DevExtreme().SelectBox().ID("ddlCityList")
+                                    .DataSource(d => d.Mvc().Controller("Account").LoadAction("GetCityList").Key("intGlCode"))
+                                    .DisplayExpr("varCityName")
+                                    .ValueExpr("intGlCode")
+                                    .Placeholder("-- Select --")
+                                    .SearchEnabled(true)
+                                    .OnOpened("dxSelectBox_OnOpened")
+                                    )
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+
+                            <label for="inputEmail3" class="col-sm-1 col-form-label">Address:</label>
+                            <div class="col-sm-3">
+                                <textarea class="form-control" id="txtAddress" asp-for="customer_Master.address_Master.varAddressLine1" rows="3"></textarea>
+                            </div>
+
+                            <label for="inputEmail3" class="col-sm-1 col-form-label">PinCode:</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" asp-for="customer_Master.address_Master.varPostalCode" id="txtPinCode" placeholder="Pin Code">
+                            </div>
+                            <label for="inputEmail3" class="col-sm-1 col-form-label">Gender:</label>
+                            <div class="col-sm-3">
+                                <select class="select2-single-placeholder form-control" asp-for="customer_Master.chrGender" name="Gender" id="ddlGender">
+                                    <option value="">Select</option>
+                                    <option value="Aceh">Male</option>
+                                    <option value="Aceh">Female</option>
+                                </select>
+                            </div>
+                          
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-1 col-form-label"><span class="red">*</span>Mobile No:</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" id="txtMobileNo" asp-for="customer_Master.address_Master.varContactNo" placeholder="Mobile No">
+                            </div>
+                            <label for="inputEmail3" class="col-sm-1 col-form-label">Email:</label>
+                            <div class="col-sm-3">
+                                <input type="email" class="form-control" asp-for="customer_Master.address_Master.varEmailAddress" id="txtEmail" placeholder="Email">
+                            </div>
+                            <label for="inputEmail3" class="col-sm-1 col-form-label">DOB:</label>
+                            <div class="col-sm-3">
+                                <input type="date" class="form-control" asp-for="customer_Master.dtDOB" id="txtDOB" placeholder="Password">
+                            </div>
+@*                             <label for="inputEmail3" class="col-sm-1 col-form-label">Anniversary:</label>
+                            <div class="col-sm-3">
+                                <input type="date" class="form-control" asp-for="customer_Master." id="txtAnniversary" placeholder="Anniversary">
+                            </div> *@
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-1 col-form-label">Status:</label>
+                            <div class="col-sm-3">
+                                <input type="checkbox" id="chkStatus" />
+                            </div>
+                        </div>
+                        <input type="hidden" asp-for="@Model.customer_Master.ref_AddressId" id="ref_AddressId" />
+                        <input type="hidden" asp-for="@Model.customer_Master.intGlCode" id="ref_CustintGlCode" />
+                        <input type="hidden" asp-for="@Model.customer_Master.chrActive" id="chrActive" />
+
+                        <div class="form-group row">
+                            <div class="col-sm-3">
+                                <button type="button" class="btn btn-primary" onclick="ValidateDataCity();">Save</button>
+                                <button type="button" class="btn btn-dark" onclick="resetValidationcity();">Cancel</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<br />
+<!---Container Fluid-->
+<!-- Container Fluid-->
+<div class="container-fluid" id="container-wrapper">
+    <div class="row">
+        <!-- DataTable with Hover -->
+        <div class="col-lg-12">
+            <div class="card mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">City List</h6>
+                    <button type="button" class="btn btn-primary" onclick="ExportExcelCity();">Download</button>
+                </div>
+                <div class="table-responsive p-3">
+                    @(Html.DevExtreme().DataGrid()
+                        .ID("grdCustomerList")
+                        .ShowBorders(true)
+                        .DataSource(ds => ds.Mvc().Controller("Account").Key("intGlCode").LoadAction("GetCustomerList"))
+                        .Selection(s => s.Mode(SelectionMode.Single))
+                        .LoadPanel(f => f.Enabled(false))
+                        .Columns(columns =>
+                        {
+                            columns.Add().DataField("intGlCode").Caption("Edit").Type(GridCommandColumnType.Buttons)
+                            .Width(50)
+                            .Buttons(b =>
+                            {
+                                b.Add().Name(GridColumnButtonName.Edit).Visible(true).Icon("edit").OnClick("editdataCity");
+
+                            });
+                            columns.Add().DataField("varCityCode").Caption("City Code");
+                            columns.Add().DataField("varCityName").Caption("City Name");
+                            columns.Add().DataField("CountryName").Caption("Country Name");
+                            columns.Add().DataField("StateName").Caption("State Name");
+                            columns.Add().DataField("chrActive").Caption("Status");
+                            columns.Add().DataField("ref_CountryID").Caption("ref_CountryID").Visible(false);
+                            columns.Add().DataField("ref_StateID").Caption("ref_StateID").Visible(false);
+                            columns.Add().DataField("dtEntryDate").Caption("Entry Date");
+
+                        })
+                        .ColumnAutoWidth(true)
+                        .Scrolling(scrolling => scrolling.ColumnRenderingMode(GridColumnRenderingMode.Standard))
+                        .ShowRowLines(true)
+                        .RowAlternationEnabled(true)
+                        .Paging(paging => paging.PageSize(10))
+                        .Pager(pager =>
+                        {
+                            pager.ShowInfo(true);
+                        })
+                        .Sorting(sorting => sorting.Mode(DevExtreme.AspNet.Mvc.GridSortingMode.Multiple))
+                        .FilterRow(filterRow => filterRow
+                        .Visible(true)
+                        .ApplyFilter(GridApplyFilterMode.Auto)
+                        )
+                        .HeaderFilter(headerFilter => headerFilter.Visible(true))
+                        .WordWrapEnabled(true)
+                        )
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+@Html.AntiForgeryToken()
+@section Scripts {
+    <script src="~/Scripts/Account/Customer.js"></script>
+    <script src="~/Scripts/Account/Common.js"></script>
+}
+<!---Container Fluid-->
