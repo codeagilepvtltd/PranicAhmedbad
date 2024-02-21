@@ -380,5 +380,62 @@ namespace PranicAhmedbad.Controllers
         }
         #endregion
 
+        #region Customer
+
+        public ActionResult Customers()
+        {
+            return View("Admin/Customer_Master");
+        }
+
+        public IActionResult GetCustomerList()
+        {
+
+            CustomerMasterViewModel customerViewModel = new CustomerMasterViewModel();
+            DataSet dsResult = new DataSet();
+            try
+            {
+                customerViewModel = accountRepository.GetCustomerlist();
+                var resultJson = JsonConvert.SerializeObject(customerViewModel.customer_Masters);
+                return Content(resultJson, "application/json");
+            }
+            catch (Exception ex)
+            {
+                //ModuleErrorLogRepository.Insert_Modules_Error_Log("GetPersonDetails", System.Reflection.MethodBase.GetCurrentMethod().Name.ToString(), Convert.ToString(sessionManager.IntGlCode), ex.StackTrace, this.GetType().Name.ToString(), "Novapack", ex.Source, "", "", ex.Message);
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction("ErrorForbidden", "Account");
+            }
+        }
+
+        public ActionResult Save_Customer(CustomerMasterViewModel customerView)
+        {
+            try
+            {
+                customerView.customer_Master.ref_EntryBy = 1;
+                customerView.customer_Master.ref_UpdateBy = 1;
+                customerView.customer_Master.chrActive = customerView.customer_Master.chrActive == "true" ? "Y" : "N";
+                DataSet result = accountRepository.InsertUpdate_Customer(customerView);
+                var resultJson = JsonConvert.SerializeObject(result);
+
+                if (result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0)
+                {
+                    TempData["ErrorMessage"] = string.Format(Common_Messages.Save_Failed_Message, "Customer");
+                    return Content(resultJson, "application/json");
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = string.Format(Common_Messages.Save_Success_Message, "Customer");
+                    return Content(resultJson, "application/json");
+                }
+            }
+            catch (Exception ex)
+            {
+                SQLHelper.writeException(ex);
+
+                return Content(JsonConvert.SerializeObject(0));
+            }
+        }
+        #endregion
+
+
     }
 }

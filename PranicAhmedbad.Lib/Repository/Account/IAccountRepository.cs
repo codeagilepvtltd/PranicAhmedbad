@@ -38,8 +38,8 @@ namespace PranicAhmedbad.Lib.Repository.Account
         #endregion
 
         #region Customer
-        //DataSet InsertUpdate_Customer(CustomerMasterViewModel customerMasterViewModel);
-        //CustomerMasterViewModel GetCustomer(int CityId = 0);
+        DataSet InsertUpdate_Customer(CustomerMasterViewModel customerMasterViewModel);
+        CustomerMasterViewModel GetCustomerlist(int CityId = 0);
 
         #endregion
     }

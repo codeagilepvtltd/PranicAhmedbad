@@ -163,21 +163,42 @@ namespace PranicAhmedbad.Lib.DA
 
         }
 
-        //public DataSet InsertUpdate_Customer(CustomerMasterViewModel customerMasterViewModel)
-        //{
-        //    sqlQuery = new StringBuilder();
-        //    object[] objParamName = { "intGlCode", "varCountryCode", "varCountryName", "chrActive", "ref_EntryBy", "ref_UpdatedBy" };
-        //    object[] objParamValue = { countryViewModel.country_Master.intGlCode, countryViewModel.country_Master.varCountryCode, countryViewModel.country_Master.varCountryName, countryViewModel.country_Master.chrActive, countryViewModel.country_Master.ref_EntryBy, countryViewModel.country_Master.ref_UpdateBy };
+        public DataSet InsertUpdate_Customer(CustomerMasterViewModel customerMasterViewModel)
+        {
+            sqlQuery = new StringBuilder();
+            object[] objParamName = { "intGlCode", "ref_LoginID", "varFirstName", "varMiddleName", "varLastName", "varAddressLine1", "varAddressLine2", "ref_AddressId", "ref_EntityTypeID", "ref_CityId", "ref_StateId", "varPostalCode", "varGender", "varContactNo", "varEmailAddress", "varGMapLocation", "dtDOB", "chrActive", "ref_EntryBy", "ref_UpdateBy" };
+            object[] objParamValue = { customerMasterViewModel.customer_Master.intGlCode, customerMasterViewModel.customer_Master.ref_LoginID, customerMasterViewModel.customer_Master.varFirstName, customerMasterViewModel.customer_Master.varMiddleName, customerMasterViewModel.customer_Master.varLasteName
+                    , customerMasterViewModel.customer_Master.address_Master.varAddressLine1,customerMasterViewModel.customer_Master.address_Master.varAddressLine2,customerMasterViewModel.customer_Master.ref_AddressId,customerMasterViewModel.customer_Master.ref_EntityTypeID,customerMasterViewModel.customer_Master.address_Master.ref_CityId,0,
+                    customerMasterViewModel.customer_Master.address_Master.varPostalCode,customerMasterViewModel.customer_Master.chrGender,customerMasterViewModel.customer_Master.address_Master.varContactNo,customerMasterViewModel.customer_Master.address_Master.varEmailAddress,customerMasterViewModel.customer_Master.address_Master.varGMapLocation,
+                    customerMasterViewModel.customer_Master.dtDOB,customerMasterViewModel.customer_Master.chrActive,customerMasterViewModel.customer_Master.ref_EntryBy,customerMasterViewModel.customer_Master.dtEntryDate};
 
-        //    try
-        //    {
-        //        return SQLHelper.GetData(StoredProcedures.USP_InsertUpdate_Country_Master, objParamName, objParamValue);
-        //    }
-        //    catch
-        //    {
-        //        throw;
-        //    }
+            try
+            {
+                return SQLHelper.GetData(StoredProcedures.USP_InsertUpdate_Customer_Master, objParamName, objParamValue);
+            }
+            catch
+            {
+                throw;
+            }
 
-        //}
+        }
+
+        public DataSet GetCustomerList(int AddId = 0)
+        {
+            sqlQuery = new StringBuilder();
+            object[] objParamName = { "intGlCode" };
+            object[] objParamValue = { AddId };
+
+            try
+            {
+                resultSet = SQLHelper.GetData(StoredProcedures.USP_Select_CustomerList, objParamName, objParamValue);
+            }
+            catch
+            {
+                throw;
+            }
+            return resultSet;
+
+        }
     }
 }
