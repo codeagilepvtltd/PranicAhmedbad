@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PranicAhmedbad.Lib.Models
 {
-    internal class Event_Master
+    public class Event_Master
     {
         public long intGlCode { get; set; }
 
@@ -17,8 +17,6 @@ namespace PranicAhmedbad.Lib.Models
         public string varEventDescription { get; set; }
 
         public string varEventContent { get; set; }
-
-        public string varEventAddress { get; set; }
 
         public int? ref_CityID { get; set; }
 
@@ -40,6 +38,8 @@ namespace PranicAhmedbad.Lib.Models
 
         public string varRegistrationLink { get; set; }
 
+        public long? ref_AddressID { get; set; }
+
         public int? ref_StatusID { get; set; }
 
         public string chrActive { get; set; }
@@ -52,6 +52,7 @@ namespace PranicAhmedbad.Lib.Models
 
         public long? ref_UpdateBy { get; set; }
 
+        public Address_Master address_Master { get; set; }
     }
 
 }
