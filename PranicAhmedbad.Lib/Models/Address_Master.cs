@@ -19,8 +19,12 @@ namespace PranicAhmedbad.Lib.Models
         public string  varContactNo { get; set; }
 
         public string  varGMapLocation { get; set; }
-
         public long? ref_CityId { get; set; }
+        public string CityName { get; set; }
+        public long? ref_StateId { get; set; }
+        public string StateName { get; set; }
+        public long? ref_CountryId { get; set; }
+        public string CountryName { get; set; }
 
         public long? varPostalCode { get; set; }
 
@@ -33,6 +37,8 @@ namespace PranicAhmedbad.Lib.Models
         public DateTime? dtUpdatedDate { get; set; }
 
         public long? ref_UpdateBy { get; set; }
+
+      
 
     }
 
