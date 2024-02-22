@@ -152,6 +152,7 @@
     <Compile Include="Common\Common_Functions.cs" />
     <Compile Include="Common\SQLHelper.cs" />
     <Compile Include="DA\Account_DA.cs" />
+    <Compile Include="DA\EventMaster_DA.cs" />
     <Compile Include="DA\ModuleErrorLogDA.cs" />
     <Compile Include="Models\Address_Master.cs" />
     <Compile Include="Models\City_Master.cs" />
@@ -187,10 +188,13 @@
     <Compile Include="Models\Whatsapp_Log.cs" />
     <Compile Include="Models\Whatsapp_Master.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\Account\EventRepository.cs" />
     <Compile Include="Repository\Account\AccountRepository.cs" />
+    <Compile Include="Repository\Account\IEventRepository.cs" />
     <Compile Include="Repository\Account\IAccountRepository.cs" />
     <Compile Include="Repository\ModuleErrorLog\IModuleErrorLogRepository.cs" />
     <Compile Include="Repository\ModuleErrorLog\ModuleErrorLogRepository.cs" />
+    <Compile Include="ViewModels\EventModels.cs" />
     <Compile Include="ViewModels\AccountModels.cs" />
     <Compile Include="ViewModels\CommonFieldModels.cs" />
   </ItemGroup>

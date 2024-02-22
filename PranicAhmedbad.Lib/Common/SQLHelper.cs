@@ -21,6 +21,8 @@ namespace PranicAhmedbad.Lib.Common
         USP_Select_CityList,
         USP_InsertUpdate_Customer_Master,
         USP_Select_CustomerList,
+        USP_Select_EventList,
+        USP_InsertUpdate_Event_Master
     }
     public class Common_Messages
     {
