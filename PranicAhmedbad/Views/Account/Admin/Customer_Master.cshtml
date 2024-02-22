@@ -1,4 +1,5 @@
 ﻿@using DevExtreme.AspNet.Mvc
+@using DevExtreme.AspNet.TagHelpers
 @model CustomerMasterViewModel
 @{
     ViewData["Title"] = "Pranic Ahmedbad - Customer";
@@ -89,8 +90,8 @@
                             <div class="col-sm-3">
                                 <select class="select2-single-placeholder form-control" asp-for="customer_Master.chrGender" name="Gender" id="ddlGender">
                                     <option value="">Select</option>
-                                    <option value="Aceh">Male</option>
-                                    <option value="Aceh">Female</option>
+                                    <option value="M">Male</option>
+                                    <option value="F">Female</option>
                                 </select>
                             </div>
                           
@@ -106,7 +107,7 @@
                             </div>
                             <label for="inputEmail3" class="col-sm-1 col-form-label">DOB:</label>
                             <div class="col-sm-3">
-                                <input type="date" class="form-control" asp-for="customer_Master.dtDOB" id="txtDOB" placeholder="Password">
+                                <input type="date" class="form-control" asp-for="customer_Master.dtDOB" id="txtDOB" placeholder="Date of Birth">
                             </div>
 @*                             <label for="inputEmail3" class="col-sm-1 col-form-label">Anniversary:</label>
                             <div class="col-sm-3">
@@ -116,17 +117,21 @@
                         <div class="form-group row">
                             <label for="inputEmail3" class="col-sm-1 col-form-label">Status:</label>
                             <div class="col-sm-3">
-                                <input type="checkbox" id="chkStatus" />
+                                <input type="checkbox" asp-for="customer_Master.chrActive" id="chkStatus" />
                             </div>
                         </div>
                         <input type="hidden" asp-for="@Model.customer_Master.ref_AddressId" id="ref_AddressId" />
                         <input type="hidden" asp-for="@Model.customer_Master.intGlCode" id="ref_CustintGlCode" />
                         <input type="hidden" asp-for="@Model.customer_Master.chrActive" id="chrActive" />
+                        <input type="hidden" asp-for="@Model.customer_Master.ref_CityId" id="ref_CityId" />
+                        <input type="hidden" asp-for="@Model.customer_Master.ref_StateID" id="ref_StateID" />
+                        <input type="hidden" asp-for="@Model.customer_Master.ref_CountryID" id="ref_CountryID" />
+                        <input type="hidden" asp-for="@Model.customer_Master.chrGender" id="ref_chrGender" />
 
                         <div class="form-group row">
                             <div class="col-sm-3">
-                                <button type="button" class="btn btn-primary" onclick="ValidateDataCity();">Save</button>
-                                <button type="button" class="btn btn-dark" onclick="resetValidationcity();">Cancel</button>
+                                <button type="button" class="btn btn-primary" onclick="ValidateDataCustomer();">Save</button>
+                                <button type="button" class="btn btn-dark" onclick="resetValidationcustomer();">Cancel</button>
                             </div>
                         </div>
 
@@ -148,7 +153,7 @@
             <div class="card mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">City List</h6>
-                    <button type="button" class="btn btn-primary" onclick="ExportExcelCity();">Download</button>
+                    <button type="button" class="btn btn-primary" onclick="ExportExcelCustomer();">Download</button>
                 </div>
                 <div class="table-responsive p-3">
                     @(Html.DevExtreme().DataGrid()
@@ -163,17 +168,18 @@
                             .Width(50)
                             .Buttons(b =>
                             {
-                                b.Add().Name(GridColumnButtonName.Edit).Visible(true).Icon("edit").OnClick("editdataCity");
+                                b.Add().Name(GridColumnButtonName.Edit).Visible(true).Icon("edit").OnClick("editdataCutomer");
 
                             });
-                            columns.Add().DataField("varCityCode").Caption("City Code");
-                            columns.Add().DataField("varCityName").Caption("City Name");
-                            columns.Add().DataField("CountryName").Caption("Country Name");
-                            columns.Add().DataField("StateName").Caption("State Name");
+                            columns.Add().DataField("varFirstName").Caption("First Name");
+                            columns.Add().DataField("varMiddleName").Caption("Middle Name");
+                            columns.Add().DataField("varLasteName").Caption("Last Name");
+                            columns.Add().DataField("varAddressLine1").Caption("Address");
+                            columns.Add().DataField("varPostalCode").Caption("PinCode");
+                            columns.Add().DataField("varContactNo").Caption("ContactNo").Visible(false);
+                            columns.Add().DataField("varEmailAddress").Caption("Email").Visible(false);
                             columns.Add().DataField("chrActive").Caption("Status");
-                            columns.Add().DataField("ref_CountryID").Caption("ref_CountryID").Visible(false);
-                            columns.Add().DataField("ref_StateID").Caption("ref_StateID").Visible(false);
-                            columns.Add().DataField("dtEntryDate").Caption("Entry Date");
+                            columns.Add().DataField("dtDOB").DataType(DevExtreme.AspNet.Mvc.GridColumnDataType.DateTime).Caption("Date Of Birth");
 
                         })
                         .ColumnAutoWidth(true)

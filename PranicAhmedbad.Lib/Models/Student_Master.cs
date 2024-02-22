@@ -10,7 +10,7 @@ namespace PranicAhmedbad.Lib.Models
     {
         public long intGlCode { get; set; }
 
-        public long ref_LoginID { get; set; }
+        public long? ref_LoginID { get; set; }
 
         public string varFirstName { get; set; }
 
@@ -19,7 +19,7 @@ namespace PranicAhmedbad.Lib.Models
         public string varLasteName { get; set; }
 
         public int ref_EntityTypeID { get; set; }
-        public int ref_AddressId { get; set; }
+        public long ref_AddressId { get; set; }
 
         public string chrGender { get; set; }
 
@@ -35,7 +35,22 @@ namespace PranicAhmedbad.Lib.Models
 
         public long? ref_UpdateBy { get; set; }
 
+        public int ref_CountryID { get; set; }
+        public int ref_StateID { get; set; }
+        public long? ref_CityId { get; set; }
+
+        public string varAddressLine1 { get; set; }
+
+        public string varAddressLine2 { get; set; }
+
+        public string varEmailAddress { get; set; }
+
+        public string varContactNo { get; set; }
+
+        public string varGMapLocation { get; set; }
+        public long? varPostalCode { get; set; }
         public Address_Master address_Master { get; set; }
+
 
     }
 }

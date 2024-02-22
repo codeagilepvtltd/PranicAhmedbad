@@ -253,20 +253,27 @@ namespace PranicAhmedbad.Lib.Repository.Account
                 {
                     customerViewModel.customer_Masters = dsResult.Tables[0].AsEnumerable().Select(row => new Customer_Master()
                     {
-                        intGlCode = row.Field<int>("intGlCode"),
-                        ref_LoginID = row.Field<int>("ref_LoginID"),
+                        intGlCode = row.Field<Int64>("intGlCode"),
+                        ref_LoginID = row.Field<Int64>("ref_LoginID"),
                         varFirstName = row.Field<string>("varFirstName"),
                         varMiddleName = row.Field<string>("varMiddleName"),
                         varLasteName = row.Field<string>("varLasteName"),
                         ref_EntityTypeID = row.Field<int>("ref_EntityTypeID"),
-                        ref_AddressId = row.Field<int>("ref_AddressId"), 
+                        ref_AddressId = row.Field<Int64>("ref_AddressId"),
                         chrGender = row.Field<string>("chrGender"),
                         dtDOB = row.Field<DateTime>("dtDOB"),
                         chrActive = row.Field<string>("chrActive"),
                         dtEntryDate = row.Field<DateTime>("dtEntryDate"),
-                        ref_EntryBy = row.Field<int>("ref_EntryBy"),
-                        dtUpdatedDate = row.Field<DateTime>("dtUpdatedDate"),
-                        ref_UpdateBy = row.Field<int>("ref_UpdateBy")
+                        ref_EntryBy = row.Field<Int64>("ref_EntryBy"),
+                        ref_CityId = row.Field<Int64>("ref_CityId"),
+                        ref_StateID = row.Field<int>("ref_StateID"),
+                        ref_CountryID = row.Field<int>("ref_CountryID"),
+                        varAddressLine1 = row.Field<string>("varAddressLine1"),
+                        varContactNo = row.Field<string>("varContactNo"),
+                        varEmailAddress = row.Field<string>("varEmailAddress"),
+                        varGMapLocation = row.Field<string>("varGMapLocation"),
+                        varPostalCode = row.Field<Int64>("varPostalCode"),
+
 
                     }).ToList();
 

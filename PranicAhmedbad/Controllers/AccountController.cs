@@ -391,7 +391,7 @@ namespace PranicAhmedbad.Controllers
         {
 
             CustomerMasterViewModel customerViewModel = new CustomerMasterViewModel();
-            DataSet dsResult = new DataSet();
+             DataSet dsResult = new DataSet();
             try
             {
                 customerViewModel = accountRepository.GetCustomerlist();
@@ -418,12 +418,12 @@ namespace PranicAhmedbad.Controllers
 
                 if (result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0)
                 {
-                    TempData["ErrorMessage"] = string.Format(Common_Messages.Save_Failed_Message, "Customer");
+                    TempData["ErrorMessage"] = string.Format(Common_Messages.Save_Success_Message, "Customer");
                     return Content(resultJson, "application/json");
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = string.Format(Common_Messages.Save_Success_Message, "Customer");
+                    TempData["ErrorMessage"] = string.Format(Common_Messages.Save_Failed_Message, "Customer");
                     return Content(resultJson, "application/json");
                 }
             }
