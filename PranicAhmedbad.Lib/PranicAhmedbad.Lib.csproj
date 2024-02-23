@@ -76,6 +76,10 @@
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\PranicAhmedbad\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\PranicAhmedbad\packages\System.ComponentModel.Annotations.5.0.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Configuration.ConfigurationManager, Version=6.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\PranicAhmedbad\packages\System.Configuration.ConfigurationManager.6.0.1\lib\net461\System.Configuration.ConfigurationManager.dll</HintPath>
@@ -171,6 +175,7 @@
     <Compile Include="Models\Forgot_Password_History.cs" />
     <Compile Include="Models\Foundation_Master.cs" />
     <Compile Include="Models\Gallery.cs" />
+    <Compile Include="Models\General_Master.cs" />
     <Compile Include="Models\Inquiry.cs" />
     <Compile Include="Models\LoginForm_Details.cs" />
     <Compile Include="Models\Login_Master.cs" />

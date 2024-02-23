@@ -88,13 +88,17 @@
                             </div>
                             <label for="inputEmail3" class="col-sm-1 col-form-label">Gender:</label>
                             <div class="col-sm-3">
-                                <select class="select2-single-placeholder form-control" asp-for="customer_Master.chrGender" name="Gender" id="ddlGender">
-                                    <option value="">Select</option>
-                                    <option value="M">Male</option>
-                                    <option value="F">Female</option>
-                                </select>
+
+                                @(Html.DevExtreme().SelectBox().ID("ddlGender")
+                                    .DataSource(d => d.Mvc().Controller("Account").LoadAction("GetGenders").Key("intGlCode"))
+                                    .DisplayExpr("GenderName")
+                                    .ValueExpr("intGlCode")
+                                    .Placeholder("-- Select --")
+                                    .SearchEnabled(true)
+                                    .OnOpened("dxSelectBox_OnOpened")
+                                    )
                             </div>
-                          
+
                         </div>
                         <div class="form-group row">
                             <label for="inputEmail3" class="col-sm-1 col-form-label"><span class="red">*</span>Mobile No:</label>
@@ -107,11 +111,11 @@
                             </div>
                             <label for="inputEmail3" class="col-sm-1 col-form-label">DOB:</label>
                             <div class="col-sm-3">
-                                <input type="date" class="form-control" asp-for="customer_Master.dtDOB" id="txtDOB" placeholder="Date of Birth">
+                                <input type="datetime-local" class="form-control" asp-for="customer_Master.dtDOB" id="txtDOB" placeholder="Date of Birth">
                             </div>
-@*                             <label for="inputEmail3" class="col-sm-1 col-form-label">Anniversary:</label>
+                            @*                             <label for="inputEmail3" class="col-sm-1 col-form-label">Anniversary:</label>
                             <div class="col-sm-3">
-                                <input type="date" class="form-control" asp-for="customer_Master." id="txtAnniversary" placeholder="Anniversary">
+                            <input type="date" class="form-control" asp-for="customer_Master." id="txtAnniversary" placeholder="Anniversary">
                             </div> *@
                         </div>
                         <div class="form-group row">
@@ -126,7 +130,11 @@
                         <input type="hidden" asp-for="@Model.customer_Master.ref_CityId" id="ref_CityId" />
                         <input type="hidden" asp-for="@Model.customer_Master.ref_StateID" id="ref_StateID" />
                         <input type="hidden" asp-for="@Model.customer_Master.ref_CountryID" id="ref_CountryID" />
-                        <input type="hidden" asp-for="@Model.customer_Master.chrGender" id="ref_chrGender" />
+                        <input type="hidden" asp-for="@Model.customer_Master.chrGender" id="chrGender" />
+                       
+                        <input type="hidden" asp-for="@Model.customer_Master.ref_LoginID" id="ref_LoginID" />
+                        <input type="hidden" asp-for="@Model.customer_Master.ref_EntityTypeID" id="ref_EntityTypeID" />
+
 
                         <div class="form-group row">
                             <div class="col-sm-3">
@@ -171,15 +179,19 @@
                                 b.Add().Name(GridColumnButtonName.Edit).Visible(true).Icon("edit").OnClick("editdataCutomer");
 
                             });
-                            columns.Add().DataField("varFirstName").Caption("First Name");
-                            columns.Add().DataField("varMiddleName").Caption("Middle Name");
-                            columns.Add().DataField("varLasteName").Caption("Last Name");
-                            columns.Add().DataField("varAddressLine1").Caption("Address");
-                            columns.Add().DataField("varPostalCode").Caption("PinCode");
-                            columns.Add().DataField("varContactNo").Caption("ContactNo").Visible(false);
+                            columns.Add().DataField("varFirstName").Caption("First Name").Visible(false);
+                            columns.Add().DataField("varMiddleName").Caption("Middle Name").Visible(false);
+                            columns.Add().DataField("varLasteName").Caption("Last Name").Visible(false);
+                            columns.Add().DataField("varPostalCode").Caption("PinCode").Visible(false);
                             columns.Add().DataField("varEmailAddress").Caption("Email").Visible(false);
-                            columns.Add().DataField("chrActive").Caption("Status");
-                            columns.Add().DataField("dtDOB").DataType(DevExtreme.AspNet.Mvc.GridColumnDataType.DateTime).Caption("Date Of Birth");
+                            columns.Add().DataField("chrActive").Caption("Status").Visible(false);
+
+                            columns.Add().DataField("FullName").Caption("Full Name");
+                            columns.Add().DataField("UserType").Caption("User Type");
+                            columns.Add().DataField("varAddressLine1").Caption("Address");
+                            columns.Add().DataField("varContactNo").Caption("Contact No");
+                            columns.Add().DataField("CityName").Caption("City Name");
+                            columns.Add().DataField("StatusName").Caption("Status");
 
                         })
                         .ColumnAutoWidth(true)
