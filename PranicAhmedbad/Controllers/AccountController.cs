@@ -22,7 +22,7 @@ namespace PranicAhmedbad.Controllers
         // GET: Controller
 
 
-        public AccountController(IAccountRepository _accountRepository, IModuleErrorLogRepository _moduleErrorLogRepository, IHttpContextAccessor _httpContextAccessor)
+        public AccountController(IAccountRepository _accountRepository,IModuleErrorLogRepository _moduleErrorLogRepository, IHttpContextAccessor _httpContextAccessor)
         {
             accountRepository = _accountRepository;
             httpContextAccessor = _httpContextAccessor;

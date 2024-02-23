@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<IAccountRepository, AccountRepository>();
+builder.Services.AddSingleton<IEventRepository, EventRepository>();
 builder.Services.AddSingleton<IModuleErrorLogRepository, ModuleErrorLogRepository>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddRouting();

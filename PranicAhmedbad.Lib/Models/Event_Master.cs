@@ -19,7 +19,10 @@ namespace PranicAhmedbad.Lib.Models
         public string varEventContent { get; set; }
 
         public int? ref_CityID { get; set; }
-
+        public long? ref_StateId { get; set; }
+        public string StateName { get; set; }
+        public long? ref_CountryId { get; set; }
+        public string CountryName { get; set; }
         public string varContactPerson { get; set; }
 
         public string varContactMobileNo { get; set; }
