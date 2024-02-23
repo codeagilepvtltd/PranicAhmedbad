@@ -71,13 +71,16 @@ function ValidateDataState() {
             url: configuration.onLoad() + "Account/Save_States",
             success: function (response)
             {
-                if (response.Unauthorized == "401") {
+                if (response.Unauthorized == "401")
+                {
                     window.location.href = configuration.onLoad() + 'Account/States';
                 }
-                else if (response.Table[0].intStatus == 0) {
+                else if (response.Table[0].intStatus == 0)
+                {
                     PopUpMessage(response.Table[0].varMessage, "fa fa-exclamation-circle popup_icon_failure");
                 }
-                else {
+                else
+                {
                     PopUpWithClose(response.Table[0].varMessage, "fa fa-check-circle popup_icon_success");
                     resetValidationstate();
                     $("#grdStateList").dxDataGrid('instance').refresh();
