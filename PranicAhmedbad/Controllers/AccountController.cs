@@ -382,10 +382,31 @@ namespace PranicAhmedbad.Controllers
 
         #region Customer
 
+
         public ActionResult Customers()
         {
             return View("Admin/Customer_Master");
         }
+
+        public IActionResult GetGenders()
+        {
+
+            List<Gender_Master>  gender_Masters = new List<Gender_Master>();
+            DataSet dsResult = new DataSet();
+            try
+            {
+                gender_Masters = accountRepository.GetGenders();
+                var resultJson = JsonConvert.SerializeObject(gender_Masters);
+                return Content(resultJson, "application/json");
+            }
+            catch (Exception ex)
+            {
+                //ModuleErrorLogRepository.Insert_Modules_Error_Log("GetPersonDetails", System.Reflection.MethodBase.GetCurrentMethod().Name.ToString(), Convert.ToString(sessionManager.IntGlCode), ex.StackTrace, this.GetType().Name.ToString(), "Novapack", ex.Source, "", "", ex.Message);
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction("ErrorForbidden", "Account");
+            }
+        }
+
 
         public IActionResult GetCustomerList()
         {

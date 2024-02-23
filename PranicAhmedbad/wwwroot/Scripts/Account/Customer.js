@@ -8,6 +8,7 @@ function editdataCutomer(e) {
     $("#ddlCountryList").dxSelectBox("getDataSource").reload();
     $("#ddlStateList").dxSelectBox("getDataSource").reload();
     $("#ddlCityList").dxSelectBox("getDataSource").reload();
+    $("#ddlGender").dxSelectBox("getDataSource").reload();
     setTimeout(function () {
 
         var ddlCountryList = $("#ddlCountryList").dxSelectBox('instance');
@@ -20,16 +21,17 @@ function editdataCutomer(e) {
         
         var ddlCityList = $("#ddlCityList").dxSelectBox('instance');
         ddlCityList.option('value', parseInt(e.row.data.ref_CityId));
-        
+
+        var ddlGender = $("#ddlGender").dxSelectBox('instance');
+        ddlGender.option('value', parseInt(e.row.data.chrGender));
+
 
     }, 100);
 
     $("#ref_CityId").val(e.row.data.ref_CityId);
     $("#ref_StateID").val(e.row.data.ref_StateID);
     $("#ref_CountryID").val(e.row.data.ref_CountryID);
-    $("#ref_chrGender").val(e.row.data.chrGender);
-    $("#ddlGender").val(e.row.data.chrGender);
-
+    $("#chrGender").val(e.row.data.chrGender);
     $("#intGlCode").val(e.row.data.intGlCode);
     $("#ref_AddressId").val(e.row.data.ref_AddressId);
     $("#ref_CustintGlCode").val(e.row.data.intGlCode);
@@ -41,9 +43,12 @@ function editdataCutomer(e) {
     $("#txtPinCode").val(e.row.data.varPostalCode);
     $("#txtMobileNo").val(e.row.data.varContactNo);
     $("#txtEmail").val(e.row.data.varEmailAddress);
+    $("#ref_LoginID").val(e.row.data.ref_LoginID);
+    $("#ref_EntityTypeID").val(e.row.data.ref_EntityTypeID);
 
+    
     $("#chkStatus").prop('checked', e.row.data.chrActive == 'Y' ? true : false);
-   /* $("#txtDOB").val(e.row.data.dtDOB);*/
+    $("#txtDOB").val(e.row.data.dtDOB);
     
 }
 function resetValidationcustomer() {
@@ -57,10 +62,16 @@ function resetValidationcustomer() {
     $('.field-validation-valid span').html('')
 
     $('input:text').val('');
+    $("input[type='email']").val('');
+    $("input[type='datetime-local']").val('');
+    $('#txtAddress').val('');
+
     $("#grdCustomerList").dxDataGrid('instance').refresh();
     $("#grdCustomerList").dxDataGrid('instance').clearFilter();
     $("#ddlCountryList").dxSelectBox('instance').option('value', "0");
     $("#ddlStateList").dxSelectBox('instance').option('value', "0");
+    $("#ddlCityList").dxSelectBox('instance').option('value', "0");
+    $("#ddlGender").dxSelectBox('instance').option('value', "0");
 
 
     $("#ddlCountryList").focus();
@@ -106,6 +117,14 @@ function ValidateDataCustomer() {
         return false;
     }
     $("#ref_CityId").val(ddlCity);
+
+    var ddlGender = $("#ddlGender").dxSelectBox('instance').option('value');
+    if (ddlGender == undefined || ddlCity == null || ddlCity == '' || ddlCity == '0') {
+        PopUpMessage('Please Select Gender.', "fa fa-exclamation-circle popup_icon");
+        $("#ddlGender").focus();
+        return false;
+    }
+    $("#chrGender").val(ddlGender);
     
     setTimeout(function () {
         $.ajax({
@@ -113,14 +132,17 @@ function ValidateDataCustomer() {
             data: $('#frmCustomer').serialize(),
             timeout: 15000, // adjust the limit. currently its 15 seconds
             url: configuration.onLoad() + "Account/Save_Customer",
-            success: function (response) {
+            success: function (response)
+            {
                 if (response.Unauthorized == "401") {
                     window.location.href = configuration.onLoad() + 'Home';
                 }
-                else if (response.Table[0].intStatus == 0) {
+                else if (response.Table[0].intStatus == 0)
+                {
                     PopUpMessage(response.Table[0].varMessage, "fa fa-exclamation-circle popup_icon_failure");
                 }
-                else {
+                else
+                {
                     PopUpWithClose(response.Table[0].varMessage, "fa fa-check-circle popup_icon_success");
                     resetValidationcustomer();
                     $("#grdCustomerList").dxDataGrid('instance').refresh();

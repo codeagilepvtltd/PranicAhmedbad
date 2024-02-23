@@ -82,7 +82,7 @@ namespace PranicAhmedbad.Lib.Repository.Account
         #endregion
 
         #region Country
-        public List<Country_Master> GetCountryList(int intGlCode=0)
+        public List<Country_Master> GetCountryList(int intGlCode = 0)
         {
             Account_DA accountDA = new Account_DA();
             List<Country_Master> country_Masters = new List<Country_Master>();
@@ -146,7 +146,7 @@ namespace PranicAhmedbad.Lib.Repository.Account
                         dtEntryDate = row.Field<DateTime>("dtEntryDate")
 
                     }).ToList();
-                    
+
                 }
 
             }
@@ -221,7 +221,7 @@ namespace PranicAhmedbad.Lib.Repository.Account
                 throw;
             }
 
-            
+
         }
         #endregion
 
@@ -257,8 +257,11 @@ namespace PranicAhmedbad.Lib.Repository.Account
                         ref_LoginID = row.Field<Int64>("ref_LoginID"),
                         varFirstName = row.Field<string>("varFirstName"),
                         varMiddleName = row.Field<string>("varMiddleName"),
+                        FullName = row.Field<string>("FullName"),
+                        UserType = row.Field<string>("UserType"),
                         varLasteName = row.Field<string>("varLasteName"),
                         ref_EntityTypeID = row.Field<int>("ref_EntityTypeID"),
+                        StatusName = row.Field<string>("StatusName"),
                         ref_AddressId = row.Field<Int64>("ref_AddressId"),
                         chrGender = row.Field<string>("chrGender"),
                         dtDOB = row.Field<DateTime>("dtDOB"),
@@ -268,6 +271,7 @@ namespace PranicAhmedbad.Lib.Repository.Account
                         ref_CityId = row.Field<Int64>("ref_CityId"),
                         ref_StateID = row.Field<int>("ref_StateID"),
                         ref_CountryID = row.Field<int>("ref_CountryID"),
+                        CityName = row.Field<string>("varCityName"),
                         varAddressLine1 = row.Field<string>("varAddressLine1"),
                         varContactNo = row.Field<string>("varContactNo"),
                         varEmailAddress = row.Field<string>("varEmailAddress"),
@@ -284,6 +288,23 @@ namespace PranicAhmedbad.Lib.Repository.Account
             {
                 throw;
             }
+        }
+
+        public List<Gender_Master> GetGenders(int StateId = 0)
+        {
+            List<Gender_Master> gender_Masters = new List<Gender_Master>();
+
+            string[] Genders = { "Male", "Female" };
+            int intGlCode = 1;
+            for (int i = 0; i < Genders.Length; i++)
+            {
+                Gender_Master gender_Master = new Gender_Master();
+                gender_Master.intGlCode = intGlCode;
+                gender_Master.GenderName = Genders[i];
+                gender_Masters.Add(gender_Master);
+                intGlCode++;
+            }
+            return gender_Masters;
         }
         #endregion
     }
