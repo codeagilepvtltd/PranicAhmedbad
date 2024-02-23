@@ -1,0 +1,237 @@
+﻿@using DevExtreme.AspNet.Mvc
+@using DevExtreme.AspNet.TagHelpers
+@model EventMasterViewModel
+@{
+    ViewData["Title"] = "Pranic Ahmedbad - Event";
+}
+<!-- Container Fluid-->
+<div class="container-fluid" id="container-wrapper">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Event Master</h1>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="./">Home</a></li>
+            <li class="breadcrumb-item">Forms</li>
+            <li class="breadcrumb-item active" aria-current="page">Event Master</li>
+        </ol>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Basic -->
+            <div class="card mb-12">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Event Entry</h6>
+                </div>
+                <div class="card-body">
+                    <form class="user" asp-controller="Event" asp-action="Save_Event" method="post" id="frmEvent">
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-2 col-form-label"><span class="red">*</span>Event Name:</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="txtEventName" asp-for="event_Master.varEventName" placeholder="Event Name">
+                            </div>
+                            <label for="inputEmail3" class="col-sm-2 col-form-label"><span class="red">*</span>Content:</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="txtEventContent" asp-for="event_Master.varEventContent" placeholder="Content">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-2 col-form-label">Description:</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" id="txtEventDescription" asp-for="event_Master.varEventDescription" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-2 col-form-label">Country:</label>
+                            <div class="col-sm-4">
+                                @(Html.DevExtreme().SelectBox().ID("ddlCountryList")
+                                    .DataSource(d => d.Mvc().Controller("Account").LoadAction("GetActiveCountryList").Key("intGlCode"))
+                                    .DisplayExpr("varCountryName")
+                                    .ValueExpr("intGlCode")
+                                    .Placeholder("-- Select --")
+                                    .SearchEnabled(true)
+                                    .OnOpened("dxSelectBox_OnOpened ")
+                                    )
+                            </div>
+                            <label for="inputEmail3" class="col-sm-2 col-form-label">State:</label>
+                            <div class="col-sm-4">
+                                @(Html.DevExtreme().SelectBox().ID("ddlStateList")
+                                    .DataSource(d => d.Mvc().Controller("Account").LoadAction("GetStateListActive").Key("intGlCode"))
+                                    .DisplayExpr("varStateName")
+                                    .ValueExpr("intGlCode")
+                                    .Placeholder("-- Select --")
+                                    .SearchEnabled(true)
+                                    .OnOpened("dxSelectBox_OnOpened ")
+                                    )
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-2 col-form-label">City:</label>
+                            <div class="col-sm-4">
+                                @(Html.DevExtreme().SelectBox().ID("ddlCityList")
+                                    .DataSource(d => d.Mvc().Controller("Account").LoadAction("GetCityList").Key("intGlCode"))
+                                    .DisplayExpr("varCityName")
+                                    .ValueExpr("intGlCode")
+                                    .Placeholder("-- Select --")
+                                    .SearchEnabled(true)
+                                    .OnOpened("dxSelectBox_OnOpened")
+                                    )
+                            </div>
+                            <label for="inputEmail3" class="col-sm-2 col-form-label">Address:</label>
+                            <div class="col-sm-4">
+                                <textarea class="form-control" id="txtAddress" asp-for="event_Master.address_Master.varAddressLine1" rows="3"></textarea>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-2 col-form-label">PinCode:</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" asp-for="event_Master.address_Master.varPostalCode" id="txtPinCode" placeholder="Pin Code">
+                            </div>
+
+                            <label for="inputEmail3" class="col-sm-2 col-form-label">G Map Location:</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" asp-for="event_Master.address_Master.varGMapLocation" id="txtGMapLocation" placeholder="G Map Location">
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-2 col-form-label">Contact Person:</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" asp-for="event_Master.varContactPerson" id="txtContactPerson" placeholder="Contact Person">
+                            </div>
+                            <label for="inputEmail3" class="col-sm-2 col-form-label"><span class="red">*</span>Mobile No:</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="txtMobileNo" asp-for="event_Master.varContactMobileNo" placeholder="Mobile No">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-2 col-form-label">Email:</label>
+                            <div class="col-sm-4">
+                                <input type="email" class="form-control" asp-for="event_Master.address_Master.varEmailAddress" id="txtEmail" placeholder="Email">
+                            </div>
+                            <label for="inputEmail3" class="col-sm-2 col-form-label"><span class="red">*</span>Publish Date:</label>
+                            <div class="col-sm-4">
+                                <input type="date" class="form-control" id="txtPublishDate" asp-for="event_Master.dtEventPublishDate" placeholder="Publish Date">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+
+                            <label for="inputEmail3" class="col-sm-2 col-form-label">Start Date:</label>
+                            <div class="col-sm-4">
+                                <input type="date" class="form-control" asp-for="event_Master.dtStartDate" id="txtStartDate" placeholder="Start Date">
+                            </div>
+                            <label for="inputEmail3" class="col-sm-2 col-form-label">End Date:</label>
+                            <div class="col-sm-4">
+                                <input type="date" class="form-control" asp-for="event_Master.dtEndDate" id="txtEndDate" placeholder="End Date">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-2 col-form-label">Payment type:</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" asp-for="event_Master.varPaymentType" id="txtPayment" placeholder="Event payment type">
+                            </div>
+                            <label for="inputEmail3" class="col-sm-2 col-form-label"><span class="red">*</span>Registration:</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="txtRegistration" asp-for="event_Master.varRegistrationLink" placeholder="Registration">
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-2 col-form-label">Status:</label>
+                            <div class="col-sm-4">
+                                <input type="checkbox" asp-for="event_Master.chrActive" id="chkStatus" />
+                            </div>
+                        </div>
+                        <input type="hidden" asp-for="@Model.event_Master.ref_AddressID" id="ref_AddressId" />
+                        <input type="hidden" asp-for="@Model.event_Master.intGlCode" id="ref_EventintGlCode" />
+                        <input type="hidden" asp-for="@Model.event_Master.chrActive" id="chrActive" />
+                        <input type="hidden" asp-for="@Model.event_Master.ref_CityID" id="ref_CityId" />
+                        <input type="hidden" asp-for="@Model.event_Master.ref_StateId" id="ref_StateID" />
+                        <input type="hidden" asp-for="@Model.event_Master.ref_CountryId" id="ref_CountryID" />
+                        <input type="hidden" asp-for="@Model.event_Master.ref_EventTypeID" id="ref_EventTypeID" />
+
+                        <div class="form-group row">
+                            <div class="col-sm-3">
+                                <button type="button" class="btn btn-primary" onclick="ValidateDataEvent();">Save</button>
+                                <button type="button" class="btn btn-dark" onclick="resetValidationEvent();">Cancel</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<br />
+<!---Container Fluid-->
+<!-- Container Fluid-->
+<div class="container-fluid" id="container-wrapper">
+    <div class="row">
+        <!-- DataTable with Hover -->
+        <div class="col-lg-12">
+            <div class="card mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Event List</h6>
+                    <button type="button" class="btn btn-primary" onclick="ExportExcelEvent();">Download</button>
+                </div>
+                <div class="table-responsive p-3">
+                    @(Html.DevExtreme().DataGrid()
+                        .ID("grdEventList")
+                        .ShowBorders(true)
+                        .DataSource(ds => ds.Mvc().Controller("Event").Key("intGlCode").LoadAction("GetEventsList"))
+                        .Selection(s => s.Mode(SelectionMode.Single))
+                        .LoadPanel(f => f.Enabled(false))
+                        .Columns(columns =>
+                        {
+                            columns.Add().DataField("intGlCode").Caption("Edit").Type(GridCommandColumnType.Buttons)
+                            .Width(50)
+                            .Buttons(b =>
+                            {
+                                b.Add().Name(GridColumnButtonName.Edit).Visible(true).Icon("edit").OnClick("editdataEvent");
+
+                            });
+                            columns.Add().DataField("varEventName").Caption("Event Name");
+                            columns.Add().DataField("varEventDescription").Caption("Description");
+                            columns.Add().DataField("varEventContent").Caption("Content");
+                            columns.Add().DataField("varContactMobileNo").Caption("ContactNo").Visible(false);
+                            columns.Add().DataField("varContactPerson").Caption("Contact Person").Visible(false);
+                            columns.Add().DataField("varEmailAddress").Caption("Email").Visible(false);
+                            columns.Add().DataField("chrActive").Caption("Status");
+                            columns.Add().DataField("dtEventPublishDate").DataType(DevExtreme.AspNet.Mvc.GridColumnDataType.Date).Caption("Publish Date");
+                            columns.Add().DataField("dtStartDate").DataType(DevExtreme.AspNet.Mvc.GridColumnDataType.Date).Caption("Start Date");
+                            columns.Add().DataField("dtEndDate").DataType(DevExtreme.AspNet.Mvc.GridColumnDataType.Date).Caption("End Date");
+
+                        })
+                        .ColumnAutoWidth(true)
+                        .Scrolling(scrolling => scrolling.ColumnRenderingMode(GridColumnRenderingMode.Standard))
+                        .ShowRowLines(true)
+                        .RowAlternationEnabled(true)
+                        .Paging(paging => paging.PageSize(10))
+                        .Pager(pager =>
+                        {
+                            pager.ShowInfo(true);
+                        })
+                        .Sorting(sorting => sorting.Mode(DevExtreme.AspNet.Mvc.GridSortingMode.Multiple))
+                        .FilterRow(filterRow => filterRow
+                        .Visible(true)
+                        .ApplyFilter(GridApplyFilterMode.Auto)
+                        )
+                        .HeaderFilter(headerFilter => headerFilter.Visible(true))
+                        .WordWrapEnabled(true)
+                        )
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+@Html.AntiForgeryToken()
+@section Scripts {
+    <script src="~/Scripts/Event/Event.js"></script>
+    <script src="~/Scripts/Account/Common.js"></script>
+}
+<!---Container Fluid-->

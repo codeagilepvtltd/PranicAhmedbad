@@ -24,11 +24,10 @@ namespace PranicAhmedbad.Lib.DA
                 eventMasterViewModel.event_Master.varEventDescription,
                 eventMasterViewModel.event_Master.varEventContent, eventMasterViewModel.event_Master.varContactPerson,eventMasterViewModel.event_Master.varContactMobileNo,
                 eventMasterViewModel.event_Master.dtEventPublishDate,eventMasterViewModel.event_Master.dtStartDate,eventMasterViewModel.event_Master.dtEndDate,
-                eventMasterViewModel.event_Master.intNoofDays,eventMasterViewModel.event_Master.varPaymentType,
-                eventMasterViewModel.event_Master.varPaymentType,eventMasterViewModel.event_Master.intFollowUp,eventMasterViewModel.event_Master.varRegistrationLink,
+                eventMasterViewModel.event_Master.intNoofDays,eventMasterViewModel.event_Master.varPaymentType,eventMasterViewModel.event_Master.intFollowUp,eventMasterViewModel.event_Master.varRegistrationLink,
                 eventMasterViewModel.event_Master.ref_StatusID, eventMasterViewModel.event_Master.address_Master.varAddressLine1,eventMasterViewModel.event_Master.address_Master.varAddressLine2,
-                eventMasterViewModel.event_Master.ref_AddressID,eventMasterViewModel.event_Master.address_Master.ref_CityId,eventMasterViewModel.event_Master.address_Master.varPostalCode
-                ,eventMasterViewModel.event_Master.address_Master.varContactNo,eventMasterViewModel.event_Master.address_Master.varEmailAddress,eventMasterViewModel.event_Master.address_Master.varGMapLocation,
+                eventMasterViewModel.event_Master.ref_AddressID,eventMasterViewModel.event_Master.ref_CityID,eventMasterViewModel.event_Master.address_Master.varPostalCode
+                ,eventMasterViewModel.event_Master.varContactMobileNo,eventMasterViewModel.event_Master.address_Master.varEmailAddress,eventMasterViewModel.event_Master.address_Master.varGMapLocation,
                 eventMasterViewModel.event_Master.chrActive,eventMasterViewModel.event_Master.ref_EntryBy,eventMasterViewModel.event_Master.ref_UpdateBy };
 
 
