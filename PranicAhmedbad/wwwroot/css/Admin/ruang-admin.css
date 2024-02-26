@@ -17,6 +17,10 @@ body {
 a:focus {
   outline: 0
 }
+.red
+{
+    color:red;
+}
 
 #wrapper {
   display: -webkit-box;

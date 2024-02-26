@@ -155,6 +155,7 @@
   <ItemGroup>
     <Compile Include="Common\Common_Functions.cs" />
     <Compile Include="Common\SQLHelper.cs" />
+    <Compile Include="DA\General_DA.cs" />
     <Compile Include="DA\Account_DA.cs" />
     <Compile Include="DA\EventMaster_DA.cs" />
     <Compile Include="DA\ModuleErrorLogDA.cs" />
@@ -193,8 +194,10 @@
     <Compile Include="Models\Whatsapp_Log.cs" />
     <Compile Include="Models\Whatsapp_Master.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\General\MasterRepository.cs" />
     <Compile Include="Repository\Account\EventRepository.cs" />
     <Compile Include="Repository\Account\AccountRepository.cs" />
+    <Compile Include="Repository\General\IMasterRepository.cs" />
     <Compile Include="Repository\Account\IEventRepository.cs" />
     <Compile Include="Repository\Account\IAccountRepository.cs" />
     <Compile Include="Repository\ModuleErrorLog\IModuleErrorLogRepository.cs" />

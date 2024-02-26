@@ -18,6 +18,10 @@ namespace PranicAhmedbad.Lib.Models
 
         public string varFirstName { get; set; }
 
+        public string varUserName { get; set; }
+
+        public string varPassword { get; set; }
+
         public string varMiddleName { get; set; }
 
         public string varLasteName { get; set; }
@@ -28,7 +32,7 @@ namespace PranicAhmedbad.Lib.Models
         public string chrGender { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime dtDOB { get; set; }
+        public DateTime ? dtDOB { get; set; }
 
         public string StatusName { get; set; }
 

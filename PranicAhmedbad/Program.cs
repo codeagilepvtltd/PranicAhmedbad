@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using PranicAhmedbad.Lib.Common;
 using PranicAhmedbad.Lib.Repository.Account;
+using PranicAhmedbad.Lib.Repository.General;
 using PranicAhmedbad.Lib.Repository.ModuleErrorLog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<IAccountRepository, AccountRepository>();
 builder.Services.AddSingleton<IEventRepository, EventRepository>();
 builder.Services.AddSingleton<IModuleErrorLogRepository, ModuleErrorLogRepository>();
+builder.Services.AddSingleton<IMasterRepository, MasterRepository>();
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddRouting();
 builder.Services.AddMvc().AddSessionStateTempDataProvider();
