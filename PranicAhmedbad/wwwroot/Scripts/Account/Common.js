@@ -54,7 +54,7 @@ function PopUpMessage(message, classname) {
     } else if (classname.indexOf("popup_failure") > 0) {
         Swal.fire({
             title: "Oops...",
-            text: message,
+            html: message,
             type: "error",
             showCancelButton: false,
             confirmButtonColor: "#556ee6",

@@ -6,6 +6,7 @@ using PranicAhmedbad.Common;
 using PranicAhmedbad.Lib.Common;
 using PranicAhmedbad.Lib.Models;
 using PranicAhmedbad.Lib.Repository.Account;
+using PranicAhmedbad.Lib.Repository.General;
 using PranicAhmedbad.Lib.Repository.ModuleErrorLog;
 using PranicAhmedbad.Lib.ViewModels;
 using System.Data;
@@ -17,16 +18,19 @@ namespace PranicAhmedbad.Controllers
     {
 
         private readonly IAccountRepository accountRepository;
+        private readonly IMasterRepository masterRepository;
+
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly IModuleErrorLogRepository moduleErrorLogRepository;
         // GET: Controller
 
 
-        public AccountController(IAccountRepository _accountRepository,IModuleErrorLogRepository _moduleErrorLogRepository, IHttpContextAccessor _httpContextAccessor)
+        public AccountController(IAccountRepository _accountRepository,IModuleErrorLogRepository _moduleErrorLogRepository, IHttpContextAccessor _httpContextAccessor,IMasterRepository _masterRepository)
         {
             accountRepository = _accountRepository;
             httpContextAccessor = _httpContextAccessor;
             moduleErrorLogRepository = _moduleErrorLogRepository;
+            masterRepository=_masterRepository;
         }
 
         #region Index
@@ -397,6 +401,24 @@ namespace PranicAhmedbad.Controllers
             {
                 gender_Masters = accountRepository.GetGenders();
                 var resultJson = JsonConvert.SerializeObject(gender_Masters);
+                return Content(resultJson, "application/json");
+            }
+            catch (Exception ex)
+            {
+                //ModuleErrorLogRepository.Insert_Modules_Error_Log("GetPersonDetails", System.Reflection.MethodBase.GetCurrentMethod().Name.ToString(), Convert.ToString(sessionManager.IntGlCode), ex.StackTrace, this.GetType().Name.ToString(), "Novapack", ex.Source, "", "", ex.Message);
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction("ErrorForbidden", "Account");
+            }
+        }
+        public IActionResult GetEntityTypes()
+        {
+
+            List<Entity_Type_Master > entity_Type_Masters = new List<Entity_Type_Master>();
+            DataSet dsResult = new DataSet();
+            try
+            {
+                entity_Type_Masters = masterRepository.Select_EntityTypeList(0);
+                var resultJson = JsonConvert.SerializeObject(entity_Type_Masters);
                 return Content(resultJson, "application/json");
             }
             catch (Exception ex)
