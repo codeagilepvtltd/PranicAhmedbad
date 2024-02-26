@@ -50,13 +50,13 @@ namespace PranicAhmedbad.Lib.Repository.Account
                         eventMasterViewModel.event_Master.address_Master.varEmailAddress = Convert.ToString(dataRow["varEmailAddress"]);
                         eventMasterViewModel.event_Master.address_Master.varContactNo = Convert.ToString(dataRow["varContactNo"]);
                         eventMasterViewModel.event_Master.address_Master.varGMapLocation = Convert.ToString(dataRow["varGMapLocation"]);
-                        eventMasterViewModel.event_Master.address_Master.ref_CityId = Convert.ToInt32(dataRow["ref_CityId"]);
+                        eventMasterViewModel.event_Master.ref_CityId = Convert.ToInt32(dataRow["ref_CityId"]);
                         eventMasterViewModel.event_Master.address_Master.varPostalCode = Convert.ToInt64(dataRow["varPostalCode"]);
                         eventMasterViewModel.event_Master.address_Master.CityName = Convert.ToString(dataRow["CityName"]);
-                        eventMasterViewModel.event_Master.address_Master.ref_StateId = Convert.ToInt32(dataRow["ref_StateId"]);
-                        eventMasterViewModel.event_Master.address_Master.StateName = Convert.ToString(dataRow["StateName"]);
-                        eventMasterViewModel.event_Master.address_Master.ref_CountryId = Convert.ToInt32(dataRow["ref_CountryId"]);
-                        eventMasterViewModel.event_Master.address_Master.CountryName = Convert.ToString(dataRow["CountryName"]);
+                        eventMasterViewModel.event_Master.ref_StateId = Convert.ToInt32(dataRow["ref_StateId"]);
+                        eventMasterViewModel.event_Master.StateName = Convert.ToString(dataRow["StateName"]);
+                        eventMasterViewModel.event_Master.ref_CountryId = Convert.ToInt32(dataRow["ref_CountryId"]);
+                        eventMasterViewModel.event_Master.CountryName = Convert.ToString(dataRow["CountryName"]);
 
                     }
 
@@ -85,19 +85,19 @@ namespace PranicAhmedbad.Lib.Repository.Account
                             event_Master.chrActive = Convert.ToString(dataRow["chrActive"]);
                             event_Master.dtEntryDate = Convert.ToDateTime(dataRow["dtEntryDate"]);
                             event_Master.address_Master = new Address_Master();
-                            event_Master.address_Master.varAddressLine1 = Convert.ToString(dataRow["varAddressLine1"]);
-                            event_Master.address_Master.varAddressLine2 = Convert.ToString(dataRow["varAddressLine2"]);
-                            event_Master.address_Master.varEmailAddress = Convert.ToString(dataRow["varEmailAddress"]);
+                            event_Master.varAddressLine1 = Convert.ToString(dataRow["varAddressLine1"]);
+                            event_Master.varAddressLine2 = Convert.ToString(dataRow["varAddressLine2"]);
+                            event_Master.varEmailAddress = Convert.ToString(dataRow["varEmailAddress"]);
                             event_Master.address_Master.varContactNo = Convert.ToString(dataRow["varContactNo"]);
                             event_Master.address_Master.varGMapLocation = Convert.ToString(dataRow["varGMapLocation"]);
-                            event_Master.address_Master.ref_CityId = Convert.ToInt32(dataRow["ref_CityId"]);
-                            event_Master.address_Master.varPostalCode = Convert.ToInt64(dataRow["varPostalCode"]);
+                            event_Master.ref_CityId = Convert.ToInt32(dataRow["ref_CityId"]);
+                            event_Master.varPostalCode = Convert.ToInt64(dataRow["varPostalCode"]);
 
                             event_Master.address_Master.CityName = Convert.ToString(dataRow["CityName"]);
-                            event_Master.address_Master.ref_StateId = Convert.ToInt32(dataRow["ref_StateId"]);
-                            event_Master.address_Master.StateName = Convert.ToString(dataRow["StateName"]);
-                            event_Master.address_Master.ref_CountryId = Convert.ToInt32(dataRow["ref_CountryId"]);
-                            event_Master.address_Master.CountryName = Convert.ToString(dataRow["CountryName"]);
+                            event_Master.ref_StateId = Convert.ToInt32(dataRow["ref_StateId"]);
+                            event_Master.StateName = Convert.ToString(dataRow["StateName"]);
+                            event_Master.ref_CountryId = Convert.ToInt32(dataRow["ref_CountryId"]);
+                            event_Master.CountryName = Convert.ToString(dataRow["CountryName"]);
 
                             eventMasterViewModel.event_Masters.Add(event_Master);
                         }

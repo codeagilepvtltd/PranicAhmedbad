@@ -9,13 +9,13 @@ function editdataEvent(e) {
     $("#ddlStateList").dxSelectBox("getDataSource").reload();
     $("#ddlCityList").dxSelectBox("getDataSource").reload();
     setTimeout(function () {
-
+        
         var ddlCountryList = $("#ddlCountryList").dxSelectBox('instance');
-        ddlCountryList.option('value', parseInt(e.row.data.ref_CountryID));
+        ddlCountryList.option('value', parseInt(e.row.data.ref_CountryId));
 
 
         var ddlStateList = $("#ddlStateList").dxSelectBox('instance');
-        ddlStateList.option('value', parseInt(e.row.data.ref_StateID));
+        ddlStateList.option('value', parseInt(e.row.data.ref_StateId));
 
 
         var ddlCityList = $("#ddlCityList").dxSelectBox('instance');
@@ -25,17 +25,18 @@ function editdataEvent(e) {
     }, 100);
 
     $("#ref_CityId").val(e.row.data.ref_CityId);
-    $("#ref_StateID").val(e.row.data.ref_StateID);
-    $("#ref_CountryID").val(e.row.data.ref_CountryID);
+    $("#ref_StateId").val(e.row.data.ref_StateId);
+    $("#ref_CountryId").val(e.row.data.ref_CountryId);
 
     $("#intGlCode").val(e.row.data.intGlCode);
-    $("#ref_AddressId").val(e.row.data.ref_AddressId);
+    $("#ref_AddressId").val(e.row.data.ref_AddressID);
     $("#ref_EventintGlCode").val(e.row.data.intGlCode);
     $("#ref_EventTypeID").val(e.row.data.ref_EventTypeID);
 
     $("#txtEventName").val(e.row.data.varEventName);
     $("#txtEventDescription").val(e.row.data.varEventDescription);
     $("#txtEventContent").val(e.row.data.varEventContent);
+
     $("#txtAddress").val(e.row.data.varAddressLine1);
     $("#txtPinCode").val(e.row.data.varPostalCode);
     $("#txtMobileNo").val(e.row.data.varContactMobileNo);
@@ -55,7 +56,6 @@ function editdataEvent(e) {
 }
 function resetValidationEvent() {
 
-    //Removes validation from input-fields
     $('.input-validation-error').addClass('input-validation-valid');
     $('.input-validation-error').removeClass('input-validation-error');
     //Removes validation message after input-fields
@@ -63,17 +63,23 @@ function resetValidationEvent() {
     $('.field-validation-error').removeClass('field-validation-error');
     $('.field-validation-valid span').html('')
 
+    $("input[type='textarea']").val('');
     $('input:text').val('');
+    $("input[type='email']").val('');
+    $("input[type='datetime-local']").val('');
+    $('#txtAddress').val('');
+
     $("#grdEventList").dxDataGrid('instance').refresh();
     $("#grdEventList").dxDataGrid('instance').clearFilter();
     $("#ddlCountryList").dxSelectBox('instance').option('value', "0");
     $("#ddlStateList").dxSelectBox('instance').option('value', "0");
+    $("#ddlCityList").dxSelectBox('instance').option('value', "0");
 
 
     $("#ddlCountryList").focus();
 
 
-    $("#intGlCode").val('0');
+    $("#ref_EventintGlCode").val('0');
     //$("#Action").val('Insert');
 
     $("#chkStatus").prop('checked', false);
