@@ -18,7 +18,7 @@ namespace PranicAhmedbad.Lib.Models
 
         public string varEventContent { get; set; }
 
-        public int? ref_CityID { get; set; }
+        public int? ref_CityId { get; set; }
         public long? ref_StateId { get; set; }
         public string StateName { get; set; }
         public long? ref_CountryId { get; set; }
@@ -55,6 +55,11 @@ namespace PranicAhmedbad.Lib.Models
 
         public long? ref_UpdateBy { get; set; }
 
+        public string varAddressLine1 { get; set; }
+
+        public long? varPostalCode { get; set; }
+        public string varAddressLine2 { get; set; }
+        public string varEmailAddress { get; set; }
         public Address_Master address_Master { get; set; }
     }
 

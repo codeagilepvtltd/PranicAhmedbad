@@ -112,18 +112,18 @@
                             </div>
                             <label for="inputEmail3" class="col-sm-2 col-form-label"><span class="red">*</span>Publish Date:</label>
                             <div class="col-sm-4">
-                                <input type="date" class="form-control" id="txtPublishDate" asp-for="event_Master.dtEventPublishDate" placeholder="Publish Date">
+                                <input type="datetime-local" class="form-control" id="txtPublishDate" asp-for="event_Master.dtEventPublishDate" placeholder="Publish Date">
                             </div>
                         </div>
                         <div class="form-group row">
 
                             <label for="inputEmail3" class="col-sm-2 col-form-label">Start Date:</label>
                             <div class="col-sm-4">
-                                <input type="date" class="form-control" asp-for="event_Master.dtStartDate" id="txtStartDate" placeholder="Start Date">
+                                <input type="datetime-local" class="form-control" asp-for="event_Master.dtStartDate" id="txtStartDate" placeholder="Start Date">
                             </div>
                             <label for="inputEmail3" class="col-sm-2 col-form-label">End Date:</label>
                             <div class="col-sm-4">
-                                <input type="date" class="form-control" asp-for="event_Master.dtEndDate" id="txtEndDate" placeholder="End Date">
+                                <input type="datetime-local" class="form-control" asp-for="event_Master.dtEndDate" id="txtEndDate" placeholder="End Date">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -146,9 +146,9 @@
                         <input type="hidden" asp-for="@Model.event_Master.ref_AddressID" id="ref_AddressId" />
                         <input type="hidden" asp-for="@Model.event_Master.intGlCode" id="ref_EventintGlCode" />
                         <input type="hidden" asp-for="@Model.event_Master.chrActive" id="chrActive" />
-                        <input type="hidden" asp-for="@Model.event_Master.ref_CityID" id="ref_CityId" />
-                        <input type="hidden" asp-for="@Model.event_Master.ref_StateId" id="ref_StateID" />
-                        <input type="hidden" asp-for="@Model.event_Master.ref_CountryId" id="ref_CountryID" />
+                        <input type="hidden" asp-for="@Model.event_Master.ref_CityId" id="ref_CityId" />
+                        <input type="hidden" asp-for="@Model.event_Master.ref_StateId" id="ref_StateId" />
+                        <input type="hidden" asp-for="@Model.event_Master.ref_CountryId" id="ref_CountryId" />
                         <input type="hidden" asp-for="@Model.event_Master.ref_EventTypeID" id="ref_EventTypeID" />
 
                         <div class="form-group row">
@@ -204,6 +204,7 @@
                             columns.Add().DataField("dtEventPublishDate").DataType(DevExtreme.AspNet.Mvc.GridColumnDataType.Date).Caption("Publish Date");
                             columns.Add().DataField("dtStartDate").DataType(DevExtreme.AspNet.Mvc.GridColumnDataType.Date).Caption("Start Date");
                             columns.Add().DataField("dtEndDate").DataType(DevExtreme.AspNet.Mvc.GridColumnDataType.Date).Caption("End Date");
+
 
                         })
                         .ColumnAutoWidth(true)
