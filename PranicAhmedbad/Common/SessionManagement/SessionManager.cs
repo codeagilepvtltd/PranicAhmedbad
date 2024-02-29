@@ -18,15 +18,15 @@ namespace PranicAhmedbad.Common
         {
             _httpContextAccessor = httpContextAccessor;
         }
-        public int IntGlCode
+        public long IntGlCode
         {
             set
             {
-                _session.SetData("intGlCode", Convert.ToInt32(value));
+                _session.SetData("intGlCode", Convert.ToInt64(value));
             }
             get
             {
-                return _session.GetData<Int32>("intGlCode");
+                return _session.GetData<Int64>("intGlCode");
             }
         }
 

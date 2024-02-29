@@ -15,15 +15,19 @@ namespace PranicAhmedbad.Lib.Repository.Account
         {
             AccountLoginViewModel accountLoginViewModel = new AccountLoginViewModel();
             Account_DA accountDA = new Account_DA();
-
+            accountLoginViewModel.LoginMaster = new Login_Master();
             try
             {
                 DataSet dsResult = accountDA.Check_Login(UserName, Password);
 
                 if (dsResult.Tables.Count > 0 && dsResult.Tables[0].Rows.Count > 0)
                 {
-                    accountLoginViewModel.UserName = Convert.ToString(dsResult.Tables[0].Rows[0]["varUserName"]);
-                    accountLoginViewModel.Password = Convert.ToString(dsResult.Tables[0].Rows[0]["varPassword"]);
+                    accountLoginViewModel.LoginMaster.varUserName= Convert.ToString(dsResult.Tables[0].Rows[0]["varUserName"]);
+                    accountLoginViewModel.LoginMaster.varPassword = Convert.ToString(dsResult.Tables[0].Rows[0]["varPassword"]);
+                    accountLoginViewModel.LoginMaster.varMobileNo = Convert.ToString(dsResult.Tables[0].Rows[0]["varMobileNo"]);
+                    accountLoginViewModel.LoginMaster.varEmailID = Convert.ToString(dsResult.Tables[0].Rows[0]["varEmailID"]);
+                    accountLoginViewModel.LoginMaster.intGlCode = Convert.ToInt64(dsResult.Tables[0].Rows[0]["intGlCode"]);
+                    accountLoginViewModel.LoginMaster.varMobileNo = Convert.ToString(dsResult.Tables[0].Rows[0]["varPassword"]);
                 }
                 else
                 {
@@ -307,6 +311,20 @@ namespace PranicAhmedbad.Lib.Repository.Account
                 intGlCode++;
             }
             return gender_Masters;
+        }
+        
+        public DataSet Customer_Upload(long ref_EntryBy, string varXML, string varAction)
+        {
+            Account_DA accountDA = new Account_DA();
+            try
+            {
+                return accountDA.Customer_Upload(ref_EntryBy, varXML, varAction);
+
+            }
+            catch
+            {
+                throw;
+            }
         }
         #endregion
     }

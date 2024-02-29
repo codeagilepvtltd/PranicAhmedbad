@@ -58,7 +58,12 @@ namespace PranicAhmedbad.Lib.ViewModels
 
         public List<Customer_Master> customer_Masters { get; set; }
     }
+    public class CustomerMasterTempViewModel
+    {
+        public Temp_Customer_Upload temp_Customer_Upload { get; set; }
 
+        public List<Temp_Customer_Upload> temp_Customer_Uploads { get; set; }
+    }
 }
 
 

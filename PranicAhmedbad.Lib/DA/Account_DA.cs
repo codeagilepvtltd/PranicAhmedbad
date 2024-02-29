@@ -17,19 +17,20 @@ namespace PranicAhmedbad.Lib.DA
         {
             sqlQuery = new StringBuilder();
             object[] objParamName = { "varUserID", "varPassword" };
-            object[] objParamValue = { UserId, Password};
+            object[] objParamValue = { UserId, Password };
 
             try
             {
                 resultSet = SQLHelper.GetData(StoredProcedures.USP_Check_Login, objParamName, objParamValue);
             }
-            catch 
+            catch
             {
                 throw;
             }
             return resultSet;
 
         }
+
         public DataSet GetRolesList()
         {
             sqlQuery = new StringBuilder();
@@ -45,7 +46,7 @@ namespace PranicAhmedbad.Lib.DA
             return resultSet;
 
         }
-        public DataSet GetStateList(int StateId=0)
+        public DataSet GetStateList(int StateId = 0)
         {
             sqlQuery = new StringBuilder();
             object[] objParamName = { "intGlCode" };
@@ -97,10 +98,10 @@ namespace PranicAhmedbad.Lib.DA
             return resultSet;
 
         }
-        public DataSet InsertUpdate_states(StateViewModel  stateViewModel)
+        public DataSet InsertUpdate_states(StateViewModel stateViewModel)
         {
             sqlQuery = new StringBuilder();
-            object[] objParamName = { "intGlCode", "varStateName" , "ref_EntryBy", "ref_CountryId", "chrActive" };
+            object[] objParamName = { "intGlCode", "varStateName", "ref_EntryBy", "ref_CountryId", "chrActive" };
             object[] objParamValue = { stateViewModel.state_Master.intGlCode, stateViewModel.state_Master.varStateName, stateViewModel.state_Master.ref_EntryBy, stateViewModel.state_Master.ref_CountryId, stateViewModel.state_Master.chrActive };
 
             try
@@ -117,7 +118,7 @@ namespace PranicAhmedbad.Lib.DA
         {
             sqlQuery = new StringBuilder();
             object[] objParamName = { "intGlCode", "varCityCode", "varCityName", "ref_CountryID", "ref_StateID", "chrActive", "ref_EntryBy", "ref_UpdateBy" };
-            object[] objParamValue = { cityViewModel.city_Master.intGlCode, cityViewModel.city_Master.varCityCode, cityViewModel.city_Master.varCityName, cityViewModel.city_Master.ref_CountryID, cityViewModel.city_Master.ref_StateID, cityViewModel.city_Master.chrActive, cityViewModel.city_Master.ref_EntryBy, cityViewModel.city_Master.ref_UpdateBy};
+            object[] objParamValue = { cityViewModel.city_Master.intGlCode, cityViewModel.city_Master.varCityCode, cityViewModel.city_Master.varCityName, cityViewModel.city_Master.ref_CountryID, cityViewModel.city_Master.ref_StateID, cityViewModel.city_Master.chrActive, cityViewModel.city_Master.ref_EntryBy, cityViewModel.city_Master.ref_UpdateBy };
 
             try
             {
@@ -134,7 +135,7 @@ namespace PranicAhmedbad.Lib.DA
         {
             sqlQuery = new StringBuilder();
             object[] objParamName = { "intGlCode", "varRoleName", "chrActive", "ref_EntryBy", "ref_UpdateBy" };
-            object[] objParamValue = { roleViewModel.intGlCode, roleViewModel.varRoleName,roleViewModel.chrActive, roleViewModel.ref_EntryBy, roleViewModel.ref_UpdateBy };
+            object[] objParamValue = { roleViewModel.intGlCode, roleViewModel.varRoleName, roleViewModel.chrActive, roleViewModel.ref_EntryBy, roleViewModel.ref_UpdateBy };
 
             try
             {
@@ -149,7 +150,7 @@ namespace PranicAhmedbad.Lib.DA
         public DataSet InsertUpdate_Country(CountryViewModel countryViewModel)
         {
             sqlQuery = new StringBuilder();
-            object[] objParamName = { "intGlCode", "varCountryCode","varCountryName", "chrActive", "ref_EntryBy", "ref_UpdatedBy" };
+            object[] objParamName = { "intGlCode", "varCountryCode", "varCountryName", "chrActive", "ref_EntryBy", "ref_UpdatedBy" };
             object[] objParamValue = { countryViewModel.country_Master.intGlCode, countryViewModel.country_Master.varCountryCode, countryViewModel.country_Master.varCountryName, countryViewModel.country_Master.chrActive, countryViewModel.country_Master.ref_EntryBy, countryViewModel.country_Master.ref_UpdateBy };
 
             try
@@ -192,6 +193,23 @@ namespace PranicAhmedbad.Lib.DA
             try
             {
                 resultSet = SQLHelper.GetData(StoredProcedures.USP_Select_CustomerList, objParamName, objParamValue);
+            }
+            catch
+            {
+                throw;
+            }
+            return resultSet;
+
+        }
+        public DataSet Customer_Upload(long ref_EntryBy, string varXML, string varAction)
+        {
+            sqlQuery = new StringBuilder();
+            object[] objParamName = { "ref_EntryBy", "varXML", "varAction" };
+            object[] objParamValue = { ref_EntryBy, varXML, varAction };
+
+            try
+            {
+                resultSet = SQLHelper.GetData(StoredProcedures.USP_Customer_Upload, objParamName, objParamValue);
             }
             catch
             {
