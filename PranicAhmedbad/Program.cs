@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using PranicAhmedbad.Lib.Common;
@@ -13,6 +14,27 @@ builder.Services.AddSingleton<IAccountRepository, AccountRepository>();
 builder.Services.AddSingleton<IEventRepository, EventRepository>();
 builder.Services.AddSingleton<IModuleErrorLogRepository, ModuleErrorLogRepository>();
 builder.Services.AddSingleton<IMasterRepository, MasterRepository>();
+
+builder.Services.Configure<CookiePolicyOptions>(options =>
+{
+    // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+    options.CheckConsentNeeded = context => true; // Set for Session Data : https://stackoverflow.com/questions/49770491/session-variable-value-is-getting-null-in-asp-net-core
+    options.MinimumSameSitePolicy = SameSiteMode.None;
+});
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+               .AddCookie(options =>
+               {
+                   options.AccessDeniedPath = "/Home/ErrorForbidden";
+                   options.LoginPath = "/Account/Login";
+               }
+           );
+
+/*For TempData required to register*/
+builder.Services.Configure<CookieTempDataProviderOptions>(options =>
+{
+    options.Cookie.IsEssential = true;
+});
+
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddRouting();

@@ -1,7 +1,12 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using NPOI.HSSF.UserModel;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
 using PranicAhmedbad.Common;
 using PranicAhmedbad.Lib.Common;
 using PranicAhmedbad.Lib.Models;
@@ -9,8 +14,10 @@ using PranicAhmedbad.Lib.Repository.Account;
 using PranicAhmedbad.Lib.Repository.General;
 using PranicAhmedbad.Lib.Repository.ModuleErrorLog;
 using PranicAhmedbad.Lib.ViewModels;
+using System.Collections.Generic;
 using System.Data;
 using System.Net;
+using System.Security.Claims;
 
 namespace PranicAhmedbad.Controllers
 {
@@ -25,12 +32,12 @@ namespace PranicAhmedbad.Controllers
         // GET: Controller
 
 
-        public AccountController(IAccountRepository _accountRepository,IModuleErrorLogRepository _moduleErrorLogRepository, IHttpContextAccessor _httpContextAccessor,IMasterRepository _masterRepository)
+        public AccountController(IAccountRepository _accountRepository, IModuleErrorLogRepository _moduleErrorLogRepository, IHttpContextAccessor _httpContextAccessor, IMasterRepository _masterRepository)
         {
             accountRepository = _accountRepository;
             httpContextAccessor = _httpContextAccessor;
             moduleErrorLogRepository = _moduleErrorLogRepository;
-            masterRepository=_masterRepository;
+            masterRepository = _masterRepository;
         }
 
         #region Index
@@ -74,6 +81,9 @@ namespace PranicAhmedbad.Controllers
         [HttpPost]
         public async Task<ActionResult> ValidateLogin(AccountLoginViewModel accountLoginViewModel, string returnUrl)
         {
+
+            SessionManager sessionManager = new SessionManager(httpContextAccessor);
+
             try
             {
                 string decodedUrl = "";
@@ -94,8 +104,22 @@ namespace PranicAhmedbad.Controllers
                 }
 
                 AccountLoginViewModel accountLoginView = accountRepository.CheckAuthentication(accountLoginViewModel.UserName, accountLoginViewModel.Password);
-                if (accountLoginView != null && !string.IsNullOrEmpty(accountLoginView.UserName))
+                if (accountLoginView.LoginMaster != null && !string.IsNullOrEmpty(accountLoginView.LoginMaster.varUserName))
                 {
+                    var claims = new List<Claim>();
+                    claims.Add(new Claim(ClaimTypes.Name, accountLoginViewModel.UserName));
+                    claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+
+                    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var principal = new ClaimsPrincipal(identity);
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+                    /*Set Session*/
+                    sessionManager.IntGlCode = accountLoginView.LoginMaster.intGlCode;
+                    sessionManager.UserName = accountLoginView.LoginMaster.varUserName;
+                    sessionManager.Email = accountLoginView.LoginMaster.varEmailID;
+                    sessionManager.varFirstName = accountLoginView.LoginMaster.varUserName;
+
                     return RedirectToAction("Index", "DashBoard");
                 }
                 else
@@ -395,7 +419,7 @@ namespace PranicAhmedbad.Controllers
         public IActionResult GetGenders()
         {
 
-            List<Gender_Master>  gender_Masters = new List<Gender_Master>();
+            List<Gender_Master> gender_Masters = new List<Gender_Master>();
             DataSet dsResult = new DataSet();
             try
             {
@@ -413,7 +437,7 @@ namespace PranicAhmedbad.Controllers
         public IActionResult GetEntityTypes()
         {
 
-            List<Entity_Type_Master > entity_Type_Masters = new List<Entity_Type_Master>();
+            List<Entity_Type_Master> entity_Type_Masters = new List<Entity_Type_Master>();
             DataSet dsResult = new DataSet();
             try
             {
@@ -434,7 +458,7 @@ namespace PranicAhmedbad.Controllers
         {
 
             CustomerMasterViewModel customerViewModel = new CustomerMasterViewModel();
-             DataSet dsResult = new DataSet();
+            DataSet dsResult = new DataSet();
             try
             {
                 customerViewModel = accountRepository.GetCustomerlist();
@@ -479,6 +503,309 @@ namespace PranicAhmedbad.Controllers
         }
         #endregion
 
+        #region Customer Upload
+        public ActionResult CustomerUpload()
+        {
+            if (TempData["ButtonType"] == null)
+            {
+                TempData["ButtonType"] = "2";
+            }
+            ViewBag.Message = TempData["Message"];
+            ViewBag.MessageType = TempData["MessageType"];
+            ViewBag.ButtonType = TempData["ButtonType"];
+            return View("Admin/Customer_Upload");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CheckData(IFormFile formFile, IFormCollection frm)
+        {
+            SessionManager sessionManager = new SessionManager(httpContextAccessor);
+            int fk_SupplierGlCode = 0;
+            int fk_SupplierGSTDetailGlCode = 0;
+
+            try
+            {
+                TempData["ButtonType"] = "1";
+
+                if (formFile == null || formFile.Length == 0)
+                {
+                    TempData["Message"] = "File not selected.";
+                    TempData["MessageType"] = "Error";
+                    TempData["ButtonType"] = "2";
+                    return RedirectToAction(nameof(CustomerUpload));
+                }
+
+                var fileName = Path.GetFileName(formFile.FileName);
+                string sFileExtension = Path.GetExtension(fileName).ToLower();
+                if (sFileExtension == ".xls" || sFileExtension == ".xlsx")
+                {
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\Contents\Customers\", fileName);
+                    if (!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\Contents\Customers\")))
+                    {
+                        Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\Contents\Customers\"));
+                    }
+                    if (System.IO.File.Exists(filePath))
+                    {
+                        System.IO.File.Delete(filePath);
+                    }
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await formFile.CopyToAsync(stream);
+                    }
+
+                    IWorkbook workbook = null;
+                    DataTable dtData = new DataTable();
+                    DataSet dsResult = new DataSet();
+
+                    if (formFile.Length > 0)
+                    {
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            formFile.CopyTo(stream);
+                            stream.Position = 0;
+
+                            if (sFileExtension == ".xlsx")
+                            {
+                                workbook = new XSSFWorkbook(stream);
+                            }
+                            else if (sFileExtension == ".xls")
+                            {
+                                workbook = new HSSFWorkbook(stream);
+                            }
+                            else
+                            {
+                                throw new Exception("This format is not supported");
+                            }
+
+                            ISheet sheet = workbook.GetSheetAt(0);
+                            System.Collections.IEnumerator rows = sheet.GetRowEnumerator();
+
+                            IRow headerRow = sheet.GetRow(0);
+                            int cellCount = headerRow.LastCellNum;
+
+                            if (cellCount != 10)
+                            {    TempData["Message"] = "File is not in proper format.";
+                                TempData["MessageType"] = "Error";
+                                TempData["ButtonType"] = "2";
+                                return RedirectToAction(nameof(CustomerUpload));
+                            }
+
+                            for (int j = 0; j < cellCount; j++)
+                            {
+                                ICell cell = headerRow.GetCell(j);
+                                dtData.Columns.Add(cell.ToString().Trim());
+                            }
+
+                            dtData.Columns.Add("ref_EntryBy");
+                            Int64 ref_EntryBy = sessionManager.IntGlCode;
+                            dtData.Columns["ref_EntryBy"].DefaultValue = ref_EntryBy;
+
+                            dtData.Columns.Add("dtEntryDate");
+                            dtData.Columns["dtEntryDate"].DefaultValue = DateTime.Now.ToString("yyyy-mm-dd hh:mm:ss");
+
+                            for (int i = (sheet.FirstRowNum + 1); i <= sheet.LastRowNum; i++)
+                            {
+                                IRow row = sheet.GetRow(i);
+                                DataRow dataRow = dtData.NewRow();
+                                if (row == null)
+                                {
+                                    break;
+                                }
+                                for (int j = row.FirstCellNum; j < cellCount; j++)
+                                {
+                                    if (row.GetCell(j) != null && !string.IsNullOrEmpty(row.GetCell(j).ToString()))
+                                    {
+                                        dataRow[j] = row.GetCell(j).ToString().Trim();
+                                    }
+                                    else
+                                    {
+                                        dataRow[j] = DBNull.Value;
+                                    }
+                                }
+
+                                dtData.Rows.Add(dataRow);
+                            }
+
+                            if (dtData == null)
+                            {
+                                TempData["Message"] = "File is not in proper format.";
+                                TempData["MessageType"] = "Error";
+                                TempData["ButtonType"] = "2";
+                                return RedirectToAction(nameof(CustomerUpload));
+                            }
+
+                            accountRepository.Customer_Upload(ref_EntryBy, "", "DeleteData");
+
+                            if (dtData == null || dtData.Rows.Count == 0)
+                            {
+                                TempData["fk_SupplierGlCode"] = fk_SupplierGlCode;
+                                TempData["fk_SupplierGSTDetailGlCode"] = fk_SupplierGSTDetailGlCode;
+                                TempData["Message"] = "No Record found for Uploaded File.";
+                                TempData["MessageType"] = "Information";
+                                TempData["ButtonType"] = "2";
+                                return RedirectToAction(nameof(CustomerUpload));
+                            }
+                            else
+                            {
+                                string strXML = string.Empty;
+                                strXML = "<Customers>";
+                                for (int i = 0; i < dtData.Rows.Count; i++)
+                                {
+                                    strXML += "<Entry>";
+                                    strXML += "<FirstName>" + Convert.ToString(dtData.Rows[i]["FirstName"]) + "</FirstName>";
+                                    strXML += "<MiddleName>" + Convert.ToString(dtData.Rows[i]["MiddleName"]) + "</MiddleName>";
+                                    strXML += "<LastName>" + Convert.ToString(dtData.Rows[i]["LastName"]) + "</LastName>";
+                                    strXML += "<MobileNo>" + Convert.ToString(dtData.Rows[i]["MobileNo"]) + "</MobileNo>";
+                                    strXML += "<CityName>" + Convert.ToString(dtData.Rows[i]["CityName"]) + "</CityName>";
+                                    strXML += "<EmailId>" + Convert.ToString(dtData.Rows[i]["EmailId"]) + "</EmailId>";
+                                    strXML += "<Address1>" + Convert.ToString(dtData.Rows[i]["Address1"]) + "</Address1>";
+                                    strXML += "<PostalCode>" + Convert.ToString(dtData.Rows[i]["PostalCode"]) + "</PostalCode>";
+                                    strXML += "<Gender>" + Convert.ToString(dtData.Rows[i]["Gender"]) + "</Gender>";
+                                    strXML += "<DOB>" + Convert.ToString(dtData.Rows[i]["DOB"]) + "</DOB>";
+                                    strXML += "</Entry>";
+                                }
+                                strXML += "</Customers>";
+
+                                dsResult = accountRepository.Customer_Upload(ref_EntryBy, strXML, "Bulk_Insert");
+                                if (dsResult == null)
+                                {
+                                    TempData["Message"] = "File is not in proper format.";
+                                    TempData["MessageType"] = "Information";
+                                    TempData["ButtonType"] = "2";
+                                    return RedirectToAction(nameof(CustomerUpload));
+                                }
+                            }
+
+                            dsResult = accountRepository.Customer_Upload(ref_EntryBy, "", "CheckData");
+                            if (dsResult != null && dsResult.Tables != null)
+                            {
+                                if (dsResult.Tables.Count > 1)
+                                {
+                                    if (dsResult.Tables[1].Rows.Count > 0)
+                                    {
+                                        CustomerMasterTempViewModel customerMasterTempViewModel = new CustomerMasterTempViewModel();
+                                        customerMasterTempViewModel.temp_Customer_Uploads = new List<Temp_Customer_Upload>();
+                                        //pOViewModel.lstPO_UploadModel = Common_Functions.ConvertDataTable<PO_DetailModel>(dsResult.Tables[1]);
+                                        customerMasterTempViewModel.temp_Customer_Uploads = dsResult.Tables[1].AsEnumerable().Select(m => new Temp_Customer_Upload()
+                                        {
+                                            varFirstName = m.Field<string>("varFirstName"),
+                                            varMiddleName = m.Field<string>("varMiddleName"),
+                                            varLastName = m.Field<string>("varLastName"),
+                                            varMobileNo = m.Field<string>("varMobileNo"),
+                                            varCityName = m.Field<string>("varCityName"),
+                                            varEmailID = m.Field<string>("varEmailID"),
+                                            varAddressLine1 = m.Field<string>("varAddressLine1"),
+                                            varGender = m.Field<string>("varGender"),
+                                            varPostalCode = m.Field<string>("varPostalCode"),
+                                            dtDOB = m.Field<DateTime>("dtDOB"),
+                                            ref_EntryBy= m.Field<long>("ref_EntryBy")
+                                        }).ToList();
+
+                                        if (dsResult.Tables[0].Rows.Count > 0)
+                                        {
+                                            TempData["Message"] = Convert.ToString(dsResult.Tables[0].Rows[0]["varMessage"]);
+                                            if (Convert.ToInt32(dsResult.Tables[0].Rows[0]["intStatus"]) == 1)
+                                            {
+                                                TempData["MessageType"] = "Success";
+                                                TempData["ButtonType"] = "1";
+                                            }
+                                            else
+                                            {
+
+                                                TempData["MessageType"] = "Error";
+                                                TempData["ButtonType"] = "2";
+                                            }
+                                        }
+
+                                        ViewBag.Message = TempData["Message"];
+                                        ViewBag.MessageType = TempData["MessageType"];
+                                        ViewBag.ButtonType = TempData["ButtonType"];
+                                        return View(nameof(CustomerUpload),customerMasterTempViewModel.temp_Customer_Uploads);
+                                    }
+                                }
+                                else if (dsResult.Tables.Count > 0)
+                                {
+                                    TempData["Message"] = "Data checked successfully.";
+                                    TempData["MessageType"] = "Success";
+                                    TempData["ButtonType"] = "1";
+                                }
+                                else
+                                {
+                                    TempData["Message"] = "File is not in proper format.";
+                                    TempData["MessageType"] = "Error";
+                                    TempData["ButtonType"] = "2";
+                                }
+                            }
+                            else
+                            {
+                                TempData["Message"] = "File is not in proper format.";
+                                TempData["MessageType"] = "Error";
+                                TempData["ButtonType"] = "2";
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    TempData["Message"] = "Invalid file type!";
+                    TempData["MessageType"] = "Error";
+                    TempData["ButtonType"] = "2";
+                    return RedirectToAction(nameof(CustomerUpload));
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["Message"] = "File is not in proper format.";
+                TempData["MessageType"] = "Error";
+                TempData["ButtonType"] = "2";
+              //  ModuleErrorLogRepository.Insert_Modules_Error_Log("POUpload", System.Reflection.MethodBase.GetCurrentMethod().Name.ToString(), Convert.ToString(sessionManager.IntGlCode), ex.StackTrace, this.GetType().Name.ToString(), "Novapack", ex.Source, "", "", ex.Message);
+                return RedirectToAction(nameof(CustomerUpload));
+            }
+            return RedirectToAction(nameof(CustomerUpload));
+        }
+
+        public async Task<IActionResult> DownloadFormat()
+        {
+            var path = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\Contents\Download\", "Customers_Download_Format.xlsx");
+
+            var memory = new MemoryStream();
+            using (var stream = new FileStream(path, FileMode.Open))
+            {
+                await stream.CopyToAsync(memory);
+            }
+            memory.Position = 0;
+            return File(memory, GetContentType(path), string.Concat(Path.GetFileNameWithoutExtension(path), "_", DateTime.Now.ToString("yyyyMMdd"), ".xlsx"));
+        }
+
+
+        [NonAction]
+        private string GetContentType(string path)
+        {
+            var types = GetMimeTypes();
+            var ext = Path.GetExtension(path).ToLowerInvariant();
+            return types[ext];
+        }
+
+        [NonAction]
+        private Dictionary<string, string> GetMimeTypes()
+        {
+            return new Dictionary<string, string>
+            {
+                {".txt", "text/plain"},
+                {".pdf", "application/pdf"},
+                {".doc", "application/vnd.ms-word"},
+                {".docx", "application/vnd.ms-word"},
+                {".xls", "application/vnd.ms-excel"},
+                {".xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"},
+                {".png", "image/png"},
+                {".jpg", "image/jpeg"},
+                {".jpeg", "image/jpeg"},
+                {".gif", "image/gif"},
+                {".csv", "text/csv"}
+            };
+        }
+
+        #endregion
 
     }
 }

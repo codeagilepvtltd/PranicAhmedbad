@@ -43,6 +43,8 @@ namespace PranicAhmedbad.Lib.Repository.Account
 
         List<Gender_Master> GetGenders(int StateId = 0);
 
+        DataSet Customer_Upload(long ref_EntryBy, string varXML, string varAction);
+
         #endregion
     }
 }

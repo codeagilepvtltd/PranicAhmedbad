@@ -189,6 +189,7 @@
     <Compile Include="Models\State_Master.cs" />
     <Compile Include="Models\Status_Master.cs" />
     <Compile Include="Models\Student_Master.cs" />
+    <Compile Include="Models\Temp_Customer_Upload.cs" />
     <Compile Include="Models\User_Mapping_Master.cs" />
     <Compile Include="Models\User_Role_Mapping.cs" />
     <Compile Include="Models\Whatsapp_Log.cs" />

@@ -1,0 +1,151 @@
+﻿@using DevExtreme.AspNet.Mvc
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model PranicAhmedbad.Lib.ViewModels.CustomerMasterTempViewModel
+@{
+    ViewData["Title"] = "Pranic Ahmedbad - Customer Upload";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid" id="container-wrapper">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                @*<h4 class="card-title">PO Upload</h4>*@
+                <form asp-controller="Account" asp-action="CustomerUpload" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Upload Customers:</h4>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="my-file-selector" name="formFile">
+                                        <label class="custom-file-label" for="my-file-selector">Choose file</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group mb-0">
+                        <button type="submit" class="btn btn-warning" asp-action="DownloadFormat">Download Format</button>
+                        <button type="submit" class="btn btn-warning" asp-action="CheckData" onclick="return ValidateData()" id="btnCheckData">Check Data</button>
+                        <button type="button" class="btn btn-warning" onclick="ExportExcel();" disabled id="btnDownloadData">Download Data</button>
+                        <button type="submit" class="btn btn-primary" asp-action="SaveData" disabled id="btnSave">Save</button>
+                        <button type="submit" class="btn btn-secondary" asp-action="Cancel">Cancel</button>
+                    </div>
+                    <input type="hidden" asp-for="@Model.temp_Customer_Upload.ref_EntryBy" id="fk_CustomerGlCode" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+<!---Container Fluid-->
+<!-- Container Fluid-->
+<div class="container-fluid" id="container-wrapper">
+    <div class="row">
+        <!-- DataTable with Hover -->
+        <div class="col-lg-12">
+            <div class="card mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Country List</h6>
+                    <button type="button" class="btn btn-primary" onclick="ExportExcel();">Download</button>
+                </div>
+                <div class="table-responsive p-3">
+
+
+                    @(Html.DevExtreme().DataGrid()
+                        .ID("grdCountryDetials")
+                        .ShowBorders(true)
+                        .DataSource(ds => ds.Mvc().Controller("Account").Key("intGlCode").LoadAction("GetCountryList"))
+                        .Selection(s => s.Mode(SelectionMode.Single))
+                        .LoadPanel(f => f.Enabled(false))
+                        .Columns(columns =>
+                        {
+                            columns.Add().DataField("intGlCode").Caption("Edit").Type(GridCommandColumnType.Buttons)
+                            .Width(50)
+                            .Buttons(b =>
+                            {
+                                b.Add().Name(GridColumnButtonName.Edit).Visible(true).Icon("edit").OnClick("editdata");
+
+                            });
+                            columns.Add().DataField("varCountryName").Caption("Country Name");
+                            columns.Add().DataField("varCountryCode").Caption("Country Code");
+                            columns.Add().DataField("chrActive").Caption("Status");
+                            columns.Add().DataField("dtEntryDate").Caption("Entry Date").Format("yyyy-mm-dd");
+
+                        })
+                        .ColumnAutoWidth(true)
+                        .Scrolling(scrolling => scrolling.ColumnRenderingMode(GridColumnRenderingMode.Standard))
+                        .ShowRowLines(true)
+                        .RowAlternationEnabled(true)
+                        .Paging(paging => paging.PageSize(10))
+                        .Pager(pager =>
+                        {
+                            pager.ShowInfo(true);
+                        })
+                        .Sorting(sorting => sorting.Mode(DevExtreme.AspNet.Mvc.GridSortingMode.Multiple))
+                        .FilterRow(filterRow => filterRow
+                        .Visible(true)
+                        .ApplyFilter(GridApplyFilterMode.Auto)
+                        )
+                        .HeaderFilter(headerFilter => headerFilter.Visible(true))
+                        .WordWrapEnabled(true)
+
+                        )
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@if (ViewBag.Message != null)
+{
+    <script>
+        $(document).ready(function () {
+
+            if ('@ViewBag.MessageType' == 'Success') {
+                PopUpMessage('@ViewBag.Message', "fa fa-check-circle popup_icon_success");
+                if (@ViewBag.ButtonType == "1") {
+                    $('#btnSave').prop('disabled', false);
+                    $("#btnDownloadData").attr("disabled", true);
+                }
+            }
+            else {
+                PopUpMessage('@ViewBag.Message', "fa fa-exclamation-circle popup_icon");
+                if (@ViewBag.ButtonType == "1") {
+                    $('#btnSave').prop('disabled', true);
+                    $("#btnDownloadData").attr("disabled", false);
+                }
+                else {
+                    $('#btnSave').prop('disabled', true);
+                    $('#btnDownloadData').prop('disabled', true);
+                }
+            }
+        });
+    </script>
+}
+@Html.AntiForgeryToken()
+@section Scripts {
+    <script src="~/Scripts/Account/Common.js"></script>
+}
+
+
+<style>
+    .dvdx-overlay-content {
+        position: absolute;
+        z-index: 1000;
+        outline: 0;
+        overflow: unset !important;
+    }
+
+    .dx-overlay-content.dx-popup-normal.dx-popup-draggable.dx-resizable.dx-dropdowneditor-overlay-flipped {
+        overflow: scroll !important;
+    }
+
+    .custom-checkbox {
+        margin: 40px 0px;
+    }
+</style>
