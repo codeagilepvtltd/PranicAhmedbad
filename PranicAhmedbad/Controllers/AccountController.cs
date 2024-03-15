@@ -369,14 +369,21 @@ namespace PranicAhmedbad.Controllers
             }
         }
 
-        public IActionResult GetStateListActive()
+        public IActionResult GetStateListActive(int CountryID = 0)
         {
 
             List<State_Master> state_Masters = new List<State_Master>();
             DataSet dsResult = new DataSet();
             try
             {
-                state_Masters = accountRepository.GetStateList().Where(m => m.chrActive == "Active").ToList();
+                if (CountryID > 0)
+                {
+                    state_Masters = accountRepository.GetStateList().Where(m => m.chrActive == "Active" && m.ref_CountryId == CountryID).ToList();
+                }
+                else
+                {
+                    state_Masters = accountRepository.GetStateList().Where(m => m.chrActive == "Active").ToList();
+                }
                 var resultJson = JsonConvert.SerializeObject(state_Masters);
                 return Content(resultJson, "application/json");
             }
@@ -388,15 +395,22 @@ namespace PranicAhmedbad.Controllers
             }
         }
 
-        public IActionResult GetCityList()
+        public IActionResult GetCityList(int StateId = 0)
         {
 
-            CityViewModel cityViewModel = new CityViewModel();
+            List<City_Master> cityViewModel = new List<City_Master>();
             DataSet dsResult = new DataSet();
             try
             {
-                cityViewModel = accountRepository.GetCityList();
-                var resultJson = JsonConvert.SerializeObject(cityViewModel.city_Masters);
+                if (StateId > 0)
+                {
+                    cityViewModel = accountRepository.GetCityList().Where(m => m.chrActive == "Active" && m.ref_StateID == StateId).ToList();
+                }
+                else
+                {
+                    cityViewModel = accountRepository.GetCityList();
+                }
+                var resultJson = JsonConvert.SerializeObject(cityViewModel);
                 return Content(resultJson, "application/json");
             }
             catch (Exception ex)
@@ -584,7 +598,8 @@ namespace PranicAhmedbad.Controllers
                             int cellCount = headerRow.LastCellNum;
 
                             if (cellCount != 10)
-                            {    TempData["Message"] = "File is not in proper format.";
+                            {
+                                TempData["Message"] = "File is not in proper format.";
                                 TempData["MessageType"] = "Error";
                                 TempData["ButtonType"] = "2";
                                 return RedirectToAction(nameof(CustomerUpload));
@@ -698,7 +713,7 @@ namespace PranicAhmedbad.Controllers
                                             varGender = m.Field<string>("varGender"),
                                             varPostalCode = m.Field<string>("varPostalCode"),
                                             dtDOB = m.Field<DateTime>("dtDOB"),
-                                            ref_EntryBy= m.Field<long>("ref_EntryBy")
+                                            ref_EntryBy = m.Field<long>("ref_EntryBy")
                                         }).ToList();
 
                                         if (dsResult.Tables[0].Rows.Count > 0)
@@ -720,7 +735,7 @@ namespace PranicAhmedbad.Controllers
                                         ViewBag.Message = TempData["Message"];
                                         ViewBag.MessageType = TempData["MessageType"];
                                         ViewBag.ButtonType = TempData["ButtonType"];
-                                        return View(nameof(CustomerUpload),customerMasterTempViewModel.temp_Customer_Uploads);
+                                        return View(nameof(CustomerUpload), customerMasterTempViewModel.temp_Customer_Uploads);
                                     }
                                 }
                                 else if (dsResult.Tables.Count > 0)
@@ -758,7 +773,7 @@ namespace PranicAhmedbad.Controllers
                 TempData["Message"] = "File is not in proper format.";
                 TempData["MessageType"] = "Error";
                 TempData["ButtonType"] = "2";
-              //  ModuleErrorLogRepository.Insert_Modules_Error_Log("POUpload", System.Reflection.MethodBase.GetCurrentMethod().Name.ToString(), Convert.ToString(sessionManager.IntGlCode), ex.StackTrace, this.GetType().Name.ToString(), "Novapack", ex.Source, "", "", ex.Message);
+                //  ModuleErrorLogRepository.Insert_Modules_Error_Log("POUpload", System.Reflection.MethodBase.GetCurrentMethod().Name.ToString(), Convert.ToString(sessionManager.IntGlCode), ex.StackTrace, this.GetType().Name.ToString(), "Novapack", ex.Source, "", "", ex.Message);
                 return RedirectToAction(nameof(CustomerUpload));
             }
             return RedirectToAction(nameof(CustomerUpload));

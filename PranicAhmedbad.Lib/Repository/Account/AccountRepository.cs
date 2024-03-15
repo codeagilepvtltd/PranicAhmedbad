@@ -192,18 +192,18 @@ namespace PranicAhmedbad.Lib.Repository.Account
             }
         }
 
-        public CityViewModel GetCityList(int CityId = 0)
+        public List<City_Master> GetCityList(int CityId = 0)
         {
-            CityViewModel cityViewModel = new CityViewModel();
+            List<City_Master> cityViewModel = new List<City_Master>();
             Account_DA accountDA = new Account_DA();
 
             try
             {
-                cityViewModel.city_Masters = new List<City_Master>();
+                cityViewModel = new List<City_Master>();
                 DataSet dsResult = accountDA.GetCityList();
                 if (dsResult.Tables.Count > 0 && dsResult.Tables[0].Rows.Count > 0)
                 {
-                    cityViewModel.city_Masters = dsResult.Tables[0].AsEnumerable().Select(row => new City_Master()
+                    cityViewModel = dsResult.Tables[0].AsEnumerable().Select(row => new City_Master()
                     {
                         intGlCode = row.Field<int>("intGlCode"),
                         varCityCode = row.Field<string>("varCityCode"),

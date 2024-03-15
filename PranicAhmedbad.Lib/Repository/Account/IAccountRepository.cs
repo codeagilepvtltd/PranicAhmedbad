@@ -33,7 +33,7 @@ namespace PranicAhmedbad.Lib.Repository.Account
 
         #region City
         DataSet InsertUpdate_city(CityViewModel cityViewModel);
-        CityViewModel GetCityList(int CityId = 0);
+        List<City_Master> GetCityList(int CityId = 0);
 
         #endregion
 
