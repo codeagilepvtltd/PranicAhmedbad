@@ -26,11 +26,25 @@
                     <form class="user" asp-controller="Event" asp-action="Save_Event" method="post" id="frmEvent">
                         <div class="form-group row">
                             <label for="inputEmail3" class="col-sm-2 col-form-label"><span class="red">*</span>Event Name:</label>
-                            <div class="col-sm-4">
+                            <div class="col-sm-5">
                                 <input type="text" class="form-control" id="txtEventName" asp-for="event_Master.varEventName" placeholder="Event Name">
                             </div>
+                            <label for="inputEmail3" class="col-sm-2 col-form-label">Event Type:</label>
+                            <div class="col-sm-3">
+                                @(Html.DevExtreme().SelectBox().ID("ddlEventList")
+                                    .DataSource(d => d.Mvc().Controller("Event").LoadAction("GetEventTypeList").Key("intGlCode")
+                                    .LoadParams(new { varEventType = "EventType" }))
+                                    .DisplayExpr("varEntityType")
+                                    .ValueExpr("intGlCode")
+                                    .Placeholder("-- Select --")
+                                    .SearchEnabled(true)
+                                    .OnOpened("dxSelectBox_OnOpened")
+                                    )
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label for="inputEmail3" class="col-sm-2 col-form-label"><span class="red">*</span>Content:</label>
-                            <div class="col-sm-4">
+                            <div class="col-sm-10">
                                 <input type="text" class="form-control" id="txtEventContent" asp-for="event_Master.varEventContent" placeholder="Content">
                             </div>
                         </div>
@@ -80,24 +94,18 @@
                                     .OnOpened("dxSelectBox_OnOpened")
                                     )
                             </div>
-                            <label for="inputEmail3" class="col-sm-2 col-form-label">Address:</label>
-                            <div class="col-sm-4">
-                                <textarea class="form-control" id="txtAddress" asp-for="event_Master.address_Master.varAddressLine1" rows="3"></textarea>
-                            </div>
-
-                        </div>
-
-                        <div class="form-group row">
                             <label for="inputEmail3" class="col-sm-2 col-form-label">PinCode:</label>
                             <div class="col-sm-4">
                                 <input type="text" class="form-control" asp-for="event_Master.address_Master.varPostalCode" id="txtPinCode" placeholder="Pin Code">
                             </div>
+                        </div>
 
-                            <label for="inputEmail3" class="col-sm-2 col-form-label">G Map Location:</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" asp-for="event_Master.address_Master.varGMapLocation" id="txtGMapLocation" placeholder="G Map Location">
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-2 col-form-label">Address:</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" id="txtAddress" asp-for="event_Master.address_Master.varAddressLine1" rows="3"></textarea>
                             </div>
-
+                           
                         </div>
                         <div class="form-group row">
                             <label for="inputEmail3" class="col-sm-2 col-form-label">Contact Person:</label>
@@ -146,6 +154,10 @@
                             <div class="col-sm-4">
                                 <input type="checkbox" asp-for="event_Master.chrActive" id="chkStatus" />
                             </div>
+                            <label for="inputEmail3" class="col-sm-2 col-form-label">G Map Location:</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" asp-for="event_Master.address_Master.varGMapLocation" id="txtGMapLocation" placeholder="G Map Location">
+                            </div>
                         </div>
                         <input type="hidden" asp-for="@Model.event_Master.ref_AddressID" id="ref_AddressId" />
                         <input type="hidden" asp-for="@Model.event_Master.intGlCode" id="ref_EventintGlCode" />
@@ -153,7 +165,7 @@
                         <input type="hidden" asp-for="@Model.event_Master.ref_CityId" id="ref_CityId" />
                         <input type="hidden" asp-for="@Model.event_Master.ref_StateId" id="ref_StateId" />
                         <input type="hidden" asp-for="@Model.event_Master.ref_CountryId" id="ref_CountryId" />
-                        <input type="hidden" asp-for="@Model.event_Master.ref_EventTypeID" id="ref_EventTypeID" />
+                        <input type="hidden" asp-for="@Model.event_Master.ref_EntityID" id="ref_EntityID" />
 
                         <div class="form-group row">
                             <div class="col-sm-3">
@@ -238,6 +250,7 @@
 @section Scripts {
     <script src="~/Scripts/Event/Event.js"></script>
     <script src="~/Scripts/Account/Common.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
     <script type="text/javascript">
         function GetStateByCountry() {
             var selectedItem = $("#ddlCountryList").dxSelectBox('instance').option('selectedItem');
@@ -253,6 +266,21 @@
                 return selectedItem.intGlCode;
             }
         }
+
+        $('#txtEventContent').summernote({
+            placeholder: 'Message',
+            tabsize: 2,
+            height: 400,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link', 'picture', 'video']],
+                ['view', ['fullscreen', 'codeview', 'help']]
+            ]
+        });
     </script>
 }
 <!---Container Fluid-->

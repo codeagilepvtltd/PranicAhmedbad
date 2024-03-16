@@ -28,7 +28,7 @@ namespace PranicAhmedbad.Lib.Repository.Account
                         eventMasterViewModel.event_Master = new Event_Master();
                         DataRow dataRow = dsResult.Tables[0].Rows[0];
                         eventMasterViewModel.event_Master.intGlCode = Convert.ToInt64(dataRow["intGlCode"]);
-                        eventMasterViewModel.event_Master.ref_EventTypeID = Convert.ToInt32(dataRow["ref_EventTypeID"]);
+                        eventMasterViewModel.event_Master.ref_EntityID = Convert.ToInt32(dataRow["ref_EntityID"]);
                         eventMasterViewModel.event_Master.varEventName = Convert.ToString(dataRow["varEventName"]);
                         eventMasterViewModel.event_Master.varEventDescription = Convert.ToString(dataRow["varEventDescription"]);
                         eventMasterViewModel.event_Master.varEventContent = Convert.ToString(dataRow["varEventContent"]);
@@ -68,7 +68,7 @@ namespace PranicAhmedbad.Lib.Repository.Account
                             Event_Master event_Master = new Event_Master();
 
                             event_Master.intGlCode = Convert.ToInt64(dataRow["intGlCode"]);
-                            event_Master.ref_EventTypeID = Convert.ToInt32(dataRow["ref_EventTypeID"]);
+                            event_Master.ref_EntityID = Convert.ToInt32(dataRow["ref_EntityID"]);
                             event_Master.varEventName = Convert.ToString(dataRow["varEventName"]);
                             event_Master.varEventDescription = Convert.ToString(dataRow["varEventDescription"]);
                             event_Master.varEventContent = Convert.ToString(dataRow["varEventContent"]);
@@ -125,6 +125,108 @@ namespace PranicAhmedbad.Lib.Repository.Account
                 throw;
             }
         }
+
+        public List<Entity_Type_Master> GetEventTypeList(string varEventType)
+        {
+            EventMaster_DA EventMasterDA = new EventMaster_DA();
+            List<Entity_Type_Master> EntityTypeMaster = new List<Entity_Type_Master>();
+
+            try
+            {
+                DataSet dsResult = EventMasterDA.GetEventTypeList(varEventType);
+
+                if (dsResult.Tables.Count > 0 && dsResult.Tables[0].Rows.Count > 0)
+                {
+                    EntityTypeMaster = dsResult.Tables[0].AsEnumerable().Select(row => new Entity_Type_Master()
+                    {
+                        intGlCode = row.Field<int>("intGlCode"),
+                        varEntityType = row.Field<string>("varEntityName"),
+                        varEntityName = row.Field<string>("varEntityName"),
+                        chrActive = row.Field<string>("chrActive")
+
+                    }).ToList();
+
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            return EntityTypeMaster;
+        }
+
+        public List<User_Role_Mapping> TraineeList(int intGlCode = 0, string varRoleName = "")
+        {
+            EventMaster_DA EventMasterDA = new EventMaster_DA();
+            List<User_Role_Mapping> UserRoleMapping = new List<User_Role_Mapping>();
+
+            try
+            {
+                DataSet dsResult = EventMasterDA.GeTraineeist(intGlCode, varRoleName);
+
+                if (dsResult.Tables.Count > 0 && dsResult.Tables[0].Rows.Count > 0)
+                {
+                    UserRoleMapping = dsResult.Tables[0].AsEnumerable().Select(row => new User_Role_Mapping()
+                    {
+                        intGlCode = row.Field<Int64>("intGlCode"),
+                        varRoleName = row.Field<string>("varRoleName"),
+                        UserFullName = row.Field<string>("UserFullName"),
+                        ref_RoleID = row.Field<int>("ref_RoleID"),
+                        ref_UserID = row.Field<Int64>("ref_UserID"),
+                        chrActive = row.Field<string>("chrActive")
+
+                    }).ToList();
+
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            return UserRoleMapping;
+        }
+
+        public DataSet InsertUpdate_EventSlot(EventSlotDetailViewModel eventslotMasterView)
+        {
+            EventMaster_DA eventMaster_DA = new EventMaster_DA();
+            try
+            {
+                return eventMaster_DA.InsertUpdate_EventSlot(eventslotMasterView);
+
+            }
+            catch
+            {
+                throw;
+            }
+        }
+        //public List<Event_SlotDetails> GetEventSlotList(string varEventType)
+        //{
+        //    EventMaster_DA EventMasterDA = new EventMaster_DA();
+        //    List<Event_SlotDetails> EntitySlot = new List<Event_SlotDetails>();
+
+        //    try
+        //    {
+        //        DataSet dsResult = EventMasterDA.GetEventTypeList(varEventType);
+
+        //        if (dsResult.Tables.Count > 0 && dsResult.Tables[0].Rows.Count > 0)
+        //        {
+        //            EntitySlot = dsResult.Tables[0].AsEnumerable().Select(row => new Event_SlotDetails()
+        //            {
+        //                intGlCode = row.Field<int>("intGlCode"),
+        //                varEntityType = row.Field<string>("varEntityName"),
+        //                varEntityName = row.Field<string>("varEntityName"),
+        //                chrActive = row.Field<string>("chrActive")
+
+        //            }).ToList();
+
+        //        }
+        //    }
+        //    catch
+        //    {
+        //        throw;
+        //    }
+        //    return EntityTypeMaster;
+        //}
         #endregion
     }
 }

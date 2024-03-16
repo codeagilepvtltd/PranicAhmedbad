@@ -25,6 +25,7 @@ function editdataEvent(e) {
     $("#ddlCountryList").dxSelectBox("getDataSource").reload();
     $("#ddlStateList").dxSelectBox("getDataSource").reload();
     $("#ddlCityList").dxSelectBox("getDataSource").reload();
+    $("#ddlEventList").dxSelectBox("getDataSource").reload();
     setTimeout(function () {
         
         var ddlCountryList = $("#ddlCountryList").dxSelectBox('instance');
@@ -38,22 +39,25 @@ function editdataEvent(e) {
         var ddlCityList = $("#ddlCityList").dxSelectBox('instance');
         ddlCityList.option('value', parseInt(e.row.data.ref_CityId));
 
+        var ddlEventList = $("#ddlEventList").dxSelectBox('instance');
+        ddlEventList.option('value', parseInt(e.row.data.ref_EntityID));
+
 
     }, 100);
 
     $("#ref_CityId").val(e.row.data.ref_CityId);
     $("#ref_StateId").val(e.row.data.ref_StateId);
     $("#ref_CountryId").val(e.row.data.ref_CountryId);
+    $("#ref_EntityID").val(e.row.data.ref_EntityID);
 
     $("#intGlCode").val(e.row.data.intGlCode);
     $("#ref_AddressId").val(e.row.data.ref_AddressID);
     $("#ref_EventintGlCode").val(e.row.data.intGlCode);
-    $("#ref_EventTypeID").val(e.row.data.ref_EventTypeID);
+  
 
     $("#txtEventName").val(e.row.data.varEventName);
     $("#txtEventDescription").val(e.row.data.varEventDescription);
-    $("#txtEventContent").val(e.row.data.varEventContent);
-
+    $("#txtEventContent").summernote('code', e.row.data.varEventContent);
     $("#txtAddress").val(e.row.data.varAddressLine1);
     $("#txtPinCode").val(e.row.data.varPostalCode);
     $("#txtMobileNo").val(e.row.data.varContactMobileNo);
@@ -91,6 +95,7 @@ function resetValidationEvent() {
     $("#ddlCountryList").dxSelectBox('instance').option('value', "0");
     $("#ddlStateList").dxSelectBox('instance').option('value', "0");
     $("#ddlCityList").dxSelectBox('instance').option('value', "0");
+    $("#ddlEventList").dxSelectBox('instance').option('value', "0");
 
 
     $("#ddlCountryList").focus();
@@ -136,6 +141,14 @@ function ValidateDataEvent() {
         return false;
     }
     $("#ref_CityId").val(ddlCity);
+
+    var ddlEventType = $("#ddlEventList").dxSelectBox('instance').option('value');
+    if (ddlEventType == undefined || ddlEventType == null || ddlEventType == '' || ddlEventType == '0') {
+        PopUpMessage('Please Select Event Type.', "fa fa-exclamation-circle popup_icon");
+        $("#ddlEventList").focus();
+        return false;
+    }
+    $("#ref_EntityID").val(ddlEventType);
 
     setTimeout(function () {
         $.ajax({

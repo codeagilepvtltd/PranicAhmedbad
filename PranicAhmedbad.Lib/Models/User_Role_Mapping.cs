@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PranicAhmedbad.Lib.Models
 {
-    internal class User_Role_Mapping
+    public class User_Role_Mapping
     {
         public long intGlCode { get; set; }
 
@@ -15,6 +15,8 @@ namespace PranicAhmedbad.Lib.Models
         public int? ref_RoleID { get; set; }
 
         public string chrActive { get; set; }
+        public string UserFullName { get; set; }
+        public string varRoleName { get; set; }
 
         public DateTime? dtEntryDate { get; set; }
 

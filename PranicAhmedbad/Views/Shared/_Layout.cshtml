@@ -10,6 +10,7 @@
     <link href="~/css/Admin/devextreme/dx.common.css" rel="stylesheet" />
     <link href="~/css/Admin/devextreme/dx.light.css" rel="stylesheet" />
     <link href="~/lib/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
     <script src="~/js/Admin/devextreme/jquery.js"></script>
     <script src="~/js/Admin/devextreme/bootstrap.js"></script>
 
@@ -95,8 +96,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                       @*   <h6 class="collapse-header">Forms</h6> *@
                         <a class="collapse-item" asp-controller="Event" asp-action="Index">Events</a>
-                      @*   <a class="collapse-item" href="form_basics.html">Form Basics</a>
-                        <a class="collapse-item" href="form_advanceds.html">Form Advanceds</a> *@
+                        <a class="collapse-item" asp-controller="Event" asp-action="EventSlotDetails">Events Details</a>
                     </div>
                 </div>
             </li>

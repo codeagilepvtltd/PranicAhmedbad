@@ -24,7 +24,10 @@ namespace PranicAhmedbad.Lib.Common
         USP_Select_EventList,
         USP_InsertUpdate_Event_Master,
         USP_Select_EntityTypeList,
-        USP_Customer_Upload
+        USP_Customer_Upload,
+        USP_Select_UserRoleMappingList,
+        USP_InsertUpdate_EventSlotDetails,
+        USP_Select_EventSlotDetails
     }
     public class Common_Messages
     {
