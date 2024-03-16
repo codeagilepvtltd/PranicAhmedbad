@@ -3,6 +3,17 @@
 });
 /* State Master */
 
+function ReloadStateCityddl() {
+    $("#ddlStateList").dxSelectBox("getDataSource").reload();
+    $("#ddlCityList").dxSelectBox("getDataSource").reload();
+
+    $("#ddlStateList").dxSelectBox('instance').option('value', "0");
+    $("#ddlCityList").dxSelectBox('instance').option('value', "0");
+}
+function ReloadCityddl() {
+    $("#ddlCityList").dxSelectBox("getDataSource").reload();
+    $("#ddlCityList").dxSelectBox('instance').option('value', "0");
+}
 function editdataCutomer(e) {
 
     $("#ddlCountryList").dxSelectBox("getDataSource").reload();
@@ -112,7 +123,7 @@ function ValidateDataCustomer() {
         Msg = Msg + 'Please Enter LastName.<br/>';
     }
 
-   
+
     var ddlCountry = $("#ddlCountryList").dxSelectBox('instance').option('value');
     if (ddlCountry == undefined || ddlCountry == null || ddlCountry == '' || ddlCountry == '0') {
         Msg = Msg + 'Please Select Country.<br/>';
@@ -177,8 +188,7 @@ function ValidateDataCustomer() {
     }
     $("#ref_EntityTypeID").val(ddlUserType);
 
-    if (Msg != undefined && Msg != '')
-    {
+    if (Msg != undefined && Msg != '') {
         PopUpMessage(Msg, "fa fa-exclamation-circle popup_failure");
         return false;
     }
@@ -208,4 +218,12 @@ function ValidateDataCustomer() {
         //$('#loading').fadeOut();
     }, 1000);
 }
+function dxSelectBox_OnOpenedstateDDl(ev) {
+    var list = ev.component._list;
+    list.option('useNativeScrolling', true);
+    list._scrollView.option('useNative', true);
+    list.reload();
+}
+
+
 

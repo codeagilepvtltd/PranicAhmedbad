@@ -42,35 +42,44 @@
                         <div class="form-group row">
                             <label for="inputEmail3" class="col-sm-1 col-form-label"><span class="red">*</span>Country:</label>
                             <div class="col-sm-3">
-                                @(Html.DevExtreme().SelectBox().ID("ddlCountryList")
+                                @(
+                                    Html.DevExtreme().SelectBox().ID("ddlCountryList")
                                     .DataSource(d => d.Mvc().Controller("Account").LoadAction("GetActiveCountryList").Key("intGlCode"))
                                     .DisplayExpr("varCountryName")
                                     .ValueExpr("intGlCode")
                                     .Placeholder("-- Select --")
                                     .SearchEnabled(true)
-                                    .OnOpened("dxSelectBox_OnOpened ")
+                                    .OnOpened("dxSelectBox_OnOpened")
+                                    .OnValueChanged("ReloadStateCityddl")
                                     )
                             </div>
                             <label for="inputEmail3" class="col-sm-1 col-form-label"><span class="red">*</span>State:</label>
                             <div class="col-sm-3">
-                                @(Html.DevExtreme().SelectBox().ID("ddlStateList")
-                                    .DataSource(d => d.Mvc().Controller("Account").LoadAction("GetStateListActive").Key("intGlCode"))
+
+                                @(
+                                    Html.DevExtreme().SelectBox().ID("ddlStateList")
+                                    .DataSource(d => d.Mvc().Controller("Account").LoadAction("GetStateListActive")
+                                    .LoadParams(new { CountryID = new JS("GetStateByCountry") })
+                                    .Key("intGlCode"))
                                     .DisplayExpr("varStateName")
                                     .ValueExpr("intGlCode")
                                     .Placeholder("-- Select --")
                                     .SearchEnabled(true)
-                                    .OnOpened("dxSelectBox_OnOpened ")
+                                    .OnOpened("dxSelectBox_OnOpenedstateDDl")
+                                    .OnValueChanged("ReloadCityddl")
                                     )
                             </div>
                             <label for="inputEmail3" class="col-sm-1 col-form-label"><span class="red">*</span>City:</label>
                             <div class="col-sm-3">
                                 @(Html.DevExtreme().SelectBox().ID("ddlCityList")
-                                    .DataSource(d => d.Mvc().Controller("Account").LoadAction("GetCityList").Key("intGlCode"))
+                                    .DataSource(d => d.Mvc().Controller("Account").LoadAction("GetCityList")
+                                    .LoadParams(new { StateId = new JS("GetCityByState") })
+                                    .Key("intGlCode"))
                                     .DisplayExpr("varCityName")
                                     .ValueExpr("intGlCode")
                                     .Placeholder("-- Select --")
                                     .SearchEnabled(true)
-                                    .OnOpened("dxSelectBox_OnOpened")
+                                    .OnOpened("dxSelectBox_OnOpenedstateDDl")
                                     )
                             </div>
                         </div>
@@ -243,5 +252,21 @@
 @section Scripts {
     <script src="~/Scripts/Account/Customer.js"></script>
     <script src="~/Scripts/Account/Common.js"></script>
+    <script type="text/javascript">
+        function GetStateByCountry() {
+            var selectedItem = $("#ddlCountryList").dxSelectBox('instance').option('selectedItem');
+            if (selectedItem != null) {
+                $("#ref_CountryID").val(selectedItem.intGlCode);
+                return selectedItem.intGlCode;
+            }
+        }
+        function GetCityByState() {
+            var selectedItem = $("#ddlStateList").dxSelectBox('instance').option('selectedItem');
+            if (selectedItem != null) {
+                $("#ref_StateID").val(selectedItem.intGlCode);
+                return selectedItem.intGlCode;
+            }
+        }
+    </script>
 }
 <!---Container Fluid-->

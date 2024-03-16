@@ -2,7 +2,24 @@
 
 });
 /* State Master */
+function ReloadStateCityddl() {
+    $("#ddlStateList").dxSelectBox("getDataSource").reload();
+    $("#ddlCityList").dxSelectBox("getDataSource").reload();
 
+    $("#ddlStateList").dxSelectBox('instance').option('value', "0");
+    $("#ddlCityList").dxSelectBox('instance').option('value', "0");
+}
+function ReloadCityddl() {
+    $("#ddlCityList").dxSelectBox("getDataSource").reload();
+    $("#ddlCityList").dxSelectBox('instance').option('value', "0");
+}
+
+function dxSelectBox_OnOpenedstateDDl(ev) {
+    var list = ev.component._list;
+    list.option('useNativeScrolling', true);
+    list._scrollView.option('useNative', true);
+    list.reload();
+}
 function editdataEvent(e) {
 
     $("#ddlCountryList").dxSelectBox("getDataSource").reload();
@@ -63,7 +80,7 @@ function resetValidationEvent() {
     $('.field-validation-error').removeClass('field-validation-error');
     $('.field-validation-valid span').html('')
 
-    $("input[type='textarea']").val('');
+    $("textarea").val('');
     $('input:text').val('');
     $("input[type='email']").val('');
     $("input[type='datetime-local']").val('');

@@ -93,8 +93,6 @@ function isNumber(evt) {
     return true;
 }
 
-
-
 function closepopup() {
     if (document.URL.toString().indexOf("CreateShipmentLCL") > -1) {
         window.location.href = config.projectURL + "Transaction/CreateShipmentLCL";
