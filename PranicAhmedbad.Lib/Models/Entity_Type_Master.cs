@@ -11,6 +11,7 @@ namespace PranicAhmedbad.Lib.Models
         public int intGlCode { get; set; }
 
         public string varEntityType { get; set; }
+        public string varEntityName { get; set; }
 
         public string chrActive { get; set; }
 

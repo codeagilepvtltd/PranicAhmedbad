@@ -11,6 +11,11 @@ namespace PranicAhmedbad.Lib.Repository.Account
         DataSet InsertUpdate_EventMaster(EventMasterViewModel customerMasterViewModel);
         EventMasterViewModel GetEventlist(long CityId = 0);
 
+        List<User_Role_Mapping> TraineeList(int intGlCode = 0,string varRoleName="");
+        List<Entity_Type_Master> GetEventTypeList(string varEventType);
+
+        DataSet InsertUpdate_EventSlot(EventSlotDetailViewModel eventslotMasterView);
+
         #endregion
     }
 }

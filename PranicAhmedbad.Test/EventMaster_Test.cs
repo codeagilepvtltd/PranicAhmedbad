@@ -24,7 +24,7 @@ namespace PranicAhmedBad.Test
             eventMasterViewModel.event_Master.address_Master = new PranicAhmedbad.Lib.Models.Address_Master();
 
             eventMasterViewModel.event_Master.intGlCode = 0;
-            eventMasterViewModel.event_Master.ref_EventTypeID = 1;
+            eventMasterViewModel.event_Master.ref_EntityID = 1;
             eventMasterViewModel.event_Master.varEventName = "Healing Camp 2022-02-22";
             eventMasterViewModel.event_Master.varEventDescription = "Healing Camp 2022-02-22 Description";
             eventMasterViewModel.event_Master.varEventContent = "Healing Camp 2022-02-22 Content";
@@ -69,7 +69,7 @@ namespace PranicAhmedBad.Test
             eventMasterViewModel.event_Master.address_Master = new PranicAhmedbad.Lib.Models.Address_Master();
 
             eventMasterViewModel.event_Master.intGlCode = 3;
-            eventMasterViewModel.event_Master.ref_EventTypeID = 1;
+            eventMasterViewModel.event_Master.ref_EntityID = 1;
             eventMasterViewModel.event_Master.varEventName = "Healing Camp 2025-02-23";
             eventMasterViewModel.event_Master.varEventDescription = "Healing Camp 2026-02-22 Description 23";
             eventMasterViewModel.event_Master.varEventContent = "Healing Camp 2026-02-25 Content";

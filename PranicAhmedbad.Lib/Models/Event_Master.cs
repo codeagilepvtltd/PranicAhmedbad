@@ -10,7 +10,7 @@ namespace PranicAhmedbad.Lib.Models
     {
         public long intGlCode { get; set; }
 
-        public int? ref_EventTypeID { get; set; }
+        public int? ref_EntityID { get; set; }
 
         public string varEventName { get; set; }
 

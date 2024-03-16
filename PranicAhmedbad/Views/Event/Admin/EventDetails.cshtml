@@ -1,0 +1,166 @@
+﻿@using DevExtreme.AspNet.Mvc
+@using DevExtreme.AspNet.TagHelpers
+@model EventSlotDetailViewModel
+@{
+    ViewData["Title"] = "Pranic Ahmedbad - Event";
+}
+
+<div class="container-fluid" id="container-wrapper">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Event Master</h1>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="./">Home</a></li>
+            <li class="breadcrumb-item">Forms</li>
+            <li class="breadcrumb-item active" aria-current="page">Event Master</li>
+        </ol>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Basic -->
+            <div class="card mb-12">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Event Entry</h6>
+                </div>
+                <div class="card-body">
+                    <form class="user" asp-controller="Event" asp-action="Save_EventSlot" method="post" id="frmEventSlot">
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-2 col-form-label">Event :</label>
+                            <div class="col-sm-4">
+                                @(Html.DevExtreme().SelectBoxFor(m => m.event_slotDetail.ref_EventID).ID("ddlEventList")
+                                    .DataSource(d => d.Mvc().Controller("Event").LoadAction("GetEventsList").Key("intGlCode"))
+                                    .DisplayExpr("varEventName")
+                                    .ValueExpr("intGlCode")
+                                    .Placeholder("-- Select --")
+                                    .SearchEnabled(true)
+                                    .OnOpened("dxSelectBox_OnOpened")
+                                    )
+                            </div>
+                            <label for="inputEmail3" class="col-sm-2 col-form-label">Event status :</label>
+                            <div class="col-sm-4">
+                                @(Html.DevExtreme().SelectBoxFor(m => m.event_slotDetail.ref_StatusID).ID("ddlEventStatusList")
+                                    .DataSource(d => d.Mvc().Controller("Event").LoadAction("GetEventTypeList").Key("intGlCode")
+                                    .LoadParams(new { varEventType = "EventStatus" }))
+                                    .DisplayExpr("varEntityType")
+                                    .ValueExpr("intGlCode")
+                                    .Placeholder("-- Select --")
+                                    .SearchEnabled(true)
+                                    .OnOpened("dxSelectBox_OnOpened")
+                                    )
+                            </div>
+                          
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-2 col-form-label">Trainee :</label>
+                            <div class="col-sm-4">
+                                @(Html.DevExtreme().SelectBoxFor(m => m.event_slotDetail.ref_TrainerID).ID("ddlTraineeList")
+                                    .DataSource(d => d.Mvc().Controller("Event").LoadAction("GetTraineeList").Key("intGlCode")
+                                    .LoadParams(new { intGlCode = 0, varRoleName = "Trainers" }))
+                                    .DisplayExpr("UserFullName")
+                                    .ValueExpr("intGlCode")
+                                    .Placeholder("-- Select --")
+                                    .SearchEnabled(true)
+                                    .OnOpened("dxSelectBox_OnOpened")
+                                    )
+                            </div>
+
+                            <label for="inputEmail3" class="col-sm-2 col-form-label">StartDate:</label>
+                            <div class="col-sm-4">
+                                <input type="date" class="form-control" asp-for="event_slotDetail.dtDate" id="txtDate" placeholder="Date">
+                            </div>
+                            
+
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-2 col-form-label">StartTime:</label>
+                            <div class="col-sm-4">
+                                <input type="time" class="form-control" asp-for="event_slotDetail.varTimeFrom" id="txtFromtime" placeholder="StartTime">
+                            </div>
+                            <label for="inputEmail3" class="col-sm-2 col-form-label">EndTime:</label>
+                            <div class="col-sm-4">
+                                <input type="time" class="form-control" asp-for="event_slotDetail.varTimeTo" id="txtTotime" placeholder="EndDate">
+                            </div>
+                           
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-2 col-form-label">No of attendance:</label>
+                            <div class="col-sm-4">
+                                <input type="text" asp-for="event_slotDetail.intNoofSeats" id="TxtintNoofSeats" />
+                            </div>
+
+                            <label for="inputEmail3" class="col-sm-2 col-form-label">Status:</label>
+                            <div class="col-sm-4">
+                                <input type="checkbox" asp-for="event_slotDetail.chrActive" id="chkStatus" />
+                            </div>
+                        </div>
+                        <input type="hidden" asp-for="@Model.event_slotDetail.intGlCode" id="ref_SlotintGlCode" />
+                        <input type="hidden" asp-for="@Model.event_slotDetail.chrActive" id="chrActive" />
+                        <div class="form-group row">
+                            <div class="col-sm-3">
+                                <button type="button" class="btn btn-primary" onclick="ValidateDataEvent();">Save</button>
+                                <button type="button" class="btn btn-dark" onclick="resetValidationEvent();">Cancel</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<br />
+
+<div class="container-fluid" id="container-wrapper">
+    <div class="row">
+        <!-- DataTable with Hover -->
+        <div class="col-lg-12">
+            <div class="card mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Event List</h6>
+                    <button type="button" class="btn btn-primary">Download</button>
+                </div>
+                <div class="table-responsive p-3">
+                    @*   @(Html.DevExtreme().DataGrid()
+                    .ID("grdEventList")
+                    .ShowBorders(true)
+                    .Selection(s => s.Mode(SelectionMode.Single))
+                    .LoadPanel(f => f.Enabled(false))
+                    .Columns(columns =>
+                    {
+
+                    columns.Add().DataField("dtEventPublishDate").DataType(DevExtreme.AspNet.Mvc.GridColumnDataType.DateTime).Caption("Publish Date");
+                    columns.Add().DataField("dtStartDate").DataType(DevExtreme.AspNet.Mvc.GridColumnDataType.DateTime).Format(DevExtreme.AspNet.Mvc.Format.ShortTime).EditorOptions(new { type = "time", interval = 15 }).Caption("Start Date");
+                    columns.Add().DataField("dtEndDate").DataType(DevExtreme.AspNet.Mvc.GridColumnDataType.DateTime).Format(DevExtreme.AspNet.Mvc.Format.ShortTime).EditorOptions(new { type = "time", interval = 15 }).Caption("End Date");
+                    columns.Add().DataField("dtEndDate").DataType(DevExtreme.AspNet.Mvc.GridColumnDataType.String).EditorOptions(new { type = "dxTextBox", interval = 15 }).Caption("Attendance");
+                    })
+                    .ColumnAutoWidth(true)
+                    .Scrolling(scrolling => scrolling.ColumnRenderingMode(GridColumnRenderingMode.Standard))
+                    .ShowRowLines(true)
+                    .RowAlternationEnabled(true)
+                    .Paging(paging => paging.PageSize(10))
+                    .Pager(pager =>
+                    {
+                    pager.ShowInfo(true);
+                    })
+                    .Sorting(sorting => sorting.Mode(DevExtreme.AspNet.Mvc.GridSortingMode.Multiple))
+                    .FilterRow(filterRow => filterRow
+                    .Visible(true)
+                    .ApplyFilter(GridApplyFilterMode.Auto)
+                    )
+                    .HeaderFilter(headerFilter => headerFilter.Visible(true))
+                    .WordWrapEnabled(true)
+                    ) *@
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@Html.AntiForgeryToken()
+@section Scripts {
+    <script src="~/Scripts/Event/EventSlotDetails.js"></script>
+    <script src="~/Scripts/Account/Common.js"></script>
+}

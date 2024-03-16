@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PranicAhmedbad.Lib.Models
 {
-    internal class Event_SlotDetails
+    public class Event_SlotDetails
     {
         public long intGlCode { get; set; }
 

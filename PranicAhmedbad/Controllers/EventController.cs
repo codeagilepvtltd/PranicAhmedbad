@@ -68,14 +68,49 @@ namespace PranicAhmedbad.Controllers
             }
         }
 
-        public ActionResult Save_Events(EventMasterViewModel eventMasterView)
+        public IActionResult GetTraineeList(int intGlCode = 0, string varRoleName = "")
+        {
+            List<User_Role_Mapping> UserRoleMapping = new List<User_Role_Mapping>();
+            DataSet dsResult = new DataSet();
+            try
+            {
+                UserRoleMapping = eventRepository.TraineeList(intGlCode,varRoleName);
+                var resultJson = JsonConvert.SerializeObject(UserRoleMapping);
+                return Content(resultJson, "application/json");
+            }
+            catch (Exception ex)
+            {
+                //ModuleErrorLogRepository.Insert_Modules_Error_Log("GetPersonDetails", System.Reflection.MethodBase.GetCurrentMethod().Name.ToString(), Convert.ToString(sessionManager.IntGlCode), ex.StackTrace, this.GetType().Name.ToString(), "Novapack", ex.Source, "", "", ex.Message);
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction("ErrorForbidden", "Account");
+            }
+        }
+        public IActionResult GetEventTypeList(string varEventType)
+        {
+            EventMasterViewModel EventViewModel = new EventMasterViewModel();
+            DataSet dsResult = new DataSet();
+            try
+            {
+                EventViewModel.EntityTypeMaster = eventRepository.GetEventTypeList(varEventType);
+                var resultJson = JsonConvert.SerializeObject(EventViewModel.EntityTypeMaster);
+                return Content(resultJson, "application/json");
+            }
+            catch (Exception ex)
+            {
+                //ModuleErrorLogRepository.Insert_Modules_Error_Log("GetPersonDetails", System.Reflection.MethodBase.GetCurrentMethod().Name.ToString(), Convert.ToString(sessionManager.IntGlCode), ex.StackTrace, this.GetType().Name.ToString(), "Novapack", ex.Source, "", "", ex.Message);
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction("ErrorForbidden", "Account");
+            }
+        }
+
+        public ActionResult Save_EventSlot(EventSlotDetailViewModel eventslotMasterView)
         {
             try
             {
-                eventMasterView.event_Master.ref_EntryBy = 1;
-                eventMasterView.event_Master.ref_UpdateBy = 1;
-                eventMasterView.event_Master.chrActive = eventMasterView.event_Master.chrActive == "true" ? "Y" : "N";
-                DataSet result = eventRepository.InsertUpdate_EventMaster(eventMasterView);
+                eventslotMasterView.event_slotDetail.ref_EntryBy = 1;
+                eventslotMasterView.event_slotDetail.ref_UpdateBy = 1;
+                eventslotMasterView.event_slotDetail.chrActive = eventslotMasterView.event_slotDetail.chrActive == "true" ? "Y" : "N";
+                DataSet result = eventRepository.InsertUpdate_EventSlot(eventslotMasterView);
                 var resultJson = JsonConvert.SerializeObject(result);
 
                 if (result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0)
@@ -95,6 +130,14 @@ namespace PranicAhmedbad.Controllers
 
                 return Content(JsonConvert.SerializeObject(0));
             }
+        }
+
+        #endregion
+
+        #region Event
+        public ActionResult EventSlotDetails()
+        {
+            return View("Admin/EventDetails");
         }
 
         #endregion

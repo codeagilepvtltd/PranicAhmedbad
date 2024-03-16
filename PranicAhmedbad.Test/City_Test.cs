@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using PranicAhmedbad.Lib.Models;
 using PranicAhmedbad.Lib.Repository.Account;
 using PranicAhmedbad.Lib.ViewModels;
 using System;
@@ -59,8 +60,8 @@ namespace PranicAhmedBad.Test
         public void Get_City()
         {
             IAccountRepository accountRepository = new AccountRepository();
-            CityViewModel city = accountRepository.GetCityList(1);
-            if (city.city_Masters.Count > 0)
+            List<City_Master> city = accountRepository.GetCityList(1);
+            if (city.Count > 0)
             {
                 //Assert.A(accountLoginViewModel.UserName, "Mitesh");
             }
