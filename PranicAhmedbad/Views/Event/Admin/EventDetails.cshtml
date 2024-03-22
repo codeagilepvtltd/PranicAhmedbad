@@ -36,7 +36,7 @@
                                     .OnOpened("dxSelectBox_OnOpened")
                                     )
                             </div>
-                            <label for="inputEmail3" class="col-sm-2 col-form-label">Event status :</label>
+                           @*  <label for="inputEmail3" class="col-sm-2 col-form-label">Event status :</label>
                             <div class="col-sm-4">
                                 @(Html.DevExtreme().SelectBoxFor(m => m.event_slotDetail.ref_StatusID).ID("ddlEventStatusList")
                                     .DataSource(d => d.Mvc().Controller("Event").LoadAction("GetEventTypeList").Key("intGlCode")
@@ -47,10 +47,7 @@
                                     .SearchEnabled(true)
                                     .OnOpened("dxSelectBox_OnOpened")
                                     )
-                            </div>
-                          
-                        </div>
-                        <div class="form-group row">
+                            </div> *@
                             <label for="inputEmail3" class="col-sm-2 col-form-label">Trainee :</label>
                             <div class="col-sm-4">
                                 @(Html.DevExtreme().SelectBoxFor(m => m.event_slotDetail.ref_TrainerID).ID("ddlTraineeList")
@@ -64,11 +61,18 @@
                                     )
                             </div>
 
+                        </div>
+                        <div class="form-group row">
+                            
                             <label for="inputEmail3" class="col-sm-2 col-form-label">StartDate:</label>
                             <div class="col-sm-4">
-                                <input type="date" class="form-control" asp-for="event_slotDetail.dtDate" id="txtDate" placeholder="Date">
+                                <input type="datetime-local" class="form-control" asp-for="event_slotDetail.dtDate" id="txtDate" placeholder="Date">
                             </div>
-                            
+                            <label for="inputEmail3" class="col-sm-2 col-form-label">No of attendance:</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" asp-for="event_slotDetail.intNoofSeats" id="TxtintNoofSeats" />
+                            </div>
+
 
                         </div>
                         <div class="form-group row">
@@ -80,14 +84,10 @@
                             <div class="col-sm-4">
                                 <input type="time" class="form-control" asp-for="event_slotDetail.varTimeTo" id="txtTotime" placeholder="EndDate">
                             </div>
-                           
+
                         </div>
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-2 col-form-label">No of attendance:</label>
-                            <div class="col-sm-4">
-                                <input type="text" asp-for="event_slotDetail.intNoofSeats" id="TxtintNoofSeats" />
-                            </div>
-
+                         
                             <label for="inputEmail3" class="col-sm-2 col-form-label">Status:</label>
                             <div class="col-sm-4">
                                 <input type="checkbox" asp-for="event_slotDetail.chrActive" id="chkStatus" />
@@ -119,39 +119,48 @@
             <div class="card mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">Event List</h6>
-                    <button type="button" class="btn btn-primary">Download</button>
+                    <button type="button" class="btn btn-primary" onclick="ExportExcelEvent();">Download</button>
                 </div>
                 <div class="table-responsive p-3">
-                    @*   @(Html.DevExtreme().DataGrid()
-                    .ID("grdEventList")
-                    .ShowBorders(true)
-                    .Selection(s => s.Mode(SelectionMode.Single))
-                    .LoadPanel(f => f.Enabled(false))
-                    .Columns(columns =>
-                    {
+                    @(Html.DevExtreme().DataGrid()
+                        .ID("grdEventSlotList")
+                        .ShowBorders(true)
+                        .DataSource(ds => ds.Mvc().Controller("Event").Key("intGlCode").LoadAction("GetEventSlotList"))
+                        .Selection(s => s.Mode(SelectionMode.Single))
+                        .LoadPanel(f => f.Enabled(false))
+                        .Columns(columns =>
+                        {
+                            columns.Add().DataField("intGlCode").Caption("Edit").Type(GridCommandColumnType.Buttons)
+                            .Width(50)
+                            .Buttons(b =>
+                            {
+                                b.Add().Name(GridColumnButtonName.Edit).Visible(true).Icon("edit").OnClick("editEventSlot");
 
-                    columns.Add().DataField("dtEventPublishDate").DataType(DevExtreme.AspNet.Mvc.GridColumnDataType.DateTime).Caption("Publish Date");
-                    columns.Add().DataField("dtStartDate").DataType(DevExtreme.AspNet.Mvc.GridColumnDataType.DateTime).Format(DevExtreme.AspNet.Mvc.Format.ShortTime).EditorOptions(new { type = "time", interval = 15 }).Caption("Start Date");
-                    columns.Add().DataField("dtEndDate").DataType(DevExtreme.AspNet.Mvc.GridColumnDataType.DateTime).Format(DevExtreme.AspNet.Mvc.Format.ShortTime).EditorOptions(new { type = "time", interval = 15 }).Caption("End Date");
-                    columns.Add().DataField("dtEndDate").DataType(DevExtreme.AspNet.Mvc.GridColumnDataType.String).EditorOptions(new { type = "dxTextBox", interval = 15 }).Caption("Attendance");
-                    })
-                    .ColumnAutoWidth(true)
-                    .Scrolling(scrolling => scrolling.ColumnRenderingMode(GridColumnRenderingMode.Standard))
-                    .ShowRowLines(true)
-                    .RowAlternationEnabled(true)
-                    .Paging(paging => paging.PageSize(10))
-                    .Pager(pager =>
-                    {
-                    pager.ShowInfo(true);
-                    })
-                    .Sorting(sorting => sorting.Mode(DevExtreme.AspNet.Mvc.GridSortingMode.Multiple))
-                    .FilterRow(filterRow => filterRow
-                    .Visible(true)
-                    .ApplyFilter(GridApplyFilterMode.Auto)
-                    )
-                    .HeaderFilter(headerFilter => headerFilter.Visible(true))
-                    .WordWrapEnabled(true)
-                    ) *@
+                            });
+                            columns.Add().DataField("varEventName").DataType(DevExtreme.AspNet.Mvc.GridColumnDataType.String).Caption("Event");
+                            columns.Add().DataField("TrainerName").DataType(DevExtreme.AspNet.Mvc.GridColumnDataType.String).Caption("Trainer");
+                            columns.Add().DataField("dtDate").DataType(DevExtreme.AspNet.Mvc.GridColumnDataType.Date).Format("MM/dd/yyyy").Caption("Date");
+                            columns.Add().DataField("varTimeFrom").DataType(DevExtreme.AspNet.Mvc.GridColumnDataType.String).Format(DevExtreme.AspNet.Mvc.Format.ShortTime).Caption("Time From");
+                            columns.Add().DataField("varTimeTo").DataType(DevExtreme.AspNet.Mvc.GridColumnDataType.String).Format(DevExtreme.AspNet.Mvc.Format.ShortTime).Caption("Time To");
+                            columns.Add().DataField("intNoofSeats").DataType(DevExtreme.AspNet.Mvc.GridColumnDataType.String).Caption("Attendance");
+                        })
+                        .ColumnAutoWidth(true)
+                        .Scrolling(scrolling => scrolling.ColumnRenderingMode(GridColumnRenderingMode.Standard))
+                        .ShowRowLines(true)
+                        .RowAlternationEnabled(true)
+                        .Paging(paging => paging.PageSize(10))
+                        .Pager(pager =>
+                        {
+                            pager.ShowInfo(true);
+                        })
+                        .Sorting(sorting => sorting.Mode(DevExtreme.AspNet.Mvc.GridSortingMode.Multiple))
+                        .FilterRow(filterRow => filterRow
+                        .Visible(true)
+                        .ApplyFilter(GridApplyFilterMode.Auto)
+                        )
+                        .HeaderFilter(headerFilter => headerFilter.Visible(true))
+                        .WordWrapEnabled(true)
+                        )
                 </div>
             </div>
         </div>

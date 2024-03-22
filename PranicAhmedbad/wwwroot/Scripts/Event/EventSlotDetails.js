@@ -1,5 +1,36 @@
 ﻿
 
+function editEventSlot(e) {
+
+    $("#ddlEventList").dxSelectBox("getDataSource").reload();
+    $("#ddlTraineeList").dxSelectBox("getDataSource").reload();
+    //$("#ddlEventStatusList").dxSelectBox("getDataSource").reload();
+    setTimeout(function () {
+
+        //var ddlCountryList = $("#ddlEventStatusList").dxSelectBox('instance');
+        //ddlCountryList.option('value', parseInt(e.row.data.ref_StatusID));
+
+        var ddlStateList = $("#ddlTraineeList").dxSelectBox('instance');
+        ddlStateList.option('value', parseInt(e.row.data.ref_TrainerID));
+        
+        var ddlEventList = $("#ddlEventList").dxSelectBox('instance');
+        ddlEventList.option('value', parseInt(e.row.data.ref_EventID));
+
+
+    }, 100);
+    
+    $("#txtDate").val(e.row.data.dtDate);
+    $("#txtFromtime").val(e.row.data.varTimeFrom);
+    $("#txtTotime").val(e.row.data.varTimeTo);
+
+
+    $("#TxtintNoofSeats").val(e.row.data.intNoofSeats);
+    $("#ref_SlotintGlCode").val(e.row.data.intGlCode);
+    $("#chkStatus").prop('checked', e.row.data.chrActive == 'Y' ? true : false);
+
+    document.getElementById("frmEventSlot").scrollIntoView();
+
+}
 function ValidateDataEvent() {
 
     var chrActive = $("#chkStatus").prop('checked');
@@ -21,12 +52,12 @@ function ValidateDataEvent() {
     }
     /*$("#ref_CityId").val(ddlCity);*/
 
-    var ddlEventStatus = $("#ddlEventStatusList").dxSelectBox('instance').option('value');
-    if (ddlEventStatus == undefined || ddlEventStatus == null || ddlEventStatus == '' || ddlEventStatus == '0') {
-        PopUpMessage('Please Select Event Type.', "fa fa-exclamation-circle popup_icon");
-        $("#ddlEventList").focus();
-        return false;
-    }
+    //var ddlEventStatus = $("#ddlEventStatusList").dxSelectBox('instance').option('value');
+    //if (ddlEventStatus == undefined || ddlEventStatus == null || ddlEventStatus == '' || ddlEventStatus == '0') {
+    //    PopUpMessage('Please Select Event Type.', "fa fa-exclamation-circle popup_icon");
+    //    $("#ddlEventList").focus();
+    //    return false;
+    //}
    /* $("#ref_EntityID").val(ddlEventStatus);*/
 
     setTimeout(function () {
@@ -45,7 +76,7 @@ function ValidateDataEvent() {
                 else {
                     PopUpWithClose(response.Table[0].varMessage, "fa fa-check-circle popup_icon_success");
                     resetValidationEvent();
-                    $("#grdEventList").dxDataGrid('instance').refresh();
+                    $("#grdEventSlotList").dxDataGrid('instance').refresh();
                 }
             },
             error: function (error) {
@@ -54,4 +85,37 @@ function ValidateDataEvent() {
         });
         //$('#loading').fadeOut();
     }, 1000);
+}
+
+function resetValidationEvent() {
+
+    $('.input-validation-error').addClass('input-validation-valid');
+    $('.input-validation-error').removeClass('input-validation-error');
+    //Removes validation message after input-fields
+    $('.field-validation-error').addClass('field-validation-valid');
+    $('.field-validation-error').removeClass('field-validation-error');
+    $('.field-validation-valid span').html('')
+    
+    $("input[type='time']").val('');
+    $("input[type='date']").val('');
+    $("input[type='datetime-local']").val('');
+    $('#TxtintNoofSeats').val('0');
+
+    $("#grdEventSlotList").dxDataGrid('instance').refresh();
+    $("#grdEventSlotList").dxDataGrid('instance').clearFilter();
+    $("#ddlEventList").dxSelectBox('instance').option('value', "0");
+   // $("#ddlEventStatusList").dxSelectBox('instance').option('value', "0");
+    $("#ddlTraineeList").dxSelectBox('instance').option('value', "0");
+
+
+    $("#ref_SlotintGlCode").val('0');
+    //$("#Action").val('Insert');
+
+    $("#chkStatus").prop('checked', false);
+
+    $("#chrActive").val('false');
+
+}
+function ExportExcelEvent() {
+    $("#grdEventSlotList").dxDataGrid("instance").exportToExcel(false);
 }

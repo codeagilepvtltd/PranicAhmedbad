@@ -117,5 +117,24 @@ namespace PranicAhmedbad.Lib.DA
 
         }
 
+        public DataSet EventSlotDetailsList(long ref_EventId = 0)
+        {
+            sqlQuery = new StringBuilder();
+            object[] objParamName = { "ref_EventId" };
+            object[] objParamValue = { ref_EventId };
+
+            try
+            {
+                resultSet = SQLHelper.GetData(StoredProcedures.USP_Select_EventSlotDetails, objParamName, objParamValue);
+            }
+            catch
+            {
+                throw;
+            }
+            return resultSet;
+
+        }
+
+
     }
 }
