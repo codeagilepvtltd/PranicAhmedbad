@@ -199,34 +199,42 @@ namespace PranicAhmedbad.Lib.Repository.Account
                 throw;
             }
         }
-        //public List<Event_SlotDetails> GetEventSlotList(string varEventType)
-        //{
-        //    EventMaster_DA EventMasterDA = new EventMaster_DA();
-        //    List<Event_SlotDetails> EntitySlot = new List<Event_SlotDetails>();
+        public List<Event_SlotDetails> GetEventSlotList(long ref_EventId = 0)
+        {
+            EventMaster_DA EventMasterDA = new EventMaster_DA();
+            List<Event_SlotDetails> EntitySlot = new List<Event_SlotDetails>();
 
-        //    try
-        //    {
-        //        DataSet dsResult = EventMasterDA.GetEventTypeList(varEventType);
+            try
+            {
+                DataSet dsResult = EventMasterDA.EventSlotDetailsList(ref_EventId);
 
-        //        if (dsResult.Tables.Count > 0 && dsResult.Tables[0].Rows.Count > 0)
-        //        {
-        //            EntitySlot = dsResult.Tables[0].AsEnumerable().Select(row => new Event_SlotDetails()
-        //            {
-        //                intGlCode = row.Field<int>("intGlCode"),
-        //                varEntityType = row.Field<string>("varEntityName"),
-        //                varEntityName = row.Field<string>("varEntityName"),
-        //                chrActive = row.Field<string>("chrActive")
+                if (dsResult.Tables.Count > 0 && dsResult.Tables[0].Rows.Count > 0)
+                {
+                    EntitySlot = dsResult.Tables[0].AsEnumerable().Select(row => new Event_SlotDetails()
+                    {
+                        intGlCode = row.Field<Int64>("ref_EventSlotId"),
+                        ref_EventID = row.Field<Int64>("ref_EventID"),
+                        varTimeFrom = row.Field<string>("varTimeFrom"),
+                        varTimeTo = row.Field<string>("varTimeTo"),
+                        dtDate = row.Field<DateTime>("EventDate"),
+                        intNoofSeats = row.Field<int>("intNoofSeats"),
+                        ref_TrainerID = row.Field<Int64>("ref_TrainerID"),
+                        TrainerName = row.Field<string>("TrainerName"),
+                        varEventName = row.Field<string>("varEventName"),
+                        varEventDescription = row.Field<string>("varEventDescription"),
+                        ref_StatusID = row.Field<int>("ref_StatusID"),
+                        chrActive = row.Field<string>("chrActive")
 
-        //            }).ToList();
+                    }).ToList();
 
-        //        }
-        //    }
-        //    catch
-        //    {
-        //        throw;
-        //    }
-        //    return EntityTypeMaster;
-        //}
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            return EntitySlot;
+        }
         #endregion
     }
 }

@@ -16,6 +16,8 @@ namespace PranicAhmedbad.Lib.Repository.Account
 
         DataSet InsertUpdate_EventSlot(EventSlotDetailViewModel eventslotMasterView);
 
+        List<Event_SlotDetails> GetEventSlotList(long ref_EventId);
+
         #endregion
     }
 }

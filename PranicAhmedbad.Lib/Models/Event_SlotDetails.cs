@@ -17,6 +17,10 @@ namespace PranicAhmedbad.Lib.Models
         public string varTimeFrom { get; set; }
 
         public string varTimeTo { get; set; }
+        public string TrainerName { get; set; }
+
+        public string varEventName { get; set; }
+        public string varEventDescription { get; set; }
 
         public long? ref_TrainerID { get; set; }
 

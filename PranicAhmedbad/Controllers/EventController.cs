@@ -103,6 +103,14 @@ namespace PranicAhmedbad.Controllers
             }
         }
 
+        #endregion
+
+        #region Event
+        public ActionResult EventSlotDetails()
+        {
+            return View("Admin/EventDetails");
+        }
+
         public ActionResult Save_EventSlot(EventSlotDetailViewModel eventslotMasterView)
         {
             try
@@ -132,14 +140,23 @@ namespace PranicAhmedbad.Controllers
             }
         }
 
-        #endregion
-
-        #region Event
-        public ActionResult EventSlotDetails()
+        public IActionResult GetEventSlotList(long ref_EventId)
         {
-            return View("Admin/EventDetails");
+            EventSlotDetailViewModel EventSlotViewModel = new EventSlotDetailViewModel();
+            DataSet dsResult = new DataSet();
+            try
+            {
+                EventSlotViewModel.event_slotDetails = eventRepository.GetEventSlotList(ref_EventId);
+                var resultJson = JsonConvert.SerializeObject(EventSlotViewModel.event_slotDetails);
+                return Content(resultJson, "application/json");
+            }
+            catch (Exception ex)
+            {
+                //ModuleErrorLogRepository.Insert_Modules_Error_Log("GetPersonDetails", System.Reflection.MethodBase.GetCurrentMethod().Name.ToString(), Convert.ToString(sessionManager.IntGlCode), ex.StackTrace, this.GetType().Name.ToString(), "Novapack", ex.Source, "", "", ex.Message);
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction("ErrorForbidden", "Account");
+            }
         }
-
         #endregion
     }
 }
